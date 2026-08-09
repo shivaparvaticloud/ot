@@ -2,31 +2,33 @@
 
 Static site. No build step, no framework, no JavaScript, no external requests.
 
-## Deploy to Cloudflare
+## Deploy to Cloudflare Pages
 
-Deployed as a **Worker with static assets**, not Cloudflare Pages. The site is
-`public/`; everything outside it — this README, `wrangler.toml`, `.gitignore` —
-is not uploaded and is never served.
+The site is `public/`. Everything outside it — this README, `wrangler.toml`,
+`.gitignore` — is not part of the build output and is never served.
 
-There is no build step. `wrangler.toml` supplies the whole configuration, so
-in Workers Builds the build command stays **empty** and the deploy command is
-the default:
+There is no build step. `wrangler.toml` sets the project name and output
+directory, so the dashboard build fields are locked to the right values.
 
-```
-npx wrangler deploy
-```
-
-1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Workers**
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages**
 2. **Connect to Git** → select this repository
-3. Leave the build command empty; deploy command `npx wrangler deploy`
-4. **Custom domains** → add your domain, follow the DNS instructions
-5. **SSL/TLS** → set encryption mode to **Full (strict)**
+3. Framework preset **None**; build command **empty**; output directory
+   `public` (read from `wrangler.toml`)
+4. **Save and Deploy**
+5. **Custom domains** → add your domain, follow the DNS instructions
+6. **SSL/TLS** → set encryption mode to **Full (strict)**
 
-Every push to the production branch redeploys automatically. The same
-`npx wrangler deploy` publishes from a terminal without connecting Git.
+Every push to the production branch redeploys automatically.
 
-Note `wrangler pages deploy` is **not** the right command for this repo — that
-is the Pages path, and it will not read the `[assets]` configuration.
+To publish from a terminal instead of connecting Git:
+
+```
+npx wrangler pages deploy
+```
+
+Note this is a Pages project. `wrangler deploy` — the Workers command — does
+not read `pages_build_output_dir` and will fail with "Missing entry-point to
+Worker script or to assets directory".
 
 ## Before going live
 
@@ -72,7 +74,7 @@ all three must end up as the same hostname you attach in **Custom domains**.
 | `public/_headers` | Cloudflare security headers — **do not rename** |
 | `public/robots.txt` | Search engine directives |
 | `public/sitemap.xml` | The three indexable pages |
-| `wrangler.toml` | Worker name, asset directory, 404 handling |
+| `wrangler.toml` | Pages project name and build output directory |
 
 ## Design decisions
 
