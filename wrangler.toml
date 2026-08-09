@@ -1,0 +1,11 @@
+# Cloudflare Pages project configuration.
+#
+# Cloudflare reads this on Git-connected builds, so the build settings do not
+# have to be entered in the dashboard. It also lets the site be published
+# straight from a terminal with `npx wrangler pages deploy`.
+#
+# There is no build step — `public/` is the site, served as-is.
+
+name = "ot-site"
+pages_build_output_dir = "public"
+compatibility_date = "2026-08-09"
