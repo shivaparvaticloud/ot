@@ -227,6 +227,65 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
 .updated{ font-family:var(--sans); font-size:0.8125rem; color:var(--ink-faint); margin-bottom:2rem; }
 .back{ font-family:var(--sans); font-size:0.875rem; font-weight:600; }
 
+/* ---------- Primary nav ---------- */
+.brand{ display:flex; flex-direction:column; gap:0.1rem; }
+.nav{
+  display:flex; flex-wrap:wrap; gap:0.35rem 1.3rem;
+  font-family:var(--sans); font-size:0.8125rem; font-weight:600;
+}
+/* No retracting underline here — in a five-item header it reads as noise. */
+.nav a{ color:var(--ink-soft); background-image:none; }
+.nav a:hover{ color:var(--accent); }
+
+/* ---------- Response-time promise under the hero CTA ---------- */
+.promise{
+  font-family:var(--sans); font-size:0.8125rem; line-height:1.7;
+  color:var(--ink-faint); margin:1.1rem 0 0; max-width:none;
+}
+.promise strong{ color:var(--ink-soft); font-weight:600; }
+
+/* ---------- Illustrative examples ---------- */
+.examples{ display:grid; gap:1rem; margin:1.4rem 0 0; }
+.example{
+  background:var(--card); border:1px solid var(--rule-soft);
+  border-left:3px solid var(--accent); border-radius:3px;
+  padding:1.1rem 1.2rem;
+}
+.example h3{ font-size:0.9375rem; margin-bottom:0.65rem; }
+.ex-line{ font-size:0.9375rem; line-height:1.6; color:var(--ink-soft); margin:0 0 0.65rem; max-width:none; }
+.ex-line:last-child{ margin-bottom:0; }
+.ex-line span{
+  display:block; font-family:var(--sans); font-size:0.625rem; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint);
+  margin-bottom:0.1rem;
+}
+
+/* ---------- FAQ ---------- */
+.faq{ max-width:42rem; }
+.qa{ padding:1rem 0; border-bottom:1px solid var(--rule-soft); }
+.qa:first-child{ padding-top:0; }
+.qa:last-child{ border-bottom:0; padding-bottom:0; }
+.qa h3{ font-size:0.9375rem; margin-bottom:0.35rem; }
+.qa p{ margin:0; font-size:0.9375rem; color:var(--ink-soft); max-width:40rem; }
+
+.sub{ margin-top:1.9rem; font-size:0.9375rem; }
+
+/* ---------- Breadcrumbs ---------- */
+.crumbs{ font-family:var(--sans); font-size:0.8125rem; margin:0 0 1.3rem; }
+.crumbs ol{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:0.5rem; }
+.crumbs li{ color:var(--ink-faint); }
+.crumbs li + li::before{ content:"/"; margin-right:0.5rem; color:var(--rule); }
+.crumbs [aria-current="page"]{ color:var(--ink-soft); }
+
+/* ---------- Practitioner portrait (optional — see README) ---------- */
+.portrait{
+  float:right; width:11rem; max-width:38%; margin:0.2rem 0 1rem 1.5rem;
+  border-radius:3px; border:1px solid var(--rule-soft);
+}
+
+/* ---------- Sticky contact bar, small screens only ---------- */
+.sticky-cta{ display:none; }
+
 /* ============================================================
    MOTION — one entrance sequence, on load, once.
    Deliberately no scroll-linked reveals: content that fades in
@@ -277,13 +336,27 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
   .day svg{ min-height:200px; }
 }
 @media (max-width: 46rem){
-  .masthead .wrap{ flex-direction:column; align-items:flex-start; gap:0.3rem; }
+  .masthead .wrap{ flex-direction:column; align-items:flex-start; gap:0.55rem; }
   .cols{ grid-template-columns:1fr; gap:1rem; }
   .day-marks{ grid-template-columns:1fr 1fr; gap:0.5rem 0.9rem; margin-top:1.1rem; }
   .day-marks div{ border-top:1px solid var(--rule-soft); padding-top:0.5rem; }
   .creds > div{ grid-template-columns:1fr; gap:0.15rem; }
   .hero{ padding:3rem 0 2.5rem; }
   .band{ padding:2.5rem 0; }
+  .portrait{ float:none; width:9rem; margin:0 0 1.1rem; }
+
+  /* Sticky contact bar. display:none above this breakpoint keeps the
+     duplicate links out of the accessibility tree on larger screens. */
+  .sticky-cta{
+    display:flex; gap:0.5rem; position:fixed; z-index:50;
+    left:0; right:0; bottom:0;
+    padding:0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));
+    background:var(--paper); border-top:1px solid var(--rule);
+  }
+  .sticky-cta .btn{ flex:1 1 auto; text-align:center; padding:0.72rem 0.6rem; font-size:0.875rem; }
+  .sticky-cta .btn-line{ flex:0 0 30%; }
+  /* Clear the bar so it never covers the last line of the footer. */
+  body{ padding-bottom:4.75rem; }
 }
 @media (max-width: 30rem){
   .day-marks{ grid-template-columns:1fr; }
@@ -291,7 +364,7 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
 }
 
 @media print{
-  body{ background:#fff; color:#000; }
-  .btn,.skip{ display:none; }
+  body{ background:#fff; color:#000; padding-bottom:0; }
+  .btn,.skip,.nav,.sticky-cta{ display:none; }
   .band{ page-break-inside:avoid; }
 }

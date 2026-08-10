@@ -3,20 +3,150 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>[YOUR NAME] — Occupational Therapist, Sydney</title>
-<meta name="description" content="Occupational therapy in Sydney for adults and adolescents. Routines, attention and task management, sensory load and daily structure. Telehealth across NSW.">
+<title>[YOUR NAME] — Occupational Therapist, [LOCATION] &amp; Telehealth NSW</title>
+<meta name="description" content="Occupational therapy in [LOCATION], Sydney for adults and adolescents. Routines, task initiation, attention, sensory load and daily structure. NDIS and private. Telehealth across NSW.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://[YOURDOMAIN].com.au/">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2F2EE">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14171A">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="[YOUR NAME], Occupational Therapist">
+<meta property="og:title" content="Occupational therapy for the shape of your day">
+<meta property="og:description" content="Adults and adolescents in [LOCATION], Sydney. Routines, starting things, attention, sensory load. NDIS and private. Telehealth across NSW.">
+<meta property="og:url" content="https://[YOURDOMAIN].com.au/">
+<meta property="og:image" content="https://[YOURDOMAIN].com.au/share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A line showing demand across a day rising above a shaded band representing available capacity.">
+<meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- JSON-LD is a data block, never executed, so it is unaffected by the
+     script-src 'none' policy in _headers. Contains no reviews or ratings:
+     testimonials are prohibited under s133 of the National Law. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["MedicalBusiness", "ProfessionalService"],
+      "@id": "https://[YOURDOMAIN].com.au/#practice",
+      "name": "[YOUR NAME], Occupational Therapist",
+      "url": "https://[YOURDOMAIN].com.au/",
+      "image": "https://[YOURDOMAIN].com.au/share.png",
+      "description": "Occupational therapy for adults and adolescents: routines, task initiation, attention, time management, sensory load and daily structure.",
+      "medicalSpecialty": "OccupationalTherapy",
+      "priceRange": "$$",
+      "email": "[YOUR EMAIL]",
+      "telephone": "[YOURPHONE_NO_SPACES]",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "[LOCATION]",
+        "addressRegion": "NSW",
+        "addressCountry": "AU"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Sydney" },
+        { "@type": "State", "name": "New South Wales" }
+      ],
+      "availableService": [
+        { "@type": "MedicalTherapy", "name": "Occupational therapy assessment" },
+        { "@type": "MedicalTherapy", "name": "Routine and habit development" },
+        { "@type": "MedicalTherapy", "name": "Sensory modulation and environmental modification" }
+      ],
+      "provider": { "@id": "https://[YOURDOMAIN].com.au/#practitioner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://[YOURDOMAIN].com.au/#practitioner",
+      "name": "[YOUR FULL LEGAL NAME]",
+      "jobTitle": "Occupational Therapist",
+      "worksFor": { "@id": "https://[YOURDOMAIN].com.au/#practice" },
+      "alumniOf": "[UNIVERSITY]",
+      "identifier": {
+        "@type": "PropertyValue",
+        "name": "AHPRA registration",
+        "value": "[OTA0000000000]"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://[YOURDOMAIN].com.au/#website",
+      "url": "https://[YOURDOMAIN].com.au/",
+      "name": "[YOUR NAME], Occupational Therapist",
+      "inLanguage": "en-AU",
+      "publisher": { "@id": "https://[YOURDOMAIN].com.au/#practice" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://[YOURDOMAIN].com.au/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need a referral from my GP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You can contact me directly and book without a referral. A referral is only needed if you are claiming through a Medicare care plan, in which case your GP arranges it. NDIS participants who are plan-managed or self-managed do not need a GP referral."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use NDIS or private health cover?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes to both. I see NDIS participants who are plan-managed or self-managed, charged at the NDIS Pricing Schedule rates. For private health, I issue a receipt with my provider number for you to claim if your extras cover includes occupational therapy. I am not able to invoice the NDIA directly for agency-managed participants."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer telehealth?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, by video across New South Wales, and it is a genuine option rather than a fallback. A lot of this work is about your actual home and routines, and being in that space during a session is often more useful than describing it from a clinic room."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens in the first session?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We work out what is actually getting in the way rather than what it looks like from the outside. Expect questions about a typical day, where it reliably comes apart, and what you have already tried. You will leave with a clear picture of what we would work on, and you are under no obligation to book again."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is occupational therapy different from psychology or coaching?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Occupational therapy is a registered health profession concerned with function: what you do across a day and what makes it harder or easier. The work is practical and environmental rather than interpretive, so it tends to change the task, the setting and the routine as much as the strategy. It sits alongside psychological therapy and medical care rather than replacing either."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
-<a class="skip" href="#who">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
 
 <header class="masthead">
   <div class="wrap">
-    <a class="wordmark" href="/">[YOUR NAME]</a>
-    <span class="role">Occupational Therapist &middot; Sydney</span>
+    <div class="brand">
+      <a class="wordmark" href="/">[YOUR NAME]</a>
+      <span class="role">Occupational Therapist &middot; [LOCATION], Sydney</span>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <a href="#who">Who I help</a>
+      <a href="#how">How it works</a>
+      <a href="#sessions">Fees</a>
+      <a href="#faq">FAQs</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </div>
 </header>
 
@@ -25,7 +155,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="wrap">
-      <p class="eyebrow">Registered occupational therapy</p>
+      <p class="eyebrow">Registered occupational therapy &middot; Adults &amp; adolescents</p>
       <h1>Occupational therapy for the shape of your day.</h1>
       <p class="lede">I work with adults and adolescents on the practical layer of daily life — routines, starting things, managing time and sensory load, and getting a day back into a shape that holds.</p>
 
@@ -93,6 +223,7 @@
         <a class="btn btn-solid" href="mailto:[YOUR EMAIL]?subject=Occupational%20therapy%20enquiry">Send an enquiry</a>
         <a class="btn btn-line" href="tel:[YOURPHONE_NO_SPACES]">Call [YOUR PHONE]</a>
       </div>
+      <p class="promise">Replies within <strong>[2] business days</strong> &middot; [AVAILABILITY] &middot; No referral needed</p>
     </div>
   </section>
 
@@ -110,7 +241,7 @@
           <li>Environments that are quietly exhausting to be in</li>
           <li>Systems that work for other people and not for you</li>
         </ul>
-        <p>I see NDIS participants who are plan-managed or self-managed, private clients, and people referred by their GP.</p>
+        <p>I see NDIS participants who are plan-managed or self-managed, private clients, and people referred by their GP. If you are not sure whether this is the right kind of help, <a href="#contact">ask me</a> — I will tell you plainly if it isn't.</p>
       </div>
     </div>
   </section>
@@ -190,8 +321,38 @@
     </div>
   </section>
 
+  <!-- ============ ILLUSTRATIVE EXAMPLES ============
+       Composites, not client stories. Written to show the shape of the
+       work without outcome claims, testimonials or identifying detail —
+       all three are restricted under the AHPRA advertising guidelines. -->
+  <section class="band band-fill" id="examples">
+    <div class="wrap cols">
+      <div><h2>What the work looks like</h2></div>
+      <div>
+        <p>Three illustrative examples of how a block of sessions tends to run. These are composites written to show the shape of the work — they are not accounts of real clients.</p>
+        <div class="examples">
+          <article class="example">
+            <h3>A morning that eats the day</h3>
+            <p class="ex-line"><span>Presenting</span> Recently diagnosed with ADHD. Mornings take three hours, so work starts late and runs late, which pushes sleep back again.</p>
+            <p class="ex-line"><span>What we work on</span> Mapping where the time actually goes rather than where it feels like it goes. Reducing the number of decisions before leaving the house. Anchoring the start of the day to something fixed.</p>
+          </article>
+          <article class="example">
+            <h3>A home that is quietly exhausting</h3>
+            <p class="ex-line"><span>Presenting</span> Autistic adult, working from home, describing a constant low-level depletion with no single obvious cause.</p>
+            <p class="ex-line"><span>What we work on</span> A sensory audit of the spaces used most. Adjusting light, sound and visual load. Building recovery into the day deliberately instead of after collapse.</p>
+          </article>
+          <article class="example">
+            <h3>Systems that keep failing</h3>
+            <p class="ex-line"><span>Presenting</span> Long history of planners, apps and routines that hold for a week and then stop, with the failure read as a character problem.</p>
+            <p class="ex-line"><span>What we work on</span> Why each system failed, treated as design information rather than fault. Rebuilding one routine at a time around how attention actually behaves.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ SESSIONS ============ -->
-  <section class="band band-fill" id="sessions">
+  <section class="band" id="sessions">
     <div class="wrap cols">
       <div><h2>Sessions and fees</h2></div>
       <div>
@@ -206,7 +367,39 @@
             <tr><td>GST</td><td>Occupational therapy provided as appropriate treatment is GST-free</td></tr>
           </tbody>
         </table>
+        <p>Payment is due [at the time of the appointment / within 7 days of invoice]. Cancellations inside [24 / 48] hours are charged in full. Full details are in the <a href="/terms.html">terms of service</a>.</p>
         <p>Delivered by telehealth across NSW, and in person at [LOCATION]. Where a GP has referred you, I return a written summary to them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="band band-fill" id="faq">
+    <div class="wrap cols">
+      <div><h2>Common questions</h2></div>
+      <div>
+        <div class="faq">
+          <div class="qa">
+            <h3>Do I need a referral from my GP?</h3>
+            <p>No. You can contact me directly and book without a referral. A referral is only needed if you are claiming through a Medicare care plan, in which case your GP arranges it. NDIS participants who are plan-managed or self-managed don't need one either.</p>
+          </div>
+          <div class="qa">
+            <h3>Can I use NDIS or private health cover?</h3>
+            <p>Yes to both. I see plan-managed and self-managed NDIS participants at the NDIS Pricing Schedule rates. For private health, I issue a receipt with my provider number for you to claim, if your extras cover includes occupational therapy. I'm not able to invoice the NDIA directly, so agency-managed participants can't currently be seen.</p>
+          </div>
+          <div class="qa">
+            <h3>Do you offer telehealth?</h3>
+            <p>Yes, by video across New South Wales — and it's a genuine option rather than a fallback. Much of this work is about your actual home and routines, and being in that space during a session is often more useful than describing it from a clinic room.</p>
+          </div>
+          <div class="qa">
+            <h3>What happens in the first session?</h3>
+            <p>We work out what is actually getting in the way, rather than what it looks like from the outside. Expect questions about a typical day, where it reliably comes apart, and what you've already tried. You'll leave with a clear picture of what we would work on — and no obligation to book again.</p>
+          </div>
+          <div class="qa">
+            <h3>How is this different from psychology or coaching?</h3>
+            <p>Occupational therapy is a registered health profession concerned with function: what you do across a day, and what makes it harder or easier. The work is practical and environmental rather than interpretive — it changes the task, the setting and the routine as much as the strategy. It sits alongside psychological therapy and medical care rather than replacing either.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -249,8 +442,14 @@
         <ul class="contact-lines">
           <li><span>Email</span><a href="mailto:[YOUR EMAIL]?subject=Occupational%20therapy%20enquiry">[YOUR EMAIL]</a></li>
           <li><span>Phone</span><a href="tel:[YOURPHONE_NO_SPACES]">[YOUR PHONE]</a></li>
-          <li><span>Location</span>[LOCATION] &middot; telehealth across NSW</li>
+          <li><span>Consulting rooms</span>[LOCATION], Sydney NSW</li>
+          <li><span>Telehealth</span>By video, across New South Wales</li>
+          <li><span>Hours</span>[HOURS]</li>
         </ul>
+
+        <h3 class="sub">Getting here</h3>
+        <p>The rooms are in [LOCATION], a short walk from [NEAREST STATION]. [PARKING NOTE] The full street address is confirmed when you book.</p>
+        <p><a href="https://www.google.com/maps/search/?api=1&amp;query=[MAPS_QUERY]" rel="noopener noreferrer">Open directions in Maps &rarr;</a></p>
       </div>
     </div>
   </section>
@@ -267,11 +466,18 @@
       <span>[YOUR NAME], Occupational Therapist</span>
       <span>AHPRA [OTA0000000000]</span>
       <span>ABN [00 000 000 000]</span>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
     </div>
   </div>
 </footer>
+
+<!-- Sticky contact bar, small screens only. CSS-only; display:none above the
+     breakpoint keeps it out of the accessibility tree on desktop. -->
+<nav class="sticky-cta" aria-label="Quick contact">
+  <a class="btn btn-solid" href="mailto:[YOUR EMAIL]?subject=Occupational%20therapy%20enquiry">Send an enquiry</a>
+  <a class="btn btn-line" href="tel:[YOURPHONE_NO_SPACES]">Call</a>
+</nav>
 
 </body>
 </html>
