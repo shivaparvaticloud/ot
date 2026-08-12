@@ -176,7 +176,10 @@ disables all of it and renders the final state immediately.
 - Landmarks and a real heading hierarchy
 - Hero graphic carries `role="img"` with `<title>` and `<desc>`
 - Visible focus rings throughout
-- WCAG AA contrast in both colour modes
+- WCAG AA contrast in both colour modes, measured rather than assumed. The
+  tightest pair is `--ink-faint` on `--paper-deep`: 4.62:1 light, 4.81:1 dark,
+  against a 4.5:1 floor. Re-check with a contrast tool if you change the palette
+  — the small uppercase labels are the first thing to fail.
 - Reduced motion fully respected
 
 ## Compliance note

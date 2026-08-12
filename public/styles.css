@@ -12,7 +12,10 @@
   --card:       #FBFBF8;
   --ink:        #171A1C;
   --ink-soft:   #4A5054;
-  --ink-faint:  #767C82;
+  /* Darkened from #767C82, which measured 3.76:1 on --paper and 3.46:1 on
+     --paper-deep — below the 4.5:1 AA floor for text this small. This value
+     is the lightest on the same hue that clears 4.5:1 on both. */
+  --ink-faint:  #63686D;
   --rule:       #D6D6CE;
   --rule-soft:  #E3E3DB;
   --accent:     #1F3D4C;
