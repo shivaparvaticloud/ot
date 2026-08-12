@@ -1,0 +1,16 @@
+{
+  "name": "Simple Roots Therapy",
+  "short_name": "Simple Roots",
+  "description": "Holistic, paced and empowering occupational therapy and coaching for children, adolescents and adults in Sydney.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#F7F5F0",
+  "theme_color": "#F7F5F0",
+  "lang": "en-AU",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

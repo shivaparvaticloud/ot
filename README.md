@@ -45,7 +45,31 @@ without a home of their own).
 | `public/404.html` | Not-found page |
 
 Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
-`llms.txt`, `favicon.svg`, `share.png`, `.well-known/security.txt`.
+`llms.txt`, `favicon.svg`, `share.png`, `apple-touch-icon.png`, `icon-192.png`,
+`icon-512.png`, `site.webmanifest`, `.well-known/security.txt`.
+
+Total 280 KB across 21 files, and a page costs two requests: the HTML and one
+stylesheet. Nothing is loaded from another server.
+
+## Light only — how it is actually enforced
+
+Three separate mechanisms, because `prefers-color-scheme` alone is not enough:
+
+1. **No dark palette exists.** There is one set of custom properties and no
+   `prefers-color-scheme` block, so there is nothing for a dark preference to
+   switch to.
+2. **`color-scheme: light`** in CSS and `<meta name="color-scheme" content="light">`
+   in every head. This is what stops **Chrome on Android auto-darkening the
+   page** — its automatic dark theme applies to sites that have not declared a
+   scheme, and would otherwise invert the palette on a phone set to dark.
+3. **`@media (forced-colors: active)`** for Windows High Contrast. In that mode
+   the OS palette replaces ours by design; the block makes sure nothing
+   disappears when it does — diagram strokes follow `CanvasText`, tinted fills
+   become transparent rather than invisible shapes, cards keep a visible
+   border, and focus uses `Highlight`.
+
+Verified by loading every page with the browser's system preference forced to
+**dark**: all nine still compute `rgb(247, 245, 240)` as the body background.
 
 ## Brand kit implementation
 
@@ -306,6 +330,40 @@ an audience that includes autistic and ADHD clients and their families.
 **Separate pages rather than one long scroll.** Each question a visitor might
 have has its own URL, which is better for search, for sharing a specific
 answer, and for anyone who finds a long page hard to navigate.
+
+## Verification
+
+Everything below was measured in a headless browser against the site served
+with its real `_headers` CSP, not asserted. Re-run these after any change.
+
+| Check | Result |
+|---|---|
+| Light theme with system set to dark | 9/9 pages render `#F7F5F0` |
+| Rendered text contrast, every visible element | 0 failures |
+| Horizontal overflow at 320/360/390/768/1024/1440px | none |
+| 200% zoom (640px equivalent) | no horizontal scroll |
+| Text-spacing override (WCAG 1.4.12) | reflows without clipping |
+| Duplicate IDs, nameless links, missing `alt` | none |
+| Heading order, one `h1` per page | clean |
+| Internal links and anchors | all resolve |
+| Tap targets (WCAG 2.2 SC 2.5.8) | all standalone controls ≥24×24 |
+| Keyboard | skip link is first stop and moves focus to `#main`; focus ring visible |
+| Reduced motion | final state renders immediately, nothing stranded faded |
+| Print stylesheet | nav and sticky bar hidden, content intact |
+| HTML tag balance | 9/9 clean |
+| JSON-LD | valid on all pages, no `Review`/`AggregateRating` |
+| Requests per page | 2 (HTML + CSS), zero external, zero CSP violations |
+
+Two notes on the tap-target check. It found 151 failures on the first pass —
+navigation, breadcrumb, footer and list links were all around 21px tall — now
+fixed with a `min-height` and vertical padding on standalone links. The seven
+that remain are links **inside a sentence**, which SC 2.5.8 exempts because
+their size is constrained by the surrounding line-height; padding those would
+break the text rhythm for no compliance gain, so they are deliberately left.
+
+This matters more than the usual box-ticking here: the practice treats gross
+and fine motor difficulties, so small targets fail exactly the people most
+likely to be using the site.
 
 ## Accessibility
 
