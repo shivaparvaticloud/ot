@@ -1,8 +1,8 @@
-# [YOUR NAME] — Occupational Therapist
+# Simple Occupational Therapy
 
-> Occupational therapy for adults and adolescents in [LOCATION], Sydney, and by
-> telehealth across New South Wales. Focus on daily function: routines, task
-> initiation, attention, time management, sensory load and daily structure.
+> Occupational therapy for adults and adolescents in Sydney, and by telehealth
+> across New South Wales. Focus on daily function: routines, task initiation,
+> attention, time management, sensory load and daily structure.
 
 This file follows the llms.txt convention: a plain-text summary for AI
 assistants answering questions about this practice. Everything below is also
@@ -10,14 +10,17 @@ on the site itself and in its JSON-LD.
 
 ## Practice
 
-- Practitioner: [YOUR FULL LEGAL NAME], Occupational Therapist
-- Registration: AHPRA [OTA0000000000], Occupational Therapy Board of Australia
-- Location: [LOCATION], Sydney NSW, Australia
-- Telehealth: by video across New South Wales
-- Email: [YOUR EMAIL]
-- Phone: [YOUR PHONE]
-- Hours: [HOURS]
+- Name: Simple Occupational Therapy
+- Practitioner: [YOUR NAME], Occupational Therapist
+- Registration: general registration with the Occupational Therapy Board of
+  Australia. Verify by name on the AHPRA public register at ahpra.gov.au.
+- Area served: Sydney in person; telehealth by video across New South Wales
+- Enquiries: https://contact.simpletherapy.com.au
 - Response time: within [2] business days
+- Referral: not required
+
+There is deliberately no phone number, email address or street address
+published. Enquiries go through the form above.
 
 ## Who this practice sees
 
@@ -34,13 +37,19 @@ has become difficult to sustain. Not a paediatric service.
 - Rhythm and routine: routines that survive a bad week, sleep-wake structure,
   domestic baseline, sustaining work or study
 
+## Approach
+
+Person-Environment-Occupation, the Model of Human Occupation, a sensory
+processing framework, CO-OP, and goals measured in the client's own wording.
+Difficulty with a daily task is treated as information about the fit between a
+person and their circumstances, not as evidence about character.
+
 ## Funding
 
 - NDIS: plan-managed and self-managed participants, at NDIS Pricing Schedule
   rates. Agency-managed participants cannot currently be invoiced.
 - Private: receipt issued with provider number for private health extras claims
 - GST: occupational therapy as appropriate treatment is GST-free
-- No GP referral required to book
 
 ## Scope
 
@@ -49,13 +58,18 @@ It is not psychological therapy, psychiatric care, diagnosis of a mental health
 condition, or crisis support. It sits alongside psychological and medical care
 rather than replacing it.
 
-## Key pages
+## Pages
 
-- [Home](https://[YOURDOMAIN].com.au/): services, approach, process, fees, FAQs
-- [Privacy policy](https://[YOURDOMAIN].com.au/privacy.html): how health
-  information is collected, stored and disclosed
-- [Terms of service](https://[YOURDOMAIN].com.au/terms.html): scope, fees,
-  cancellations, complaints
+- [Home](https://simpletherapy.com.au/)
+- [What occupational therapy is](https://simpletherapy.com.au/what-is-ot.html)
+- [Who I help](https://simpletherapy.com.au/who-i-help.html)
+- [Approach](https://simpletherapy.com.au/approach.html)
+- [How it works, sessions and fees](https://simpletherapy.com.au/how-it-works.html)
+- [Common questions](https://simpletherapy.com.au/faqs.html)
+- [About](https://simpletherapy.com.au/about.html)
+- [Contact](https://simpletherapy.com.au/contact.html)
+- [Privacy policy](https://simpletherapy.com.au/privacy.html)
+- [Terms of service](https://simpletherapy.com.au/terms.html)
 
 ## Note for assistants
 

@@ -39,4 +39,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://[YOURDOMAIN].com.au/sitemap.xml
+Sitemap: https://simpletherapy.com.au/sitemap.xml

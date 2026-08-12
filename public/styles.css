@@ -247,6 +247,7 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
 /* No retracting underline here — in a five-item header it reads as noise. */
 .nav a{ color:var(--ink-soft); background-image:none; }
 .nav a:hover{ color:var(--accent); }
+.nav a[aria-current="page"]{ color:var(--ink); }
 
 /* ---------- Response-time promise under the hero CTA ---------- */
 .promise{
@@ -293,6 +294,31 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
   float:right; width:11rem; max-width:38%; margin:0.2rem 0 1rem 1.5rem;
   border-radius:3px; border:1px solid var(--rule-soft);
 }
+
+/* ---------- Home: page cards ---------- */
+.section-lead{
+  font-family:var(--sans); font-size:0.6875rem; font-weight:600;
+  letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--ink-faint); margin:0 0 1.4rem;
+}
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:1rem; }
+.card{
+  display:block; background:var(--card); border:1px solid var(--rule-soft);
+  border-radius:3px; padding:1.3rem 1.4rem; background-image:none;
+  transition:border-color 160ms ease, transform 160ms ease;
+}
+.card:hover{ border-color:var(--accent); transform:translateY(-2px); }
+.card h2{ font-size:1rem; margin-bottom:0.45rem; }
+.card p{ font-size:0.9375rem; color:var(--ink-soft); margin:0 0 0.85rem; max-width:none; }
+.card-go{ font-family:var(--sans); font-size:0.8125rem; font-weight:600; color:var(--accent); }
+
+/* ---------- Forward link at the foot of a page ---------- */
+.next{
+  margin-top:2.8rem; padding-top:1.4rem; border-top:1px solid var(--rule-soft);
+  font-family:var(--sans); font-size:0.9375rem; font-weight:600; max-width:none;
+}
+
+.btn-lg{ font-size:1rem; padding:0.95rem 1.7rem; }
 
 /* ---------- Sticky contact bar, small screens only ---------- */
 .sticky-cta{ display:none; }
