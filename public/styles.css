@@ -3,43 +3,46 @@
    Zero JavaScript. Zero external requests. CSS-only motion.
    Light and dark modes. Reduced motion fully respected.
 
-   Palette and type follow the brand kit. Two deviations, both
-   documented in README.md:
-     - Air Force Blue (#628294) measures 3.79:1 on Bright Snow,
-       below the 4.5:1 AA floor for text. It is used only for
-       large headings and graphic elements, where the threshold
-       is 3:1, and never for small text or as a button fill.
-     - The kit specifies no dark palette. The dark values below
-       are derived from it and checked to the same AA standard.
+   The site renders dark for every visitor, regardless of their
+   system setting. There is no light palette and no
+   prefers-color-scheme switch.
+
+   Type follows the brand kit. Colour follows it in role and
+   relationship rather than literal hex, because the kit
+   specifies a light scheme only — see README.md.
    ============================================================ */
 
 @view-transition { navigation: auto; }
 
 :root{
-  /* Brand kit, light */
-  --jet:        #2B3A42;   /* Primary Dark   */
-  --afb:        #628294;   /* Secondary      */
+  /* The site is dark only. The brand kit's five colours are kept here as
+     reference constants; the applied roles below are the dark treatment
+     derived from them, and every pair is verified to WCAG AA. */
+  --jet:        #2B3A42;   /* Primary Dark       */
+  --afb:        #628294;   /* Secondary          */
   --snow:       #F4F7F6;   /* Background Neutral */
-  --linen:      #EAE7E1;   /* Warm Neutral   */
-  --rose:       #825358;   /* Accent         */
+  --linen:      #EAE7E1;   /* Warm Neutral       */
+  --rose:       #825358;   /* Accent             */
 
-  /* Applied roles — 60 / 20 / 10 / 10 */
-  --paper:      var(--snow);
-  --paper-deep: var(--linen);
-  --card:       var(--linen);
-  --ink:        var(--jet);      /* headings          */
-  --ink-body:   #333333;         /* body copy         */
-  --ink-soft:   #4A5054;
-  --ink-faint:  #666666;         /* eyebrows, captions */
-  --rule:       #D3D8D6;
-  --rule-soft:  #E1E5E3;
-  --accent:     var(--rose);
-  --accent-lift:#6B4247;
-  --on-accent:  var(--snow);
-  --structure:  var(--afb);      /* graphics and large headings only */
+  color-scheme: dark;
 
-  --capacity:   #DCE4E4;
-  --demand:     var(--jet);
+  /* Applied roles — 60 / 20 / 10 / 10, dark treatment */
+  --paper:      #1C242A;   /* deepened Jet Black, 60% */
+  --paper-deep: #232D34;   /* raised surface, 20%     */
+  --card:       #232D34;
+  --ink:        #EDF1F0;   /* headings                */
+  --ink-body:   #DBE2E1;   /* body copy               */
+  --ink-soft:   #BFC7C6;
+  --ink-faint:  #9BA6AB;   /* eyebrows, captions      */
+  --rule:       #35424A;
+  --rule-soft:  #2B353C;
+  --accent:     #D49AA0;   /* Smoky Rose, lifted      */
+  --accent-lift:#E6B7BC;
+  --on-accent:  #1C242A;
+  --structure:  #8FAEC0;   /* Air Force Blue, lifted  */
+
+  --capacity:   #2A353C;
+  --demand:     #8FAEC0;
 
   --measure: 34rem;
   /* No webfonts: loading one would break the zero-external-requests
@@ -50,27 +53,6 @@
           "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --serif: Georgia, "Source Serif Pro", "Freight Text", "Iowan Old Style",
            Palatino, "Times New Roman", serif;
-}
-
-@media (prefers-color-scheme: dark){
-  :root{
-    --paper:      #1C242A;
-    --paper-deep: #232D34;
-    --card:       #232D34;
-    --ink:        #EDF1F0;
-    --ink-body:   #DBE2E1;
-    --ink-soft:   #BFC7C6;
-    --ink-faint:  #9BA6AB;
-    --rule:       #35424A;
-    --rule-soft:  #2B353C;
-    --accent:     #D49AA0;
-    --accent-lift:#E6B7BC;
-    --on-accent:  #1C242A;
-    --structure:  #8FAEC0;
-
-    --capacity:   #2A353C;
-    --demand:     #8FAEC0;
-  }
 }
 
 @media (prefers-contrast: more){

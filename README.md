@@ -49,31 +49,42 @@ Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
 
 ## Brand kit implementation
 
-**Colour.** Applied on the kit's 60 / 20 / 10 / 10 split:
+**The site is dark for every visitor.** There is no light palette and no
+`prefers-color-scheme` switch — a visitor whose system is set to light still
+gets the dark site. `color-scheme: dark` is declared so scrollbars and any
+native controls match.
 
-| Role | Colour | Where |
-|---|---|---|
-| Background Neutral | Bright Snow `#F4F7F6` | Page background, ~60% |
-| Warm Neutral | Soft Linen `#EAE7E1` | Alternating bands, cards, ~20% |
-| Primary Dark | Jet Black `#2B3A42` | Headings, wordmark |
-| Secondary | Air Force Blue `#628294` | Diagram strokes, rules, icons |
-| Accent | Smoky Rose `#825358` | Buttons, links, active states, ~10% |
+**Colour.** The brand kit specifies a light scheme only, so the kit is followed
+in *role and relationship* rather than literal hex. Its five colours are kept
+in `styles.css` as reference constants, and the applied roles are the dark
+treatment derived from them, on the kit's 60 / 20 / 10 / 10 split:
 
-Body copy is `#333333` and eyebrows/captions `#666666`, per the kit's muted
-hierarchy rule. Pure black is never used.
+| Kit role | Kit colour | Applied (dark) | Where |
+|---|---|---|---|
+| Background Neutral | Bright Snow `#F4F7F6` | `#1C242A` | Page background, ~60% |
+| Warm Neutral | Soft Linen `#EAE7E1` | `#232D34` | Alternating bands, cards, ~20% |
+| Primary Dark | Jet Black `#2B3A42` | `#EDF1F0` | Headings — the role inverts |
+| Secondary | Air Force Blue `#628294` | `#8FAEC0` | Diagram strokes, rules, icons |
+| Accent | Smoky Rose `#825358` | `#D49AA0` | Buttons, links, active states, ~10% |
 
-**Two documented deviations:**
+The kit's muted-hierarchy rule is preserved: headings, body and captions step
+down in three levels (`#EDF1F0`, `#DBE2E1`, `#9BA6AB`) and pure white is never
+used, exactly as pure black was never used in the light version.
 
-1. **Air Force Blue is not used for text.** It measures **3.79:1** on Bright
-   Snow, below the 4.5:1 AA floor. It clears the 3:1 threshold for graphics and
-   large text, so it is used for diagram strokes, rules and icons — which is
-   consistent with the kit's "key structural elements" — and never for small
-   text or as a button fill. Everything else in the palette passes AA
-   comfortably; the tightest is `#666666` on Soft Linen at 4.65:1.
-2. **The dark palette is derived, not specified.** The kit covers light only.
-   The dark values in `styles.css` are tuned from the same hues and checked to
-   the same AA standard; the tightest is 5.64:1. Replace them if the kit is
-   later extended.
+Two things to know about the colour:
+
+1. **Air Force Blue is not used for text**, in either treatment. In the kit's
+   own light scheme it measures **3.79:1** on Bright Snow, below the 4.5:1 AA
+   floor. It clears 3:1 for graphics, so it drives diagram strokes, rules and
+   icons — consistent with the kit's "key structural elements" — and never
+   small text or a button fill.
+2. **Every dark pair was measured, not assumed.** Tightest is 5.64:1 against a
+   4.5:1 floor. If the kit is later extended with an official dark palette,
+   replace these values and re-measure.
+
+`share.png` and `favicon.svg` use the same dark treatment. The favicon has a
+single mid-tone version rather than a light/dark pair, because it needs to stay
+legible against the browser's chrome, not the site's background.
 
 **Typography.** Sans title / serif story, as specified:
 
@@ -153,13 +164,56 @@ grep -ro '\[[A-Za-z0-9 /–_]*\]' public/ | sort -u
 | Placeholder | Replace with |
 |---|---|
 | `[2]` | Response time in business days |
-| `[XXX]` | Session fees |
-| `[50]`, `[60]` | Session lengths in minutes |
 | `[24 / 48]` | Cancellation notice window |
-| `[XX]` | Percentage of the fee charged for a late cancellation |
 | `[at the time of the appointment / within 7 days of invoice]` | Payment terms — pick one |
 | `[DATE]` | Date the legal pages were last updated |
 | `[SECURITY_TXT_EXPIRY]` | ISO timestamp under a year away, e.g. `2027-06-30T00:00:00.000Z` |
+
+## No fees are published
+
+By instruction, the site carries **no dollar amounts, no session lengths in
+minutes and no price indicators** — `priceRange` has been removed from the
+structured data too, since `$$` is still a price signal. The sessions page
+describes what each session type *is*, and says fees are discussed during the
+free ten-minute call and confirmed in writing before the first appointment.
+`llms.txt` tells AI assistants the same thing and asks them not to quote a
+figure.
+
+Cancellation terms say "charged in full" rather than a percentage, for the
+same reason. NDIS wording refers to the current NDIS Pricing Arrangements
+without reproducing any rate.
+
+If you later want to publish fees, the sessions page is the place, and the
+`llms.txt` funding note needs updating at the same time or the two will
+disagree.
+
+## Contact opens the visitor's mail client
+
+Every call to action — hero button, sticky mobile bar, the contact page
+button, the group-program link, the end-of-page links — is a
+`mailto:contact@simplerootstherapy.com.au?subject=Enquiry` link. Clicking one
+opens whatever mail client the visitor has set as default: Outlook, Apple Mail,
+Thunderbird, or Gmail where the browser is configured to handle `mailto:`.
+
+Worth knowing: **`mailto:` opens the default handler, and on desktop that is
+not Gmail unless the visitor has set it.** Someone using webmail without that
+handler registered may see nothing happen, or an unconfigured mail app open.
+The address is also shown as plain visible text in the footer and on the
+contact page, so it can always be copied by hand — which is the fallback that
+makes this safe.
+
+The Web Map asked for a contact form. There is none: this site has no
+JavaScript and no backend, and the CSP sets `form-action 'none'`. A real form
+would need a third-party endpoint or a small Worker, and a CSP change.
+
+## Location
+
+The site says **Sydney**, and telehealth across NSW, with no suburb, street
+address, map or coordinates anywhere. That is deliberate for now. When you want
+to be specific, the places to update are the masthead tagline, the contact
+page's "Serving" line, `llms.txt`, and the `areaServed` block in the home page
+JSON-LD — at which point adding `address` and `geo` to that schema is what
+makes the practice eligible for Maps results.
 
 ## Editing the shared header and footer
 

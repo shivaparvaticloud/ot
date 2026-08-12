@@ -1,13 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Three overlapping circles">
+  <!-- Single mid-tone treatment, matching the site's permanent dark theme.
+       These values stay legible against both light and dark browser chrome,
+       so the icon needs no prefers-color-scheme switch. -->
   <style>
-    .ring { fill: none; stroke: #628294; stroke-width: 1.7; }
-    .fill { fill: #628294; opacity: 0.14; }
-    .core { fill: #825358; opacity: 0.30; }
-    @media (prefers-color-scheme: dark) {
-      .ring { stroke: #8FAEC0; }
-      .fill { fill: #8FAEC0; opacity: 0.18; }
-      .core { fill: #D49AA0; opacity: 0.34; }
-    }
+    .ring { fill: none; stroke: #8FAEC0; stroke-width: 1.7; }
+    .fill { fill: #8FAEC0; opacity: 0.18; }
+    .core { fill: #D49AA0; opacity: 0.36; }
   </style>
   <circle class="fill" cx="16" cy="11.5" r="8.6"/>
   <circle class="fill" cx="10.6" cy="20.5" r="8.6"/>

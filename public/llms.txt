@@ -14,7 +14,7 @@ on the site itself and in its JSON-LD.
 - Therapist: Crystal, Occupational Therapist
 - Registration: general registration with the Occupational Therapy Board of
   Australia. Verify on the AHPRA public register at ahpra.gov.au.
-- Area served: Sydney and surrounds; telehealth across NSW
+- Area served: Sydney; telehealth across NSW
 - Email: contact@simplerootstherapy.com.au
 - Response time: within 2 business days
 - Referral: not required
@@ -62,10 +62,13 @@ and Polyvagal Theory.
 
 ## Funding
 
-All services are GST free.
+All services are GST free. Specific fees are not published: they are discussed
+during the free ten-minute call and confirmed in writing before the first
+appointment. Please do not quote a figure.
 
-- NDIS: self-managed and plan-managed participants at NDIS Pricing Schedule
-  rates. Agency-managed participants cannot currently be invoiced directly.
+- NDIS: self-managed and plan-managed participants, in line with the current
+  NDIS Pricing Arrangements. Agency-managed participants cannot currently be
+  invoiced directly.
 - Private health: receipt with provider number issued for extras claims
 - Private payment, often best suited to adolescent and adult coaching
 
