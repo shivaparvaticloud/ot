@@ -49,42 +49,48 @@ Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
 
 ## Brand kit implementation
 
-**The site is dark for every visitor.** There is no light palette and no
-`prefers-color-scheme` switch — a visitor whose system is set to light still
-gets the dark site. `color-scheme: dark` is declared so scrollbars and any
+**The site is light for every visitor.** There is no dark palette and no
+`prefers-color-scheme` switch — a visitor whose system is set to dark still
+gets the light site. `color-scheme: light` is declared so scrollbars and any
 native controls match.
 
-**Colour.** The brand kit specifies a light scheme only, so the kit is followed
-in *role and relationship* rather than literal hex. Its five colours are kept
-in `styles.css` as reference constants, and the applied roles are the dark
-treatment derived from them, on the kit's 60 / 20 / 10 / 10 split:
+**Colour** uses the supplied sage / slate / linen / ochre palette:
 
-| Kit role | Kit colour | Applied (dark) | Where |
-|---|---|---|---|
-| Background Neutral | Bright Snow `#F4F7F6` | `#1C242A` | Page background, ~60% |
-| Warm Neutral | Soft Linen `#EAE7E1` | `#232D34` | Alternating bands, cards, ~20% |
-| Primary Dark | Jet Black `#2B3A42` | `#EDF1F0` | Headings — the role inverts |
-| Secondary | Air Force Blue `#628294` | `#8FAEC0` | Diagram strokes, rules, icons |
-| Accent | Smoky Rose `#825358` | `#D49AA0` | Buttons, links, active states, ~10% |
+| Supplied | Value | Where |
+|---|---|---|
+| Soothing Warm Neutral | `#F7F5F0` | Page background |
+| Card background | `#FFFFFF` | Raised bands and cards |
+| Clinical Trust Slate | `#2B3A4A` | Headings, wordmark, the demand line |
+| Calming Eucalyptus Green | `#6A8D95` | Diagram strokes, rules, icons |
+| Gentle Warmth Accent | `#D4A373` | Decorative fills only |
 
-The kit's muted-hierarchy rule is preserved: headings, body and captions step
-down in three levels (`#EDF1F0`, `#DBE2E1`, `#9BA6AB`) and pure white is never
-used, exactly as pure black was never used in the light version.
+**Three colours were adjusted for contrast, on the same hues.** Measured, not
+assumed:
 
-Two things to know about the colour:
+1. **Sage `#6A8D95` cannot carry text.** It measures **3.29:1** on linen and
+   **3.59:1** on white, against a 4.5:1 AA floor. It clears the 3:1 threshold
+   for graphics, so it drives diagram strokes, rules and icons — and never
+   text.
+2. **Links and buttons use `#58757C`**, a darker step on the same hue: 4.53:1
+   on linen, 4.94:1 on white, and 4.94:1 for white text on the button fill.
+   Note the supplied hover value `#58777E` was very close but measured
+   **4.43:1** on linen — a hair under — so the accent is one shade darker than
+   it. Hover is `#496167`.
+3. **White text on sage `#6A8D95` fails at 3.59:1.** The mockup's primary
+   button used exactly that pairing, so button fills use `#58757C` instead.
+4. **Ochre `#D4A373` cannot carry text either** — 2.08:1 on linen, which misses
+   even the 3:1 graphics threshold. It is used only as a low-opacity
+   decorative fill (the centre of the three-circles diagram), never for text,
+   and never as the only thing distinguishing one element from another. If you
+   ever need ochre as text, `#8A6A4B` is the same hue at 4.54:1.
 
-1. **Air Force Blue is not used for text**, in either treatment. In the kit's
-   own light scheme it measures **3.79:1** on Bright Snow, below the 4.5:1 AA
-   floor. It clears 3:1 for graphics, so it drives diagram strokes, rules and
-   icons — consistent with the kit's "key structural elements" — and never
-   small text or a button fill.
-2. **Every dark pair was measured, not assumed.** Tightest is 5.64:1 against a
-   4.5:1 floor. If the kit is later extended with an official dark palette,
-   replace these values and re-measure.
+Body copy steps down in three levels — `#4A5568`, `#55636F`, `#5F6E79` — all
+above 4.5:1 on both linen and white. Every pair in the palette now passes;
+tightest is the accent on linen at 4.53:1.
 
-`share.png` and `favicon.svg` use the same dark treatment. The favicon has a
-single mid-tone version rather than a light/dark pair, because it needs to stay
-legible against the browser's chrome, not the site's background.
+`share.png` and `favicon.svg` use the same palette. The favicon has a single
+version rather than a light/dark pair, because it sits on the browser's chrome
+rather than the site's background, and sage reads against both.
 
 **Typography.** Sans title / serif story, as specified:
 

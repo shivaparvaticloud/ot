@@ -1,48 +1,56 @@
 /* ============================================================
    Simple Roots Therapy
    Zero JavaScript. Zero external requests. CSS-only motion.
-   Light and dark modes. Reduced motion fully respected.
+   Light theme only. Reduced motion fully respected.
 
-   The site renders dark for every visitor, regardless of their
-   system setting. There is no light palette and no
+   The site renders light for every visitor, regardless of their
+   system setting. There is no dark palette and no
    prefers-color-scheme switch.
 
-   Type follows the brand kit. Colour follows it in role and
-   relationship rather than literal hex, because the kit
-   specifies a light scheme only — see README.md.
+   Type follows the brand kit. Colour uses the supplied sage /
+   slate / linen / ochre palette, with darker steps on the same
+   hues wherever the original fails WCAG AA as text — the
+   substitutions are listed in README.md.
    ============================================================ */
 
 @view-transition { navigation: auto; }
 
 :root{
-  /* The site is dark only. The brand kit's five colours are kept here as
-     reference constants; the applied roles below are the dark treatment
-     derived from them, and every pair is verified to WCAG AA. */
-  --jet:        #2B3A42;   /* Primary Dark       */
-  --afb:        #628294;   /* Secondary          */
-  --snow:       #F4F7F6;   /* Background Neutral */
-  --linen:      #EAE7E1;   /* Warm Neutral       */
-  --rose:       #825358;   /* Accent             */
+  /* Supplied palette. Every value below is one of these five, or a
+     darkened step on the same hue where the original fails WCAG AA
+     as text — see README.md. */
+  --sage:       #6A8D95;   /* Calming Eucalyptus Green */
+  --slate:      #2B3A4A;   /* Clinical Trust Slate     */
+  --linen:      #F7F5F0;   /* Soothing Warm Neutral    */
+  --ochre:      #D4A373;   /* Gentle Warmth Accent     */
+  --white:      #FFFFFF;   /* Card background          */
 
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* Applied roles — 60 / 20 / 10 / 10, dark treatment */
-  --paper:      #1C242A;   /* deepened Jet Black, 60% */
-  --paper-deep: #232D34;   /* raised surface, 20%     */
-  --card:       #232D34;
-  --ink:        #EDF1F0;   /* headings                */
-  --ink-body:   #DBE2E1;   /* body copy               */
-  --ink-soft:   #BFC7C6;
-  --ink-faint:  #9BA6AB;   /* eyebrows, captions      */
-  --rule:       #35424A;
-  --rule-soft:  #2B353C;
-  --accent:     #D49AA0;   /* Smoky Rose, lifted      */
-  --accent-lift:#E6B7BC;
-  --on-accent:  #1C242A;
-  --structure:  #8FAEC0;   /* Air Force Blue, lifted  */
+  /* Applied roles */
+  --paper:      var(--linen);   /* page background        */
+  --paper-deep: var(--white);   /* raised bands and cards */
+  --card:       var(--white);
+  --ink:        var(--slate);   /* headings               */
+  --ink-body:   #4A5568;        /* body copy              */
+  --ink-soft:   #55636F;
+  --ink-faint:  #5F6E79;        /* eyebrows, captions     */
+  --rule:       #E0DCD2;
+  --rule-soft:  #EBE7DE;
 
-  --capacity:   #2A353C;
-  --demand:     #8FAEC0;
+  /* Sage measures 3.29:1 on linen — fine for graphics at the 3:1
+     threshold, below the 4.5:1 floor for text. Text and buttons use the
+     darker step, 4.53:1 on linen and 4.94:1 on white — a shade under the
+     supplied hover value, which measured 4.43:1 on linen and just missed.
+     Graphics use the sage itself. */
+  --accent:     #58757C;        /* links, buttons         */
+  --accent-lift:#496167;        /* hover                  */
+  --on-accent:  var(--white);
+  --structure:  var(--sage);    /* strokes, icons, rules  */
+  --warm:       var(--ochre);   /* decorative fills only  */
+
+  --capacity:   #E4EAEA;
+  --demand:     var(--slate);
 
   --measure: 34rem;
   /* No webfonts: loading one would break the zero-external-requests
@@ -130,7 +138,7 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
 .pillars svg{ display:block; width:100%; max-width:44rem; height:auto; margin:0 auto; overflow:visible; }
 .pl-ring{ fill:none; stroke:var(--structure); stroke-width:1.6; }
 .pl-fill{ fill:var(--structure); opacity:0.10; }
-.pl-core{ fill:var(--accent); opacity:0.14; }
+.pl-core{ fill:var(--warm); opacity:0.22; }
 .pl-label{ font-family:var(--sans); font-size:15px; font-weight:600; fill:var(--ink); text-anchor:middle; }
 .pl-sub{ font-family:var(--sans); font-size:11.5px; font-weight:500; letter-spacing:0.06em; fill:var(--ink-faint); text-anchor:middle; text-transform:uppercase; }
 .pl-centre{ font-family:var(--sans); font-size:13px; font-weight:600; fill:var(--ink); text-anchor:middle; }
@@ -364,7 +372,7 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
   .demand-line{ stroke-dasharray:none; stroke-dashoffset:0; }
   .cap-band,.cap-edge,.cap-tag,.stem,.node{ opacity:1; }
   .pl-ring,.pl-fill,.pl-core,.pl-label,.pl-sub,.pl-centre{ opacity:1; }
-  .pl-fill{ opacity:0.10; } .pl-core{ opacity:0.14; }
+  .pl-fill{ opacity:0.10; } .pl-core{ opacity:0.22; }
 }
 
 /* ---------- Responsive ---------- */
