@@ -1,15 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Demand curve crossing a capacity band">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Three overlapping circles">
   <style>
-    .band { fill: #DFE3DE; }
-    .edge { stroke: #D6D6CE; stroke-width: 1; fill: none; }
-    .line { fill: none; stroke: #1F3D4C; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ring { fill: none; stroke: #628294; stroke-width: 1.7; }
+    .fill { fill: #628294; opacity: 0.14; }
+    .core { fill: #825358; opacity: 0.30; }
     @media (prefers-color-scheme: dark) {
-      .band { fill: #262E33; }
-      .edge { stroke: #2E353B; }
-      .line { stroke: #8FBBD0; }
+      .ring { stroke: #8FAEC0; }
+      .fill { fill: #8FAEC0; opacity: 0.18; }
+      .core { fill: #D49AA0; opacity: 0.34; }
     }
   </style>
-  <rect class="band" x="0" y="18" width="32" height="10" rx="1"/>
-  <path class="edge" d="M0 18 H32"/>
-  <path class="line" d="M1 29 C4 28, 5 7, 9 7 C13 7, 13 24, 16.5 24 C20 24, 20 4, 24 4 C27.5 4, 28 27, 31 29"/>
+  <circle class="fill" cx="16" cy="11.5" r="8.6"/>
+  <circle class="fill" cx="10.6" cy="20.5" r="8.6"/>
+  <circle class="fill" cx="21.4" cy="20.5" r="8.6"/>
+  <circle class="core" cx="16" cy="17.6" r="3.9"/>
+  <circle class="ring" cx="16" cy="11.5" r="8.6"/>
+  <circle class="ring" cx="10.6" cy="20.5" r="8.6"/>
+  <circle class="ring" cx="21.4" cy="20.5" r="8.6"/>
 </svg>

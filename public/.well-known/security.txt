@@ -1,7 +1,7 @@
 # RFC 9116. Tells a security researcher who found something where to send it,
 # instead of guessing or posting it publicly.
 
-Contact: https://contact.simpletherapy.com.au
+Contact: mailto:contact@simplerootstherapy.com.au
 Expires: [SECURITY_TXT_EXPIRY]
 Preferred-Languages: en
-Canonical: https://simpletherapy.com.au/.well-known/security.txt
+Canonical: https://simplerootstherapy.com.au/.well-known/security.txt

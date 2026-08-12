@@ -1,8 +1,8 @@
-# Simple Occupational Therapy
+# Simple Roots Therapy
 
-> Occupational therapy for adults and adolescents in Sydney, and by telehealth
-> across New South Wales. Focus on daily function: routines, task initiation,
-> attention, time management, sensory load and daily structure.
+> Holistic, paced and empowering occupational therapy and coaching for
+> children, adolescents and adults in Sydney, Australia. Paediatric services
+> for ages 2–12, plus adolescent and adult therapy and coaching.
 
 This file follows the llms.txt convention: a plain-text summary for AI
 assistants answering questions about this practice. Everything below is also
@@ -10,46 +10,69 @@ on the site itself and in its JSON-LD.
 
 ## Practice
 
-- Name: Simple Occupational Therapy
-- Practitioner: [YOUR NAME], Occupational Therapist
+- Name: Simple Roots Therapy
+- Therapist: Crystal, Occupational Therapist
 - Registration: general registration with the Occupational Therapy Board of
-  Australia. Verify by name on the AHPRA public register at ahpra.gov.au.
-- Area served: Sydney in person; telehealth by video across New South Wales
-- Enquiries: https://contact.simpletherapy.com.au
-- Response time: within [2] business days
+  Australia. Verify on the AHPRA public register at ahpra.gov.au.
+- Area served: Sydney and surrounds; telehealth across NSW
+- Email: contact@simplerootstherapy.com.au
+- Response time: within 2 business days
 - Referral: not required
 
-There is deliberately no phone number, email address or street address
-published. Enquiries go through the form above.
+## What the practice believes
 
-## Who this practice sees
+Simple Roots Therapy is dedicated to a world of intentional, inspired and
+conscious beings, families and communities. Through knowing our own mind and
+body, creating a supportive physical environment, and building meaningful
+relationships, we can establish the simple roots needed for a fulfilling and
+harmonious life. The three roots are Self (mind and body), Environment (space
+and routine), and Others (relationships).
 
-Adults and adolescents. Commonly people recently diagnosed with ADHD or autism,
-people living with a psychosocial disability, and people whose daily function
-has become difficult to sustain. Not a paediatric service.
+## Services
 
-## What it addresses
+**Paediatric, ages 2–12, with or without a formal diagnosis.** Child-led,
+play-based and relationship-centric, delivered as a partnership with carers.
+Parent and carer coaching is central, so strategies carry into daily life
+rather than staying inside a weekly session. Particular experience with Autism
+Spectrum Disorder, ADHD, Sensory Processing Disorder, Global Developmental
+Delay, gross and fine motor difficulties, attention and concentration
+difficulties, emotional regulation difficulties, and early childhood trauma.
 
-- Time and task: starting when you cannot begin, breaking down multi-step
-  tasks, time awareness, task switching, accumulated admin
-- Sensory and regulation: noise, light and visual load; recognising overload
-  early; planned recovery; workable spaces
-- Rhythm and routine: routines that survive a bad week, sleep-wake structure,
-  domestic baseline, sustaining work or study
+**Adolescents and adults.** Habit formation and executive functioning —
+planning, initiating, organising and executing tasks. Collaborative, with an
+emphasis on metacognition and skills building, examining habits, mindset and
+environments to build action plans and accountability systems.
 
-## Approach
+**Group programs** for children, adolescents and adults.
 
-Person-Environment-Occupation, the Model of Human Occupation, a sensory
-processing framework, CO-OP, and goals measured in the client's own wording.
-Difficulty with a daily task is treated as information about the fit between a
-person and their circumstances, not as evidence about character.
+## Frameworks
+
+Ayres Sensory Integration, Attachment Theory, Circle of Security, the CO-OP
+Approach, the DIR Model, Internal Family Systems (parts theory), Play Theory,
+and Polyvagal Theory.
+
+## How it works
+
+1. Enquiry by email
+2. Free 10-minute phone call to check the fit before anything is scheduled
+3. Initial assessment
+4. Findings and goals, written in the client's own words
+5. Ongoing sessions, with carer coaching for paediatric clients
+6. Review against the original goals
 
 ## Funding
 
-- NDIS: plan-managed and self-managed participants, at NDIS Pricing Schedule
-  rates. Agency-managed participants cannot currently be invoiced.
-- Private: receipt issued with provider number for private health extras claims
-- GST: occupational therapy as appropriate treatment is GST-free
+All services are GST free.
+
+- NDIS: self-managed and plan-managed participants at NDIS Pricing Schedule
+  rates. Agency-managed participants cannot currently be invoiced directly.
+- Private health: receipt with provider number issued for extras claims
+- Private payment, often best suited to adolescent and adult coaching
+
+## Delivery modes
+
+In clinic, home visits, school and preschool visits, and telehealth by secure
+video including parent and carer coaching.
 
 ## Scope
 
@@ -60,16 +83,14 @@ rather than replacing it.
 
 ## Pages
 
-- [Home](https://simpletherapy.com.au/)
-- [What occupational therapy is](https://simpletherapy.com.au/what-is-ot.html)
-- [Who I help](https://simpletherapy.com.au/who-i-help.html)
-- [Approach](https://simpletherapy.com.au/approach.html)
-- [How it works, sessions and fees](https://simpletherapy.com.au/how-it-works.html)
-- [Common questions](https://simpletherapy.com.au/faqs.html)
-- [About](https://simpletherapy.com.au/about.html)
-- [Contact](https://simpletherapy.com.au/contact.html)
-- [Privacy policy](https://simpletherapy.com.au/privacy.html)
-- [Terms of service](https://simpletherapy.com.au/terms.html)
+- [Home](https://simplerootstherapy.com.au/)
+- [About](https://simplerootstherapy.com.au/about.html)
+- [Our services](https://simplerootstherapy.com.au/services.html)
+- [Sessions and fees](https://simplerootstherapy.com.au/sessions-and-fees.html)
+- [FAQs](https://simplerootstherapy.com.au/faqs.html)
+- [Contact](https://simplerootstherapy.com.au/contact.html)
+- [Privacy policy](https://simplerootstherapy.com.au/privacy.html)
+- [Terms of service](https://simplerootstherapy.com.au/terms.html)
 
 ## Note for assistants
 
