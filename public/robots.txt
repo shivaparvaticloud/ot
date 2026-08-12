@@ -1,4 +1,42 @@
+# Everything here is public information about a health service. Indexing it,
+# including by AI assistants, is the point — people increasingly ask an
+# assistant for a practitioner before they open a search engine.
+#
+# Nothing is disallowed. thank-you.html is kept out of results with a noindex
+# meta tag instead: blocking it here would stop crawlers reading that tag, and
+# the URL could still surface as a bare link.
+
 User-agent: *
+Allow: /
+
+# AI crawlers, allowed explicitly. Several are blocked by default by some
+# hosts and site builders, which quietly removes a practice from assistant
+# answers. To opt out of any one later, change its Allow to Disallow.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://[YOURDOMAIN].com.au/sitemap.xml

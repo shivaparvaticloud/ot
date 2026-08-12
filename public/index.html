@@ -48,14 +48,59 @@
         "addressRegion": "NSW",
         "addressCountry": "AU"
       },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "[LAT]",
+        "longitude": "[LNG]"
+      },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=[MAPS_QUERY]",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["[OPEN_DAYS]"],
+          "opens": "[OPEN_TIME]",
+          "closes": "[CLOSE_TIME]"
+        }
+      ],
       "areaServed": [
         { "@type": "City", "name": "Sydney" },
         { "@type": "State", "name": "New South Wales" }
       ],
+      "availableLanguage": { "@type": "Language", "name": "English" },
+      "currenciesAccepted": "AUD",
+      "paymentAccepted": "NDIS (plan-managed and self-managed), private payment, private health rebate",
+      "knowsAbout": [
+        "Occupational therapy for adults",
+        "ADHD and executive function support",
+        "Autistic adults",
+        "Sensory processing and sensory modulation",
+        "Task initiation and procrastination",
+        "Routine and habit development",
+        "Sleep-wake structure",
+        "Environmental modification",
+        "NDIS occupational therapy"
+      ],
       "availableService": [
-        { "@type": "MedicalTherapy", "name": "Occupational therapy assessment" },
-        { "@type": "MedicalTherapy", "name": "Routine and habit development" },
-        { "@type": "MedicalTherapy", "name": "Sensory modulation and environmental modification" }
+        {
+          "@type": "MedicalTherapy",
+          "name": "Occupational therapy assessment",
+          "description": "Initial assessment of daily function, identifying what is getting in the way and why."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Routine and habit development",
+          "description": "Building daily and weekly structure, sleep-wake patterns and task initiation strategies."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Sensory modulation and environmental modification",
+          "description": "Adjusting sensory load and physical environments at home, work and study."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Telehealth occupational therapy",
+          "description": "Occupational therapy by video across New South Wales."
+        }
       ],
       "provider": { "@id": "https://[YOURDOMAIN].com.au/#practitioner" }
     },
@@ -123,6 +168,22 @@
             "@type": "Answer",
             "text": "Occupational therapy is a registered health profession concerned with function: what you do across a day and what makes it harder or easier. The work is practical and environmental rather than interpretive, so it tends to change the task, the setting and the routine as much as the strategy. It sits alongside psychological therapy and medical care rather than replacing either."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I need to change or cancel a session?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Give at least [24 / 48] hours notice and there is no charge. Inside that window the session is charged in full, because the time cannot be reallocated, though this is waived for genuine emergencies. If you are too flat to attend, a shorter or lighter session is often possible instead of cancelling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "I am not sure occupational therapy is what I need.",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Say so in your first email and describe the problem rather than the solution. I will tell you honestly whether this is the right service, including if it is not and who might be better placed. There is no cost to asking."
+          }
         }
       ]
     }
@@ -142,6 +203,7 @@
     </div>
     <nav class="nav" aria-label="Primary">
       <a href="#who">Who I help</a>
+      <a href="#approach">Approach</a>
       <a href="#how">How it works</a>
       <a href="#sessions">Fees</a>
       <a href="#faq">FAQs</a>
@@ -261,10 +323,11 @@
             </svg>
             <h3>Time and task</h3>
             <ul>
-              <li>Task initiation</li>
-              <li>Planning and sequencing</li>
-              <li>Time management</li>
-              <li>Attention and task switching</li>
+              <li>Starting when you can't begin</li>
+              <li>Breaking down multi-step tasks</li>
+              <li>Time awareness and realistic estimates</li>
+              <li>Switching tasks without losing the thread</li>
+              <li>Admin, bills and appointments that pile up</li>
             </ul>
           </div>
           <div class="cluster">
@@ -272,11 +335,12 @@
               <path class="gl" d="M3 19c3-6 5.5-6 8.5 0s5.5 6 8.5 0 5.5-6 7 -3"></path>
               <path class="gl" d="M3 11c2-3.5 4-3.5 6 0"></path>
             </svg>
-            <h3>Sensory and arousal</h3>
+            <h3>Sensory and regulation</h3>
             <ul>
-              <li>Sensory modulation</li>
-              <li>Arousal regulation</li>
-              <li>Environmental modification</li>
+              <li>Noise, light and visual load at home and work</li>
+              <li>Recognising overload before it arrives</li>
+              <li>Recovery that is planned, not collapse</li>
+              <li>Setting up a space you can actually work in</li>
             </ul>
           </div>
           <div class="cluster">
@@ -285,11 +349,12 @@
               <path class="gl" d="M4 12h22M10 3v5M20 3v5"></path>
               <path class="gl" d="M9 17h3M14 17h3M19 21h3"></path>
             </svg>
-            <h3>Rhythm</h3>
+            <h3>Rhythm and routine</h3>
             <ul>
-              <li>Routine and habit formation</li>
+              <li>Routines built to survive a bad week</li>
               <li>Sleep&ndash;wake structure</li>
-              <li>Daily and weekly structure</li>
+              <li>Meals, laundry and the domestic baseline</li>
+              <li>Keeping up with work or study</li>
             </ul>
           </div>
         </div>
@@ -298,23 +363,69 @@
     </div>
   </section>
 
+  <!-- ============ APPROACH ============ -->
+  <section class="band" id="approach">
+    <div class="wrap cols">
+      <div><h2>What the reasoning rests on</h2></div>
+      <div>
+        <p>Occupational therapy has a body of theory behind it, and it is reasonable to ask what a practitioner is actually working from. These are the frameworks that shape how I assess and what I suggest.</p>
+        <dl class="creds">
+          <div>
+            <dt>Person&ndash;Environment&ndash;Occupation</dt>
+            <dd>Performance is the fit between you, the task and the setting. Changing the environment or the task is as legitimate a move as changing you — often more durable.</dd>
+          </div>
+          <div>
+            <dt>Model of Human Occupation</dt>
+            <dd>What you want to do, what you are in the habit of doing, and what you can currently sustain are three different things. Plans that ignore any one of them tend to fail.</dd>
+          </div>
+          <div>
+            <dt>Sensory processing framework</dt>
+            <dd>Sensory thresholds differ between people and across a day. The aim is a workable fit between your threshold and the environment you are in, not tolerance training.</dd>
+          </div>
+          <div>
+            <dt>CO-OP</dt>
+            <dd>A guided strategy-discovery approach — goal, plan, do, check — so the method transfers to problems we never sat down and worked on together.</dd>
+          </div>
+          <div>
+            <dt>Measured against your goals</dt>
+            <dd>Goals are set in your words at the start and reviewed against the same wording at the end, rather than against a general impression of progress.</dd>
+          </div>
+        </dl>
+        <p style="margin-top:1.4rem">Underneath all of it: difficulty with a daily task is treated as information about the fit between a person and their circumstances, not as evidence about character.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ HOW IT WORKS ============ -->
-  <section class="band" id="how">
+  <section class="band band-fill" id="how">
     <div class="wrap cols">
       <div><h2>How it works</h2></div>
       <div>
+        <p>The whole path, so you know what you are agreeing to before you agree to any of it.</p>
         <ol class="steps">
           <li>
             <h3>You get in touch</h3>
             <p>A sentence about what you'd like help with is enough. I reply within [2] business days, and I'll tell you plainly if I think someone else is a better fit.</p>
           </li>
           <li>
-            <h3>Initial session</h3>
-            <p>[60] minutes, in person or by video. We work out what is actually getting in the way, rather than what it looks like from the outside. You'll leave with a clear picture of what we would work on.</p>
+            <h3>A short questionnaire</h3>
+            <p>I email a few questions about a typical day and what you've already tried. Answer what you want to — partial answers are genuinely fine, and they save session time either way.</p>
           </li>
           <li>
-            <h3>A short block, then a review</h3>
-            <p>Usually [4&ndash;6] sessions. At the end we look at where things are and decide together whether to continue, pause, or stop.</p>
+            <h3>Initial session</h3>
+            <p>[60] minutes, in person or by video. We work out what is actually getting in the way, rather than what it looks like from the outside.</p>
+          </li>
+          <li>
+            <h3>Findings and goals</h3>
+            <p>I set out what I think is happening and why, in plain language. Goals get written in your words, not clinical ones, and they are what we measure against later.</p>
+          </li>
+          <li>
+            <h3>A short block of sessions</h3>
+            <p>Usually [4&ndash;6]. Practical work between sessions, sized to what a bad week can absorb rather than a good one.</p>
+          </li>
+          <li>
+            <h3>Review, and a written summary</h3>
+            <p>We look at the original goals in their original wording and decide together whether to continue, pause, or stop. You get a short written summary of what we did and what helped.</p>
           </li>
         </ol>
       </div>
@@ -325,7 +436,7 @@
        Composites, not client stories. Written to show the shape of the
        work without outcome claims, testimonials or identifying detail —
        all three are restricted under the AHPRA advertising guidelines. -->
-  <section class="band band-fill" id="examples">
+  <section class="band" id="examples">
     <div class="wrap cols">
       <div><h2>What the work looks like</h2></div>
       <div>
@@ -352,7 +463,7 @@
   </section>
 
   <!-- ============ SESSIONS ============ -->
-  <section class="band" id="sessions">
+  <section class="band band-fill" id="sessions">
     <div class="wrap cols">
       <div><h2>Sessions and fees</h2></div>
       <div>
@@ -374,7 +485,7 @@
   </section>
 
   <!-- ============ FAQ ============ -->
-  <section class="band band-fill" id="faq">
+  <section class="band" id="faq">
     <div class="wrap cols">
       <div><h2>Common questions</h2></div>
       <div>
@@ -399,13 +510,21 @@
             <h3>How is this different from psychology or coaching?</h3>
             <p>Occupational therapy is a registered health profession concerned with function: what you do across a day, and what makes it harder or easier. The work is practical and environmental rather than interpretive — it changes the task, the setting and the routine as much as the strategy. It sits alongside psychological therapy and medical care rather than replacing either.</p>
           </div>
+          <div class="qa">
+            <h3>What if I need to change or cancel a session?</h3>
+            <p>Give me [24 / 48] hours and there's no charge. Inside that window the session is charged in full, because the time can't be reallocated — though I waive it for genuine emergencies, and I don't interrogate what counts. If you're too flat to attend, say so; we can often do a shorter or lighter session instead of cancelling.</p>
+          </div>
+          <div class="qa">
+            <h3>I'm not sure occupational therapy is what I need.</h3>
+            <p>That's a reasonable position and worth saying in your first email. Describe the problem rather than the solution and I'll tell you honestly whether this is the right service — including if it isn't, and who might be better placed. There's no cost to asking, and I'd rather redirect you early than take a booking that won't help.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============ CREDENTIALS ============ -->
-  <section class="band" id="registration">
+  <section class="band band-fill" id="registration">
     <div class="wrap cols">
       <div><h2>Qualifications and registration</h2></div>
       <div>
@@ -423,7 +542,7 @@
   </section>
 
   <!-- ============ GROUP PROGRAM ============ -->
-  <section class="band band-fill" id="group">
+  <section class="band" id="group">
     <div class="wrap cols">
       <div><h2>Group program</h2></div>
       <div>
@@ -434,7 +553,7 @@
   </section>
 
   <!-- ============ CONTACT ============ -->
-  <section class="band" id="contact">
+  <section class="band band-fill" id="contact">
     <div class="wrap cols">
       <div><h2>Get in touch</h2></div>
       <div>
@@ -462,6 +581,19 @@
       <p><strong>If you need urgent support</strong>, this practice is not an emergency service. Contact your GP, call Lifeline on 13&nbsp;11&nbsp;14, or attend your nearest emergency department.</p>
     </div>
     <p>This website provides general information about an occupational therapy service. It is not clinical advice and does not create a therapeutic relationship. Whether occupational therapy is appropriate for you is determined through individual assessment.</p>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="#who">Who I work with</a>
+      <a href="#what">What it addresses</a>
+      <a href="#approach">Approach</a>
+      <a href="#how">How it works</a>
+      <a href="#examples">What the work looks like</a>
+      <a href="#sessions">Sessions and fees</a>
+      <a href="#faq">Common questions</a>
+      <a href="#registration">Qualifications</a>
+      <a href="#group">Group program</a>
+      <a href="#contact">Get in touch</a>
+    </nav>
+
     <div class="foot-meta">
       <span>[YOUR NAME], Occupational Therapist</span>
       <span>AHPRA [OTA0000000000]</span>

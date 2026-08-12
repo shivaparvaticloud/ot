@@ -56,6 +56,10 @@ placeholder across `public/` — `index.html`, `privacy.html`, `terms.html`,
 | `[NEAREST STATION]` | Nearest station or stop, for the Getting here block |
 | `[PARKING NOTE]` | One sentence on parking, or delete the placeholder |
 | `[MAPS_QUERY]` | URL-encoded address for the directions link, e.g. `12+Example+St+Newtown+NSW` |
+| `[LAT]`, `[LNG]` | Decimal coordinates of the rooms, for local search. Right-click the spot in Google Maps to copy them |
+| `[OPEN_DAYS]` | Schema day list, e.g. `"Tuesday","Wednesday","Thursday"` |
+| `[OPEN_TIME]`, `[CLOSE_TIME]` | 24-hour times for schema, e.g. `09:00` and `16:00` |
+| `[SECURITY_TXT_EXPIRY]` | ISO timestamp under a year away, e.g. `2027-06-30T00:00:00.000Z`. RFC 9116 requires it; diarise renewing it |
 
 Find remaining placeholders before deploying:
 
@@ -100,6 +104,69 @@ this site — do not add any other.
 
 **Never add `Review` or `AggregateRating` to the structured data.** See the
 compliance note below.
+
+## Confirm the approach section before publishing
+
+The **What the reasoning rests on** section names five frameworks: Person–
+Environment–Occupation, the Model of Human Occupation, a sensory processing
+framework, CO-OP, and goal measurement in the client's own words.
+
+These are mainstream adult occupational therapy models, chosen because they
+are widely taught and likely to match your practice — but they are a
+placeholder in substance even though they contain no brackets. **Read the five
+and delete or replace any you do not actually work from.** Claiming a framework
+you do not use is a misleading advertising claim, and it is the kind of detail
+a referrer or a board notices.
+
+## AI and search discoverability
+
+- `robots.txt` **explicitly allows** the major AI crawlers — GPTBot,
+  OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User, PerplexityBot,
+  Google-Extended and Applebot. Several hosts and site builders block these by
+  default, which quietly removes a practice from assistant answers. Nothing is
+  disallowed; `thank-you.html` is kept out of results with a `noindex` tag
+  instead, because a `Disallow` would stop crawlers ever reading that tag.
+- `llms.txt` is a plain-text summary for assistants: who the practice sees,
+  what it addresses, funding, scope and limits. It restates only what is on
+  the site, and tells assistants not to synthesise reviews.
+- The `MedicalBusiness` JSON-LD carries `geo`, `hasMap`,
+  `openingHoursSpecification`, `areaServed`, `paymentAccepted`, `knowsAbout`
+  and four `availableService` entries. That is what local and AI results read.
+
+**Off-site, and worth more than any of the above:** claim your **Google
+Business Profile** and **Apple Business Connect** listings. Maps results come
+from those, not from this site. Keep name, address and phone character-for-
+character identical to the site, or the two records compete.
+
+## Security
+
+The site has no JavaScript, no forms, no cookies, no database and no backend,
+so most of the usual attack surface does not exist. The headers in `_headers`
+exist to keep it that way: if a future edit tries to pull in an external
+script, font, frame or tracker, the browser refuses it instead of failing
+silently.
+
+`Content-Security-Policy` names every directive explicitly rather than relying
+on `default-src` fallback, so `script-src`, `connect-src`, `media-src`,
+`object-src`, `frame-src`, `child-src` and `worker-src` are all `'none'`. Also
+set: HSTS, `nosniff`, `X-Frame-Options`, `X-Permitted-Cross-Domain-Policies`,
+a restrictive `Referrer-Policy`, the three Cross-Origin isolation headers
+(COOP/CORP/COEP), and a `Permissions-Policy` that switches off every feature
+the site does not use.
+
+`/.well-known/security.txt` (RFC 9116) tells a researcher where to report
+something instead of guessing or posting it publicly.
+
+**One thing to decide before launch:** the HSTS header includes `preload`.
+That is only a commitment once you submit the domain at hstspreload.org, but
+it is a real one — every subdomain becomes HTTPS-only in shipped browsers, and
+removal takes months. If you might ever need plain HTTP on a subdomain, drop
+the `preload` token from `_headers` and do not submit.
+
+Treat "military grade" claims about a static site with scepticism, including
+mine. The genuine security properties here are structural: no code executes,
+no data is collected, so there is nothing to steal or inject. The headers are
+a seatbelt on top of that, not the thing keeping you safe.
 
 ## Analytics
 

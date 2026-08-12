@@ -218,6 +218,14 @@ a:hover{ color:var(--accent-lift); background-size:0% 1px; background-position:1
 .foot p{ max-width:44rem; }
 .urgent{ border-left:3px solid var(--accent); padding:0.9rem 0 0.9rem 1.1rem; margin:0 0 1.8rem; background:var(--paper-deep); max-width:44rem; }
 .urgent p{ margin:0; font-size:0.9375rem; }
+.foot-nav{
+  display:flex; flex-wrap:wrap; gap:0.55rem 1.4rem;
+  font-family:var(--sans); font-size:0.8125rem; font-weight:600;
+  padding-bottom:1.4rem; margin-bottom:1.4rem;
+  border-bottom:1px solid var(--rule-soft);
+}
+.foot-nav a{ color:var(--ink-soft); background-image:none; }
+.foot-nav a:hover{ color:var(--accent); }
 .foot-meta{ display:flex; flex-wrap:wrap; gap:0.5rem 1.5rem; font-family:var(--sans); font-size:0.8125rem; }
 
 /* ---------- Legal pages ---------- */

@@ -1,0 +1,7 @@
+# RFC 9116. Tells a security researcher who found something where to send it,
+# instead of guessing or posting it publicly.
+
+Contact: mailto:[YOUR EMAIL]
+Expires: [SECURITY_TXT_EXPIRY]
+Preferred-Languages: en
+Canonical: https://[YOURDOMAIN].com.au/.well-known/security.txt

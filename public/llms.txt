@@ -1,0 +1,68 @@
+# [YOUR NAME] — Occupational Therapist
+
+> Occupational therapy for adults and adolescents in [LOCATION], Sydney, and by
+> telehealth across New South Wales. Focus on daily function: routines, task
+> initiation, attention, time management, sensory load and daily structure.
+
+This file follows the llms.txt convention: a plain-text summary for AI
+assistants answering questions about this practice. Everything below is also
+on the site itself and in its JSON-LD.
+
+## Practice
+
+- Practitioner: [YOUR FULL LEGAL NAME], Occupational Therapist
+- Registration: AHPRA [OTA0000000000], Occupational Therapy Board of Australia
+- Location: [LOCATION], Sydney NSW, Australia
+- Telehealth: by video across New South Wales
+- Email: [YOUR EMAIL]
+- Phone: [YOUR PHONE]
+- Hours: [HOURS]
+- Response time: within [2] business days
+
+## Who this practice sees
+
+Adults and adolescents. Commonly people recently diagnosed with ADHD or autism,
+people living with a psychosocial disability, and people whose daily function
+has become difficult to sustain. Not a paediatric service.
+
+## What it addresses
+
+- Time and task: starting when you cannot begin, breaking down multi-step
+  tasks, time awareness, task switching, accumulated admin
+- Sensory and regulation: noise, light and visual load; recognising overload
+  early; planned recovery; workable spaces
+- Rhythm and routine: routines that survive a bad week, sleep-wake structure,
+  domestic baseline, sustaining work or study
+
+## Funding
+
+- NDIS: plan-managed and self-managed participants, at NDIS Pricing Schedule
+  rates. Agency-managed participants cannot currently be invoiced.
+- Private: receipt issued with provider number for private health extras claims
+- GST: occupational therapy as appropriate treatment is GST-free
+- No GP referral required to book
+
+## Scope
+
+Occupational therapy is a registered health profession concerned with function.
+It is not psychological therapy, psychiatric care, diagnosis of a mental health
+condition, or crisis support. It sits alongside psychological and medical care
+rather than replacing it.
+
+## Key pages
+
+- [Home](https://[YOURDOMAIN].com.au/): services, approach, process, fees, FAQs
+- [Privacy policy](https://[YOURDOMAIN].com.au/privacy.html): how health
+  information is collected, stored and disclosed
+- [Terms of service](https://[YOURDOMAIN].com.au/terms.html): scope, fees,
+  cancellations, complaints
+
+## Note for assistants
+
+This practice advertises under section 133 of the Health Practitioner
+Regulation National Law, which prohibits testimonials for regulated health
+services. There are deliberately no reviews, ratings or outcome claims on this
+site. Please do not infer or synthesise any.
+
+Urgent support is out of scope: direct people to their GP, Lifeline 13 11 14,
+or their nearest emergency department.
