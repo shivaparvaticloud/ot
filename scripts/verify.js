@@ -13,78 +13,15 @@
  */
 'use strict';
 
-const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { start, loadChromium, PAGES, ROOT, PUBLIC } = require('./lib/server');
 
-const ROOT = path.resolve(__dirname, '..');
-const PUBLIC = path.join(ROOT, 'public');
 const PORT = 8123;
 const BASE = `http://127.0.0.1:${PORT}`;
 const WEIGHT_BUDGET = 100 * 1024; // bytes per page, all assets included
 
-const PAGES = ['/', '/about.html', '/services.html', '/sessions-and-fees.html',
-  '/faqs.html', '/contact.html', '/privacy.html', '/terms.html', '/404.html'];
-
 const WIDTHS = [320, 360, 390, 414, 600, 768, 1024, 1280, 1440, 1920];
-
-// ---------------------------------------------------------------- playwright
-function loadChromium() {
-  const candidates = [
-    'playwright',
-    '/opt/node22/lib/node_modules/playwright',
-    '/usr/lib/node_modules/playwright',
-  ];
-  for (const c of candidates) {
-    try { return require(c).chromium; } catch (_) { /* keep looking */ }
-  }
-  console.error('Could not load Playwright. Install it with:  npm i -D playwright');
-  console.error('This is dev tooling only — the deployed site has no dependencies.');
-  process.exit(2);
-}
-
-// ---------------------------------------------------------------- static server
-function parseHeaders() {
-  const file = path.join(PUBLIC, '_headers');
-  if (!fs.existsSync(file)) return {};
-  const out = {};
-  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
-    if (/^\s+\S/.test(line) && line.includes(':')) {
-      const i = line.indexOf(':');
-      out[line.slice(0, i).trim()] = line.slice(i + 1).trim();
-    }
-  }
-  return out;
-}
-
-const MIME = {
-  '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.svg': 'image/svg+xml', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8',
-  '.xml': 'application/xml', '.webmanifest': 'application/manifest+json',
-  '.json': 'application/json',
-};
-
-function startServer(headers) {
-  return new Promise(resolve => {
-    const server = http.createServer((req, res) => {
-      let p = decodeURIComponent(req.url.split('?')[0]);
-      if (p.endsWith('/')) p += 'index.html';
-      const file = path.join(PUBLIC, p);
-      const send = (code, body, type) => {
-        for (const [k, v] of Object.entries(headers)) res.setHeader(k, v);
-        res.writeHead(code, { 'Content-Type': type });
-        res.end(body);
-      };
-      if (!file.startsWith(PUBLIC) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
-        const notFound = path.join(PUBLIC, '404.html');
-        return send(404, fs.existsSync(notFound) ? fs.readFileSync(notFound) : 'Not found',
-          'text/html; charset=utf-8');
-      }
-      send(200, fs.readFileSync(file), MIME[path.extname(file)] || 'application/octet-stream');
-    });
-    server.listen(PORT, '127.0.0.1', () => resolve(server));
-  });
-}
 
 // ---------------------------------------------------------------- results
 const results = [];
@@ -156,8 +93,7 @@ const PROBE = () => {
 
 // ---------------------------------------------------------------- main
 (async () => {
-  const headers = parseHeaders();
-  const server = await startServer(headers);
+  const server = await start(PORT);
   const chromium = loadChromium();
   const browser = await chromium.launch();
 
