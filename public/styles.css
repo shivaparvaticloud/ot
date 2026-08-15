@@ -435,11 +435,45 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .card-go{ font-family:var(--font-sans); font-size:var(--type-label); font-weight:var(--weight-semi); color:var(--action); }
 
 /* ---------- FAQ ---------- */
+/* ---------- FAQ disclosure ----------
+   <details> carries the open/closed state natively, so this needs no
+   JavaScript and keeps working with the CSP set to script-src 'none'.
+   The <h2> stays inside <summary> so the document outline survives —
+   one heading per question, as it was before the questions collapsed.
+   Answers remain in the DOM when closed, so find-in-page reaches them
+   (browsers auto-expand a details on a match) and so the FAQPage
+   structured data still describes content that is genuinely present. */
 .faq{ max-width:var(--measure-wide); }
-.qa{ padding-block:var(--space-lg); border-block-end:var(--border-hairline) solid var(--border-subtle); }
-.qa:first-child{ padding-block-start:0; }
-.qa:last-child{ border-block-end:0; padding-block-end:0; }
-.qa h2{ font-size:var(--type-h3); margin-block-end:var(--space-xs); }
+.qa{ border-block-end:var(--border-hairline) solid var(--border-subtle); }
+.qa:last-child{ border-block-end:0; }
+
+.qa summary{
+  display:flex; align-items:flex-start; gap:var(--space-md);
+  padding-block:var(--space-lg); cursor:pointer;
+  list-style:none;              /* Firefox */
+  min-block-size:24px;          /* SC 2.5.8 target size */
+}
+.qa summary::-webkit-details-marker{ display:none; }  /* Safari */
+.qa summary h2{
+  font-size:var(--type-h3); margin:0; flex:1 1 auto; min-inline-size:0;
+  text-wrap:pretty;
+}
+.qa summary:hover h2{ color:var(--action); }
+.qa summary:focus-visible{ outline:var(--border-medium) solid var(--action); outline-offset:var(--space-2xs); }
+
+/* Marker: a chevron drawn from two borders, so it needs no image request
+   and inherits currentColor under forced-colors. */
+.qa summary::after{
+  content:""; flex:none; align-self:flex-start;
+  inline-size:0.5em; block-size:0.5em; margin-block-start:0.45em;
+  border-inline-end:var(--border-medium) solid var(--action);
+  border-block-end:var(--border-medium) solid var(--action);
+  transform:rotate(45deg); transform-origin:center;
+  transition:transform var(--dur-fast) var(--ease-emphasis);
+}
+.qa[open] summary::after{ transform:rotate(-135deg); }
+
+.qa-a{ padding-block-end:var(--space-lg); }
 .qa p{ margin:0; font-size:var(--type-caption); color:var(--text-muted); max-width:var(--measure-prose); }
 
 .sub{ margin-block-start:var(--space-3xl); font-size:var(--type-caption); }
@@ -611,11 +645,82 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .legend .sw-band{ background:transparent; border:1px solid CanvasText; }
   .ticks li::before{ background:CanvasText; }
   .nav a[aria-current="page"]{ border-block-end-color:Highlight; }
+  .qa summary::after{ border-color:CanvasText; }
   :focus-visible{ outline:3px solid Highlight; }
 }
 
+/* ---------- Print ----------
+   People do print from a health service site: a fee summary to discuss at
+   home, an FAQ page for a support coordinator, a privacy policy for a file.
+   The aim is a clean document, not a screenshot of a web page. */
+@page{ margin:18mm 16mm; }
+
 @media print{
-  body{ background:#fff; color:var(--text-strong); padding-block-end:0; }
-  .btn,.skip,.nav,.sticky-cta{ display:none; }
-  .band{ break-inside:avoid; }
+  /* Paper is its own medium: white ground, ink-dark text, physical units.
+     pt is the correct unit here — the fluid vw-based scale has no meaning
+     when there is no viewport. */
+  body{
+    background:#fff; color:#000;
+    font-size:11pt; line-height:1.45;
+    padding-block-end:0;
+  }
+  .wrap{ width:auto; margin-inline:0; }
+  p, .lede, .qa p{ max-width:none; color:#000; }
+  h1{ font-size:20pt; } h2{ font-size:14pt; } h3{ font-size:12pt; }
+
+  /* Interface chrome that cannot be used on paper. */
+  .skip, .nav, .sticky-cta, .btn, .crumbs, .foot-nav, .card-go,
+  .qa summary::after{ display:none; }
+
+  /* Screen decoration that only costs toner. */
+  .band, .band-fill, .card, .urgent{
+    background:none; border:0; box-shadow:none;
+    padding-block:0; margin-block:0 12pt;
+  }
+  /* background:none matters even though backgrounds are off by default —
+     a reader who ticks "background graphics" should not get a full-width
+     band of linen across the top of every sheet. */
+  .masthead{
+    background:none;
+    border-block-end:0.5pt solid #000; padding-block-end:6pt; margin-block-end:12pt;
+  }
+  .hero{ padding-block:0 12pt; }
+  .hero-logo img{ inline-size:36mm; }
+
+  /* Every FAQ answer prints, whether or not it was open on screen.
+     Two mechanisms because engines differ: older ones hide the closed
+     children with display, current Chromium uses ::details-content. */
+  details:not([open]) > *:not(summary){ display:block !important; }
+  details::details-content{ content-visibility:visible !important; }
+
+  /* Expand links that mean something off-screen. Internal page links are
+     left alone — a bare path helps nobody holding a sheet of paper. */
+  a[href^="mailto:"]::after,
+  a[href^="http"]::after{
+    content:" (" attr(href) ")";
+    font-size:9pt; word-break:break-all;
+  }
+  /* …except where the link text is already the address, which is every
+     link in the footer meta. Printing it twice helps nobody. */
+  .foot-meta a::after{ content:none; }
+  a{ color:#000; text-decoration:underline; }
+
+  /* Keep units of meaning on one page. */
+  .qa, .card, .urgent, .pillar-notes > div, .band{ break-inside:avoid; }
+  h1, h2, h3{ break-after:avoid; break-inside:avoid; }
+  p{ orphans:3; widows:3; }
+
+  /* The safety notice and the contact details are the two things most worth
+     having on the printed copy, so they are given a visible frame rather
+     than being flattened with the rest. */
+  .urgent{ border:0.5pt solid #000; padding:8pt; break-inside:avoid; }
+  .foot{ border-block-start:0.5pt solid #000; padding-block-start:8pt; margin-block-start:12pt; }
+  .foot-meta{ font-size:9pt; }
+
+  /* The diagram is structural, not decorative — it carries the model the
+     whole practice is built on, so it prints, but sized for paper. */
+  .pillars svg{ max-inline-size:110mm; }
+  .pl-fill{ opacity:0.10; } .pl-core{ opacity:0.18; }
+
+  *, *::before, *::after{ animation:none !important; transition:none !important; }
 }
