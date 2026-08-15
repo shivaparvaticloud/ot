@@ -183,6 +183,24 @@ const PROBE = () => {
     record('duplicate ids', p, probe.dupIds.length === 0, probe.dupIds.join(', '));
     record('accessible names', p, probe.nameless.length === 0, probe.nameless.slice(0, 2).join('; '));
     record('image alt', p, probe.imgNoAlt.length === 0, probe.imgNoAlt.join(', '));
+
+    // The width/height attributes reserve the box before the image arrives.
+    // If their ratio disagrees with the file's own, the reserved box is the
+    // wrong shape and the artwork is stretched into it — while CLS stays at
+    // zero, because the layout is stable, just stably wrong. That is exactly
+    // how the logo shipped 7% too tall, so it is asserted rather than trusted.
+    const ratios = await pg.evaluate(() => [...document.images]
+      .filter(i => i.getAttribute('width') && i.getAttribute('height') && i.naturalWidth)
+      .map(i => {
+        const attr = +i.getAttribute('width') / +i.getAttribute('height');
+        const real = i.naturalWidth / i.naturalHeight;
+        // 2% absorbs integer rounding of the intrinsic height, which the
+        // browser reports divided by the selected candidate's density.
+        return Math.abs(attr - real) / real > 0.02
+          ? `${i.currentSrc.split('/').pop()} attr ${attr.toFixed(3)} vs file ${real.toFixed(3)}`
+          : null;
+      }).filter(Boolean));
+    record('image aspect ratio', p, ratios.length === 0, ratios.join('; '));
     record('svg labelled/hidden', p, probe.svgUnlabelled.length === 0, probe.svgUnlabelled.join('; '));
     record('target size', p, probe.targets.length === 0, probe.targets.slice(0, 3).join('; '));
 

@@ -31,7 +31,7 @@ deployed output and nothing to carry a supply-chain vulnerability.
 
 ## What it checks
 
-Nineteen checks across nine pages, 176 assertions.
+Twenty checks across nine pages, 185 assertions.
 
 | Check | What would fail it |
 |---|---|
@@ -82,7 +82,7 @@ new check can actually fail.
 ## Current state
 
 ```
-170/176 passed
+179/185 passed
 ```
 
 The six failures are all the same thing: **content placeholders that have not

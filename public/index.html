@@ -171,8 +171,19 @@
   <section class="hero">
     <div class="wrap hero-lockup">
       <picture class="hero-logo">
-        <source type="image/webp" srcset="/logo-wide-240.webp 1x, /logo-wide-480.webp 2x">
-        <img src="/logo-wide-240.png" width="240" height="136" fetchpriority="high"
+        <!-- Width descriptors, not 1x/2x: the logo renders at 240px on wide
+             screens and 180px below 46rem, so a fixed 2x would make a phone
+             at DPR 2 fetch the 480 when 360 is what it needs. sizes mirrors
+             the two widths in styles.css. Intrinsic ratio is the master's
+             1.894 — width and height here must stay in that ratio or the
+             artwork stretches. -->
+        <source type="image/webp"
+                srcset="/logo-wide-240.webp 240w, /logo-wide-360.webp 360w, /logo-wide-480.webp 480w"
+                sizes="(max-width: 46rem) 180px, 240px">
+        <img src="/logo-wide-240.png"
+             srcset="/logo-wide-240.png 240w, /logo-wide-360.png 360w, /logo-wide-480.png 480w"
+             sizes="(max-width: 46rem) 180px, 240px"
+             width="240" height="127" fetchpriority="high"
              decoding="async" alt="Simple Roots Therapy &mdash; creating lasting growth">
       </picture>
       <div class="hero-text">
