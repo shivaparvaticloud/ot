@@ -115,7 +115,7 @@ you just did.
 
 ## Repository size — read this before the first update
 
-The baseline is **22.8 MB across 81 PNGs**.
+The baseline is **about 23 MB across 81 PNGs**.
 
 Git stores each binary version in full, so **every `--update` adds roughly
 another 22 MB to history permanently**, whether or not most images changed.

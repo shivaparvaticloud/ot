@@ -6,6 +6,19 @@ requests, no cookies, no contact form.
 Built from two source documents: **Web Map.docx** (structure and copy) and
 **Brand Kit.docx** (voice, colour, typography).
 
+## Documentation
+
+| Doc | What it covers |
+|---|---|
+| [`docs/INFRASTRUCTURE.md`](docs/INFRASTRUCTURE.md) | Hosting, config, deploy and rollback, custom domain, and the checks that can only run against the live origin |
+| [`docs/SECURITY.md`](docs/SECURITY.md) | Threat model, every response header and why its value, two open decisions |
+| [`docs/EMAIL-DELIVERABILITY.md`](docs/EMAIL-DELIVERABILITY.md) | SPF, DKIM and DMARC for Microsoft 365 — the site's only contact route |
+| [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md) | Measured page weights and paint timings, and what is deliberately not optimised |
+| [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Load-bearing versus decorative features, and how each fails |
+| [`docs/VERIFY.md`](docs/VERIFY.md) | The pre-deploy gate, check by check |
+| [`docs/VISUAL-REGRESSION.md`](docs/VISUAL-REGRESSION.md) | Pixel baseline, tolerance, and how to update it honestly |
+| [`docs/EDGE-CASES.md`](docs/EDGE-CASES.md) | Narrow viewports, raised font sizes, missing CSS — and the four bugs they caught |
+
 ## Deploy to Cloudflare
 
 Deployed as a **Worker with static assets**. The site is `public/`; everything
