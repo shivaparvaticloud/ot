@@ -277,9 +277,15 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   min-inline-size:280px; max-inline-size:900px;
   block-size:auto; margin-inline:auto; overflow:visible;
 }
+/* These two rest translucent so the circles read as overlapping sets rather
+   than one solid shape. The value lives in a token because it is needed in
+   three places — here, the entrance keyframes, and the reduced-motion
+   fallback — and a shared fadeIn to opacity:1 silently flattened the
+   diagram once already. */
+.pillars{ --pl-fill-rest:0.10; --pl-core-rest:0.22; }
 .pl-ring{ fill:none; stroke:var(--graphic-primary); stroke-width:1.6; }
-.pl-fill{ fill:var(--graphic-primary); opacity:0.10; }
-.pl-core{ fill:var(--graphic-warm); opacity:0.22; }
+.pl-fill{ fill:var(--graphic-primary); opacity:var(--pl-fill-rest); }
+.pl-core{ fill:var(--graphic-warm); opacity:var(--pl-core-rest); }
 
 /* Home page: each circle is a link to the page it stands for. */
 .pl-hit{ fill:transparent; cursor:pointer; }
@@ -519,7 +525,9 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .n3{ animation-delay:1340ms; } .n4{ animation-delay:1500ms; }
   .n5{ animation-delay:1660ms; }
 
-  .pl-ring,.pl-fill,.pl-core,.pl-label,.pl-sub,.pl-centre{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-ring,.pl-label,.pl-sub,.pl-centre{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-fill{ opacity:0; animation:fadeToFill var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-core{ opacity:0; animation:fadeToCore var(--dur-slow) var(--ease-entrance) forwards; }
   .pl-core{ animation-delay:120ms; }
   .p1{ animation-delay:320ms; } .p2{ animation-delay:520ms; } .p3{ animation-delay:720ms; }
 
@@ -530,6 +538,11 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 }
 
 @keyframes fadeIn{ to{ opacity:1; } }
+/* The two translucent diagram layers land on their resting opacity, not on 1.
+   A var() in a keyframe end-state resolves at computed-value time, so the
+   token stays the single source of truth. */
+@keyframes fadeToFill{ to{ opacity:var(--pl-fill-rest); } }
+@keyframes fadeToCore{ to{ opacity:var(--pl-core-rest); } }
 @keyframes draw{ to{ stroke-dashoffset:0; } }
 @keyframes pop{ from{ opacity:0; transform:scale(.4); } to{ opacity:1; transform:scale(1); } }
 @keyframes rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
@@ -540,7 +553,7 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .demand-line{ stroke-dasharray:none; stroke-dashoffset:0; }
   .cap-band,.cap-edge,.cap-tag,.stem,.node{ opacity:1; }
   .pl-ring,.pl-label,.pl-sub,.pl-centre{ opacity:1; }
-  .pl-fill{ opacity:0.10; } .pl-core{ opacity:0.22; }
+  .pl-fill{ opacity:var(--pl-fill-rest); } .pl-core{ opacity:var(--pl-core-rest); }
 }
 
 /* ---------- Responsive ---------- */
