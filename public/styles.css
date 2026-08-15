@@ -654,6 +654,38 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 @keyframes pop{ from{ opacity:0; transform:scale(.4); } to{ opacity:1; transform:scale(1); } }
 @keyframes rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
 
+/* ---------- Cross-document view transitions ----------
+   Pure CSS. The JavaScript View Transition API is unavailable here by
+   design — script-src is 'none' — but the declarative form needs no script
+   at all, so the site gets the effect without weakening the policy.
+
+   The value is not the fade. It is that the masthead, the footer and the
+   sticky CTA are identical on every page, so naming them holds them still
+   while the content beneath changes. Without the names the whole viewport
+   cross-fades, including chrome that never moved, which reads as a page
+   reload rather than as moving within one site.
+
+   Unsupported browsers — Firefox at time of writing — simply navigate.
+   There is nothing to fall back to and nothing to detect. */
+@view-transition{ navigation:auto; }
+
+.masthead{ view-transition-name:masthead; }
+.foot{ view-transition-name:foot; }
+.sticky-cta{ view-transition-name:sticky-cta; }
+
+::view-transition-old(root),
+::view-transition-new(root){
+  animation-duration:var(--dur-base);
+  animation-timing-function:var(--ease-entrance);
+}
+
+@media (prefers-reduced-motion: reduce){
+  /* navigation:none rather than animation:none. Suppressing the animation
+     would still capture and composite the snapshots, doing the work and
+     risking a flash; this turns the mechanism off. */
+  @view-transition{ navigation:none; }
+}
+
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ animation:none !important; transition:none !important; }

@@ -86,6 +86,33 @@ that reduced motion leaves nothing hidden.
 Forced-colors, by contrast, differs on **27 of 27**, so it is carrying real
 information and the emulation is genuinely working.
 
+## A third finding: compositing changes pixels without changing layout
+
+Adding `view-transition-name` to `.masthead`, `.foot` and `.sticky-cta` failed
+ten captures — every default and forced-colors capture of index and services —
+with the whole footer marked as changed.
+
+It was not a layout change. Measured at sub-pixel precision with the names on
+and off, `.foot`, `.foot-meta`, `.urgent`, `.foot-nav`, the first footer link
+and the document height are **identical to three decimal places**. What
+changed is that `view-transition-name` creates a stacking context, the footer
+is promoted to its own compositing layer, and that layer rasterises text with
+slightly different snapping and antialiasing. Same position, same content,
+different pixels.
+
+Two things worth taking from it:
+
+**Read the mask, not the row.** The bounding box said "footer", which could
+equally have meant the footer moved. Only an A/B with the property toggled —
+17,935 changed pixels with it on, matching the reported diff exactly —
+identified the cause.
+
+**Stale masks lie.** `tests/diff/` used to accumulate across runs, so it could
+hold a mask for a page that passed this time. Opening one of those sent this
+investigation down a wrong path for several minutes. The script now clears the
+directory at the start of every run, so whatever is in it belongs to the run
+you just did.
+
 ## Repository size — read this before the first update
 
 The baseline is **22.8 MB across 81 PNGs**.
