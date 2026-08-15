@@ -72,7 +72,22 @@ function start(port) {
       const reqPath = decodeURIComponent(req.url.split('?')[0]);
       let p = reqPath;
       if (p.endsWith('/')) p += 'index.html';
-      const file = path.join(PUBLIC, p);
+      let file = path.join(PUBLIC, p);
+
+      // Match Cloudflare's html_handling, which defaults to
+      // "auto-trailing-slash": /services resolves to /services.html. Without
+      // this the local server 404s extensionless URLs that work in
+      // production, so routing checks here would not reflect the deployed
+      // site.
+      if (!fs.existsSync(file) && !path.extname(p)) {
+        const asHtml = path.join(PUBLIC, p + '.html');
+        if (fs.existsSync(asHtml)) file = asHtml;
+      }
+
+      // _headers and _redirects are configuration, consumed by the platform
+      // and not served as assets. Serving them locally made the harness
+      // disagree with production on a request that should 404.
+      if (/^\/_(headers|redirects)$/.test(reqPath)) file = path.join(PUBLIC, '__never__');
       // Matched on the requested path, as the edge does — '/' is matched by
       // '/*', not by the index.html it happens to resolve to.
       const headers = headersFor(rules, reqPath);
