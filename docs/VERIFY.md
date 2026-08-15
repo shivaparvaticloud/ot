@@ -82,24 +82,23 @@ new check can actually fail.
 ## Current state
 
 ```
-170/176 passed
+171/176 passed
 ```
 
-The six failures are all the same thing: **content placeholders that have not
+The five failures are all the same thing: **content placeholders that have not
 been filled in yet.**
 
 | File | Outstanding |
 |---|---|
 | `.well-known/security.txt` | `[SECURITY_TXT_EXPIRY]` |
-| `contact.html` | `[2]` |
 | `faqs.html` | `[24 / 48]` |
 | `privacy.html` | `[DATE]` |
-| `sessions-and-fees.html` | `[2]`, `[24 / 48]` |
-| `terms.html` | `[DATE]`, `[at the time of the appointment / within 7 days of invoice]`, `[24 / 48]`, `[2]` |
+| `sessions-and-fees.html` | `[24 / 48]` |
+| `terms.html` | `[DATE]`, `[at the time of the appointment / within 7 days of invoice]`, `[24 / 48]` |
 
 This is correct behaviour, not a bug. The site is not ready to deploy while it
-still says "we reply within [2] business days" to a parent. Fill them in and
-the gate goes green.
+still quotes a bracketed cancellation window to a parent. Fill them in and the
+gate goes green.
 
 Everything else — every accessibility, layout, security, performance and
 rendering check — passes on all nine pages.

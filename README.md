@@ -37,7 +37,7 @@ without a home of their own).
 | `public/index.html` | Home — tagline, what we believe, the three simple roots |
 | `public/about.html` | Meet your therapist, clinical interests, approach, values |
 | `public/services.html` | What OT is, paediatric, adult and adolescent, group programs |
-| `public/sessions-and-fees.html` | Six-step process, session types, delivery modes, funding |
+| `public/sessions-and-fees.html` | Six-step process, session types, delivery modes, funding. Titled "Sessions" — the fees section was removed by request; the filename stays so existing links keep working |
 | `public/faqs.html` | Seven questions |
 | `public/contact.html` | Contact us |
 | `public/privacy.html` | Privacy policy (required — health information is handled) |
@@ -78,7 +78,7 @@ Verified by loading every page with the browser's system preference forced to
 gets the light site. `color-scheme: light` is declared so scrollbars and any
 native controls match.
 
-**Colour** uses the supplied sage / slate / linen / ochre palette:
+**Colour** uses the supplied sage / slate / linen / ochre / plum palette:
 
 | Supplied | Value | Where |
 |---|---|---|
@@ -87,6 +87,7 @@ native controls match.
 | Clinical Trust Slate | `#2B3A4A` | Headings, wordmark, the demand line |
 | Calming Eucalyptus Green | `#6A8D95` | Diagram strokes, rules, icons |
 | Gentle Warmth Accent | `#D4A373` | Decorative fills only |
+| Accent | `#825358` | Small uppercase labels, icons, illustration figures |
 
 **Three colours were adjusted for contrast, on the same hues.** Measured, not
 assumed:
@@ -107,6 +108,14 @@ assumed:
    decorative fill (the centre of the three-circles diagram), never for text,
    and never as the only thing distinguishing one element from another. If you
    ever need ochre as text, `#8A6A4B` is the same hue at 4.54:1.
+
+5. **The accent `#825358` can carry text**, unlike the other two brand hues:
+   **5.79:1** on linen and **6.31:1** on white. It is given the small
+   uppercase label layer — eyebrows, section leads, definition terms, the
+   masthead role line — plus the icons and the paediatric illustration, which
+   puts it on every page without ever being mistaken for a link. Under
+   `prefers-contrast: more` it steps up to slate, since 5.79:1 is AA but not
+   AAA.
 
 Body copy steps down in three levels — `#4A5568`, `#55636F`, `#5F6E79` — all
 above 4.5:1 on both linen and white. Every pair in the palette now passes;
@@ -193,7 +202,6 @@ grep -ro '\[[A-Za-z0-9 /–_]*\]' public/ | sort -u
 
 | Placeholder | Replace with |
 |---|---|
-| `[2]` | Response time in business days |
 | `[24 / 48]` | Cancellation notice window |
 | `[at the time of the appointment / within 7 days of invoice]` | Payment terms — pick one |
 | `[DATE]` | Date the legal pages were last updated |
@@ -201,13 +209,19 @@ grep -ro '\[[A-Za-z0-9 /–_]*\]' public/ | sort -u
 
 ## No fees are published
 
-By instruction, the site carries **no dollar amounts, no session lengths in
-minutes and no price indicators** — `priceRange` has been removed from the
-structured data too, since `$$` is still a price signal. The sessions page
-describes what each session type *is*, and says fees are discussed during the
-free ten-minute call and confirmed in writing before the first appointment.
-`llms.txt` tells AI assistants the same thing and asks them not to quote a
-figure.
+By instruction, the site carries **no dollar amounts and no price
+indicators** — `priceRange` has been removed from the structured data too,
+since `$$` is still a price signal. The sessions page describes what each
+session type *is*. `llms.txt` tells AI assistants the same thing and asks them
+not to quote a figure.
+
+Two things here changed on the client's later instruction, and are deliberate
+rather than drift: the **Fees** section was deleted from the sessions page
+altogether, and **session lengths are now stated in minutes** ("typically 60
+minutes face-to-face, with 10 minutes clinical record and planning time").
+Durations are not prices, and the client asked for them explicitly. The
+statement that fees are discussed on the free call now lives only in
+`terms.html`.
 
 Cancellation terms say "charged in full" rather than a percentage, for the
 same reason. NDIS wording refers to the current NDIS Pricing Arrangements
@@ -251,6 +265,12 @@ There is no build step and no templating, so the masthead, nav and footer are
 duplicated across all nine pages. **A nav change means editing nine files.**
 That is the trade-off for a site with no build tooling; a find and replace
 across `public/*.html` handles it.
+
+The footer used to carry two disclaimers — an urgent-support block naming
+Lifeline, and a "general information, not clinical advice" paragraph. Both
+were removed from all nine pages at the client's instruction. The equivalent
+scope-of-practice and crisis wording still exists in `terms.html`, which is
+where it is load-bearing; do not reinstate the footer block without asking.
 
 ## Search, structured data and sharing
 
