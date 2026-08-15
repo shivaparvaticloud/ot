@@ -249,6 +249,14 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .hero{ padding-block:var(--space-7xl) var(--space-5xl); }
 .hero .lede{ margin-block-end:var(--space-2xl); }
 
+/* Brand lockup: the wide logo sits beside the headline. width/height are
+   on the <img> so the box is reserved before the image arrives and CLS
+   stays at zero. */
+.hero-lockup{ display:flex; align-items:center; gap:var(--space-4xl); flex-wrap:wrap; }
+.hero-logo{ flex:none; display:block; }
+.hero-logo img{ display:block; inline-size:240px; block-size:auto; }
+.hero-text{ flex:1 1 22rem; min-inline-size:0; }
+
 /* ============================================================
    THREE ROOTS — the practice's conceptual model, as a component.
 
@@ -546,6 +554,8 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .day-marks div{ border-block-start:var(--border-hairline) solid var(--border-subtle); padding-block-start:var(--space-sm); }
   .creds > div{ grid-template-columns:1fr; gap:var(--space-3xs); }
   .hero{ padding-block:var(--space-5xl) var(--space-4xl); }
+  .hero-lockup{ gap:var(--space-2xl); }
+  .hero-logo img{ inline-size:180px; }
   .band{ padding-block:var(--space-section-tight); }
 
   .sticky-cta{
