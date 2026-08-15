@@ -333,6 +333,17 @@ answer, and for anyone who finds a long page hard to navigate.
 
 ## Verification
 
+Three scripts, all runnable locally, all against the site served with its
+real `_headers`:
+
+```
+node scripts/verify.js        # 20 checks x 9 pages = 185 assertions
+node scripts/visual-diff.js   # 81 captures, 9 pages x 3 widths x 3 modes
+node scripts/edge-cases.js    # narrow viewports, raised font size, no CSS
+```
+
+See `docs/VERIFY.md`, `docs/VISUAL-REGRESSION.md` and `docs/EDGE-CASES.md`.
+
 Everything below was measured in a headless browser against the site served
 with its real `_headers` CSP, not asserted. Re-run these after any change.
 

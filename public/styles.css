@@ -152,6 +152,13 @@ body{
 }
 .wrap{ width:min(100% - var(--container-gutter), var(--container)); margin-inline:auto; }
 
+/* A long unbreakable token — an email address, a URL — must wrap rather than
+   push the whole page sideways. 'anywhere' rather than 'break-word' on the
+   links: only 'anywhere' reduces min-content width, which is the figure a
+   grid or flex track actually measures when deciding how wide to be. */
+body{ overflow-wrap:break-word; }
+a[href^="mailto:"], a[href^="http"]{ overflow-wrap:anywhere; }
+
 .skip{
   position:absolute; inset-inline-start:-9999px; inset-block-start:0;
   z-index:var(--layer-skip);
@@ -274,7 +281,12 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .pillars{ margin-block-start:var(--space-4xl); }
 .pillars svg{
   display:block; inline-size:100%;
-  min-inline-size:280px; max-inline-size:900px;
+  /* min(280px, 100%) so the floor never exceeds the space available. A bare
+     280px floor overflowed a 320px phone whose owner had raised the default
+     font size, because the gutter scales with the root font and the column
+     drops below 280px. An illegibly small diagram is a much smaller problem
+     than a page that scrolls sideways. */
+  min-inline-size:min(280px,100%); max-inline-size:900px;
   block-size:auto; margin-inline:auto; overflow:visible;
 }
 /* These two rest translucent so the circles read as overlapping sets rather
@@ -316,7 +328,10 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .pl-sub{ font-family:var(--font-sans); font-size:11.5px; font-weight:500; letter-spacing:0.06em; fill:var(--text-subtle); text-anchor:middle; text-transform:uppercase; }
 .pl-centre{ font-family:var(--font-sans); font-size:13px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
 
-.pillar-notes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:var(--space-2xl); margin-block-start:var(--space-3xl); }
+/* min(14rem, 100%) for the same reason as .cards — a bare rem minimum in an
+   auto-fit track is a fixed floor that does not know how much room it has,
+   and rem grows with the visitor's font setting. */
+.pillar-notes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr)); gap:var(--space-2xl); margin-block-start:var(--space-3xl); }
 .pillar-notes h3{ font-size:var(--type-label); font-weight:var(--weight-bold); letter-spacing:var(--tracking-label); text-transform:uppercase; margin-block-end:var(--space-xs); }
 .pillar-notes p{ font-size:var(--type-caption); color:var(--text-muted); margin:0; max-width:none; }
 
@@ -343,7 +358,11 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   color:var(--text-subtle); margin-block:var(--space-2xl) 0;
   max-width:var(--measure-wide); line-height:1.9;
 }
-.legend .key{ margin-inline-end:var(--space-3xl); white-space:nowrap; }
+/* No white-space:nowrap. It kept each swatch beside its whole label, but a
+   label like "What you have available that day" cannot fit on one line at a
+   large default font size and pushed the page sideways instead. Wrapping the
+   label is the lesser cost; inline-flex keeps the swatch attached to it. */
+.legend .key{ display:inline-flex; align-items:baseline; margin-inline-end:var(--space-3xl); }
 .legend b{ display:inline-block; vertical-align:middle; inline-size:var(--space-2xl); margin-inline-end:var(--space-sm); }
 .legend .sw-line{ block-size:2.5px; background:var(--graphic-line); border-radius:var(--radius-sm); }
 .legend .sw-band{ block-size:var(--space-md); background:var(--graphic-band); border:var(--border-hairline) solid var(--border-strong); }
@@ -419,7 +438,12 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 }
 
 /* ---------- Home cards ---------- */
-.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:var(--space-lg); }
+/* min(16rem, 100%), not a bare 16rem: auto-fit still lays out a 16rem track
+   when the container is narrower than that, and the grid overflows. The
+   min() lets the track collapse to the container instead. It shows up when
+   a visitor raises their default font size — 16rem is 384px at a 24px root,
+   wider than the content column on a phone. */
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(16rem,100%),1fr)); gap:var(--space-lg); }
 .card{
   display:block; background:var(--surface-card);
   border:var(--border-hairline) solid var(--border-subtle);
