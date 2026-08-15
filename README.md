@@ -45,11 +45,14 @@ without a home of their own).
 | `public/404.html` | Not-found page |
 
 Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
-`llms.txt`, `favicon.svg`, `share.png`, `apple-touch-icon.png`, `icon-192.png`,
-`icon-512.png`, `site.webmanifest`, `.well-known/security.txt`.
+`llms.txt`, `share.png`, `favicon-32.png`, `apple-touch-icon.png`,
+`icon-192.png`, `icon-512.png`, `logo-wide-{240,360,480}.{png,webp}`,
+`site.webmanifest`, `.well-known/security.txt`.
 
-Total 280 KB across 21 files, and a page costs two requests: the HTML and one
-stylesheet. Nothing is loaded from another server.
+Total 728 KB across 27 files, most of it icons and logo derivatives that are
+not on the load path. A page costs **two requests** — the HTML and one
+stylesheet — and the home page a third for the logo. Nothing is loaded from
+another server. Measured page weights are in `docs/PERFORMANCE.md`.
 
 ## Light only — how it is actually enforced
 
@@ -112,9 +115,10 @@ Body copy steps down in three levels — `#4A5568`, `#55636F`, `#5F6E79` — all
 above 4.5:1 on both linen and white. Every pair in the palette now passes;
 tightest is the accent on linen at 4.53:1.
 
-`share.png` and `favicon.svg` use the same palette. The favicon has a single
-version rather than a light/dark pair, because it sits on the browser's chrome
-rather than the site's background, and sage reads against both.
+`share.png` uses the same palette. The browser icons are raster derivatives of
+the supplied vertical logo rather than palette artwork — there is one version
+rather than a light/dark pair, because the icon sits on the browser's chrome
+rather than the site's background.
 
 **Typography.** Sans title / serif story, as specified:
 
@@ -337,7 +341,7 @@ Three scripts, all runnable locally, all against the site served with its
 real `_headers`:
 
 ```
-node scripts/verify.js        # 20 checks x 9 pages = 185 assertions
+node scripts/verify.js        # 21 checks, 186 assertions
 node scripts/visual-diff.js   # 81 captures, 9 pages x 3 widths x 3 modes
 node scripts/edge-cases.js    # narrow viewports, raised font size, no CSS
 ```

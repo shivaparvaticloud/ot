@@ -137,6 +137,34 @@ const PROBE = () => {
 
   }
 
+  // Modern selectors must sit in their own rule.
+  //
+  // A browser that does not recognise a selector drops the ENTIRE rule, not
+  // just that one selector — so `.card, ::details-content { padding: … }`
+  // silently loses the card padding everywhere the pseudo-element is unknown.
+  // Declarations and at-rules fail gracefully; selectors do not.
+  {
+    const css = fs.readFileSync(path.join(PUBLIC, 'styles.css'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+    const MODERN = [/::details-content/, /::view-transition/, /:has\(/, /::backdrop/];
+    const lists = [];
+    let buf = '';
+    for (const ch of css) {
+      if (ch === '{') { lists.push(buf.trim()); buf = ''; }
+      else if (ch === '}' || ch === ';') buf = '';
+      else buf += ch;
+    }
+    const risky = [];
+    for (const sel of lists) {
+      if (!sel || sel.startsWith('@')) continue;
+      if (!MODERN.some(r => r.test(sel))) continue;
+      const parts = sel.split(',').map(s => s.trim()).filter(Boolean);
+      const plain = parts.filter(s => !MODERN.some(r => r.test(s)));
+      if (plain.length) risky.push(`${sel.replace(/\s+/g, ' ')} would also lose ${plain.join(', ')}`);
+    }
+    record('modern selectors isolated', '/styles.css', risky.length === 0, risky.join('; '));
+  }
+
   // unfilled placeholders — every text asset, not just HTML.
   // Matches any single-line [BRACKETED] token, then drops the two things
   // that legitimately look like one: markdown links [label](url) in llms.txt,
