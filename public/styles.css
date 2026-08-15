@@ -249,12 +249,55 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .hero{ padding-block:var(--space-7xl) var(--space-5xl); }
 .hero .lede{ margin-block-end:var(--space-2xl); }
 
-/* ---------- Three roots diagram ---------- */
+/* ============================================================
+   THREE ROOTS — the practice's conceptual model, as a component.
+
+   One geometry, used at every size. The full diagram and the three
+   single-root marks share the identical circle coordinates
+   (280,150 / 200,285 / 360,285, r=110); the marks are simply a
+   cropped viewBox over the same drawing, so they are the same
+   family by construction rather than by resemblance.
+
+   Strokes use vector-effect:non-scaling-stroke, so optical weight
+   is constant whether the mark renders at 20px or the diagram at
+   900px. No hardcoded colour — everything comes from tokens, so a
+   palette change propagates without touching the markup.
+   ============================================================ */
 .pillars{ margin-block-start:var(--space-4xl); }
-.pillars svg{ display:block; inline-size:100%; max-inline-size:44rem; block-size:auto; margin-inline:auto; overflow:visible; }
+.pillars svg{
+  display:block; inline-size:100%;
+  min-inline-size:280px; max-inline-size:900px;
+  block-size:auto; margin-inline:auto; overflow:visible;
+}
 .pl-ring{ fill:none; stroke:var(--graphic-primary); stroke-width:1.6; }
 .pl-fill{ fill:var(--graphic-primary); opacity:0.10; }
 .pl-core{ fill:var(--graphic-warm); opacity:0.22; }
+
+/* Home page: each circle is a link to the page it stands for. */
+.pl-hit{ fill:transparent; cursor:pointer; }
+.pl-link:focus-visible{ outline:none; }
+.pl-link:focus-visible .pl-hit,
+.pl-link:hover .pl-hit{ fill:var(--graphic-primary); fill-opacity:0.12; }
+.pl-link:focus-visible .pl-ring{ stroke:var(--action); stroke-width:3; }
+
+/* ---------- Single-root marks, derived from the same geometry ---------- */
+.root-mark{
+  display:inline-block; vertical-align:middle;
+  inline-size:var(--mark-size, 1.5rem); block-size:var(--mark-size, 1.5rem);
+  flex:none;
+}
+.rm-dim{
+  fill:none; stroke:var(--graphic-primary); stroke-width:1;
+  vector-effect:non-scaling-stroke; opacity:0.32;
+}
+.rm-on{
+  fill:var(--graphic-primary); fill-opacity:0.16;
+  stroke:var(--graphic-primary); stroke-width:1.75;
+  vector-effect:non-scaling-stroke;
+}
+/* A section heading marked with the root it belongs to. */
+.rooted{ display:flex; align-items:center; gap:var(--space-md); }
+.rooted h2, .rooted h3{ margin-block-end:0; }
 .pl-label{ font-family:var(--font-sans); font-size:15px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
 .pl-sub{ font-family:var(--font-sans); font-size:11.5px; font-weight:500; letter-spacing:0.06em; fill:var(--text-subtle); text-anchor:middle; text-transform:uppercase; }
 .pl-centre{ font-family:var(--font-sans); font-size:13px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
