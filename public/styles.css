@@ -521,6 +521,48 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .doc{ padding-block:var(--space-6xl) var(--space-lg); }
 .doc h1{ max-width:24ch; margin-block-end:var(--space-md); }
 .doc h2{ margin-block-start:var(--space-4xl); }
+
+/* ---------- In-page contents ----------
+   Only on the two legal pages. Eleven sections each, and they are read by
+   someone looking for one clause rather than front to back. */
+.toc{
+  margin-block:var(--space-3xl);
+  padding:var(--space-xl) var(--space-2xl);
+  background:var(--surface-raised);
+  border:var(--border-hairline) solid var(--border-subtle);
+  border-radius:var(--radius-md);
+  max-inline-size:var(--measure-wide);
+}
+.toc-title{
+  font-size:var(--type-label); font-weight:var(--weight-semi);
+  letter-spacing:var(--tracking-label); text-transform:uppercase;
+  color:var(--text-subtle);
+  margin:0 0 var(--space-md);
+}
+.doc .toc-title{ margin-block-start:0; }   /* beats .doc h2 */
+.toc ol{
+  margin:0; padding:0; list-style:none;
+  /* column-width, not column-count: the browser fits one column on a phone
+     and two on a wide screen with no breakpoint of its own. Column flow
+     also keeps the list reading top-to-bottom, as a contents list should. */
+  columns:16rem; column-gap:var(--space-3xl);
+}
+.toc li{ margin:0; break-inside:avoid; max-width:none; }
+.toc a{
+  display:block; padding-block:var(--space-2xs);
+  min-block-size:24px;                     /* SC 2.5.8 */
+  font-family:var(--font-sans); font-size:var(--type-caption);
+  text-decoration-thickness:var(--border-hairline);
+}
+
+/* The heading a jump link lands on should not sit hard against the top of
+   the window, and should say so for a moment when it is the target. */
+.doc h2{ scroll-margin-block-start:var(--space-3xl); }
+.doc h2:target{
+  border-inline-start:var(--border-thick) solid var(--action);
+  padding-inline-start:var(--space-md);
+  margin-inline-start:calc(-1 * (var(--space-md) + var(--border-thick)));
+}
 .doc p{ max-width:var(--measure-prose); }
 .doc li{ max-width:var(--measure-wide); }
 .doc ul{ padding-inline-start:var(--space-xl); }
@@ -670,7 +712,7 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 
   /* Interface chrome that cannot be used on paper. */
   .skip, .nav, .sticky-cta, .btn, .crumbs, .foot-nav, .card-go,
-  .qa summary::after{ display:none; }
+  .toc, .qa summary::after{ display:none; }
 
   /* Screen decoration that only costs toner. */
   .band, .band-fill, .card, .urgent{

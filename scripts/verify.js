@@ -123,7 +123,13 @@ const PROBE = () => {
       const href = m[1];
       if (/^(https?:|mailto:|tel:)/.test(href)) continue;
       const [p, frag] = href.split('#');
-      const target = (p === '/' || p === '') ? 'index.html' : p.replace(/^\//, '');
+      // An empty path means "this page", not the home page. Resolving it to
+      // index.html made every same-page fragment get checked against the
+      // wrong file. It went unnoticed while the only such link was the skip
+      // link, because #main happens to exist on index.html as well.
+      const target = p === '/' ? 'index.html'
+        : p === '' ? (f)
+        : p.replace(/^\//, '');
       if (p && !fs.existsSync(path.join(PUBLIC, target))) bad.push(`missing file ${href}`);
       else if (frag && ids[target] && !ids[target].has(frag)) bad.push(`missing anchor ${href}`);
     }
