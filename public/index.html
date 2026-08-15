@@ -8,7 +8,8 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://simplerootstherapy.com.au/">
 <link rel="stylesheet" href="/styles.css">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#F7F5F0">
@@ -154,7 +155,15 @@
 <header class="masthead">
   <div class="wrap">
     <div class="brand">
-      <a class="wordmark" href="/">Simple Roots Therapy</a>
+      <a class="wordmark" href="/">
+        <svg class="logo" viewBox="0 0 520 295" aria-hidden="true" focusable="false">
+          <mask id="logoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="520" height="295">
+            <image href="/images/logo-wide.png" x="0" y="0" width="520" height="295"></image>
+          </mask>
+          <rect x="0" y="0" width="520" height="295" mask="url(#logoMask)"></rect>
+        </svg>
+        <span class="vh">Simple Roots Therapy</span>
+      </a>
       <span class="role">Occupational Therapy &amp; Coaching &middot; Sydney</span>
     </div>
     <nav class="nav" aria-label="Primary">
@@ -195,30 +204,84 @@
     <div class="wrap">
       <p class="section-lead">The three simple roots</p>
       <div class="pillars">
-        <svg viewBox="0 0 560 420" role="img" aria-labelledby="plTitle plDesc">
+        <!-- The emblems are drawn as masks rather than as <img> or a plain
+             SVG <image>: the mark supplies the shape, the fill supplies the
+             colour from styles.css. That keeps the palette in one place,
+             lets forced-colours mode substitute its own ink, and costs about
+             a third of what the equivalent colour images would.
+             Geometry is checked by scripts/prepare-images.py's companion
+             layout notes in docs/IMAGES.md — every emblem sits wholly inside
+             its own circle and wholly outside the other two. -->
+        <svg viewBox="0 0 660 570" role="img" aria-labelledby="plTitle plDesc">
           <title id="plTitle">The three simple roots</title>
-          <desc id="plDesc">Three overlapping circles — Self, meaning mind and body; Environment, meaning space and routine; and Others, meaning relationships — meeting at a shared centre.</desc>
+          <desc id="plDesc">Three overlapping circles meeting at a shared centre. Self, meaning mind and body, holds a seated figure drawn from a fingerprint. Environment, meaning space and routine, holds a rooted tree and a sapling. Others, meaning relationships, holds a group of figures with joined and outstretched hands.</desc>
 
-          <circle class="pl-fill p1" cx="280" cy="150" r="110"></circle>
-          <circle class="pl-fill p2" cx="200" cy="285" r="110"></circle>
-          <circle class="pl-fill p3" cx="360" cy="285" r="110"></circle>
+          <defs>
+            <mask id="mSelfFigure" maskUnits="userSpaceOnUse" x="277.8" y="118" width="104.4" height="118">
+              <image href="/images/self-figure.png" x="277.8" y="118" width="104.4" height="118"></image>
+            </mask>
+            <mask id="mSelfSeated" maskUnits="userSpaceOnUse" x="218.4" y="143" width="39.2" height="44">
+              <image href="/images/self-seated.png" x="218.4" y="143" width="39.2" height="44"></image>
+            </mask>
+            <mask id="mEnvTree" maskUnits="userSpaceOnUse" x="126.5" y="325" width="87.1" height="110">
+              <image href="/images/env-tree.png" x="126.5" y="325" width="87.1" height="110"></image>
+            </mask>
+            <mask id="mEnvSapling" maskUnits="userSpaceOnUse" x="225.4" y="384" width="49.2" height="56">
+              <image href="/images/env-sapling.png" x="225.4" y="384" width="49.2" height="56"></image>
+            </mask>
+            <mask id="mOthersReaching" maskUnits="userSpaceOnUse" x="504" y="272" width="37.9" height="56">
+              <image href="/images/others-reaching.png" x="504" y="272" width="37.9" height="56"></image>
+            </mask>
+            <mask id="mOthersFamily" maskUnits="userSpaceOnUse" x="441.8" y="312" width="56.4" height="60">
+              <image href="/images/others-family.png" x="441.8" y="312" width="56.4" height="60"></image>
+            </mask>
+            <mask id="mOthersCircle" maskUnits="userSpaceOnUse" x="517.1" y="328" width="51.8" height="54">
+              <image href="/images/others-circle.png" x="517.1" y="328" width="51.8" height="54"></image>
+            </mask>
+            <mask id="mOthersHands" maskUnits="userSpaceOnUse" x="390.3" y="374" width="43.5" height="52">
+              <image href="/images/others-hands.png" x="390.3" y="374" width="43.5" height="52"></image>
+            </mask>
+            <mask id="mOthersHolding" maskUnits="userSpaceOnUse" x="457.2" y="384" width="55.5" height="56">
+              <image href="/images/others-holding.png" x="457.2" y="384" width="55.5" height="56"></image>
+            </mask>
+            <mask id="mOthersPair" maskUnits="userSpaceOnUse" x="524.6" y="396" width="40.9" height="48">
+              <image href="/images/others-pair.png" x="524.6" y="396" width="40.9" height="48"></image>
+            </mask>
+          </defs>
 
-          <circle class="pl-ring p1" cx="280" cy="150" r="110"></circle>
-          <circle class="pl-ring p2" cx="200" cy="285" r="110"></circle>
-          <circle class="pl-ring p3" cx="360" cy="285" r="110"></circle>
+          <circle class="pl-fill p1" cx="330" cy="190" r="150"></circle>
+          <circle class="pl-fill p2" cx="221" cy="376" r="150"></circle>
+          <circle class="pl-fill p3" cx="439" cy="376" r="150"></circle>
 
-          <circle class="pl-core" cx="280" cy="240" r="46"></circle>
+          <circle class="pl-core" cx="330" cy="314" r="54"></circle>
 
-          <text class="pl-label p1" x="280" y="115">Self</text>
-          <text class="pl-sub p1"   x="280" y="136">Mind and body</text>
+          <circle class="pl-ring p1" cx="330" cy="190" r="150"></circle>
+          <circle class="pl-ring p2" cx="221" cy="376" r="150"></circle>
+          <circle class="pl-ring p3" cx="439" cy="376" r="150"></circle>
 
-          <text class="pl-label p2" x="176" y="330">Environment</text>
-          <text class="pl-sub p2"   x="176" y="351">Space and routine</text>
+          <rect class="pl-motif p1" x="277.8" y="118" width="104.4" height="118" mask="url(#mSelfFigure)"></rect>
+          <rect class="pl-motif p1" x="218.4" y="143" width="39.2" height="44" mask="url(#mSelfSeated)"></rect>
 
-          <text class="pl-label p3" x="386" y="330">Others</text>
-          <text class="pl-sub p3"   x="386" y="351">Relationships</text>
+          <rect class="pl-motif p2" x="126.5" y="325" width="87.1" height="110" mask="url(#mEnvTree)"></rect>
+          <rect class="pl-motif p2" x="225.4" y="384" width="49.2" height="56" mask="url(#mEnvSapling)"></rect>
 
-          <text class="pl-centre" x="280" y="246">simple roots</text>
+          <rect class="pl-motif p3" x="504" y="272" width="37.9" height="56" mask="url(#mOthersReaching)"></rect>
+          <rect class="pl-motif p3" x="441.8" y="312" width="56.4" height="60" mask="url(#mOthersFamily)"></rect>
+          <rect class="pl-motif p3" x="517.1" y="328" width="51.8" height="54" mask="url(#mOthersCircle)"></rect>
+          <rect class="pl-motif p3" x="390.3" y="374" width="43.5" height="52" mask="url(#mOthersHands)"></rect>
+          <rect class="pl-motif p3" x="457.2" y="384" width="55.5" height="56" mask="url(#mOthersHolding)"></rect>
+          <rect class="pl-motif p3" x="524.6" y="396" width="40.9" height="48" mask="url(#mOthersPair)"></rect>
+
+          <text class="pl-label p1" x="330" y="84">Self</text>
+          <text class="pl-sub p1"   x="330" y="104">Mind and body</text>
+
+          <text class="pl-label p2" x="190" y="468">Environment</text>
+          <text class="pl-sub p2"   x="190" y="490">Space and routine</text>
+
+          <text class="pl-label p3" x="470" y="468">Others</text>
+          <text class="pl-sub p3"   x="470" y="490">Relationships</text>
+
+          <text class="pl-centre" x="330" y="320">simple roots</text>
         </svg>
 
         <div class="pillar-notes">

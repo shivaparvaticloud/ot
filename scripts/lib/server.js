@@ -20,28 +20,52 @@ const MIME = {
   '.json': 'application/json',
 };
 
+/**
+ * Read _headers into [pattern, headers] pairs, keeping each block with the
+ * path it belongs to. Cloudflare applies every matching block in order, so
+ * `/*` supplies the baseline and a narrower block layers on top.
+ *
+ * Grouping matters as soon as a block carries something that must not leak:
+ * /images/* sets X-Robots-Tag: noindex, and flattening the file would stamp
+ * that on every page of the local site.
+ */
 function parseHeaders() {
   const file = path.join(PUBLIC, '_headers');
-  if (!fs.existsSync(file)) return {};
-  const out = {};
+  if (!fs.existsSync(file)) return [];
+  const blocks = [];
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
-    if (/^\s+\S/.test(line) && line.includes(':')) {
+    if (/^\s*#/.test(line) || !line.trim()) continue;
+    if (/^\S/.test(line)) {
+      blocks.push([line.trim(), {}]);
+    } else if (blocks.length && line.includes(':')) {
       const i = line.indexOf(':');
-      out[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+      blocks[blocks.length - 1][1][line.slice(0, i).trim()] = line.slice(i + 1).trim();
     }
+  }
+  return blocks;
+}
+
+/** Cloudflare's matcher: a literal path, optionally ending in a `*` wildcard. */
+function headersFor(blocks, urlPath) {
+  const out = {};
+  for (const [pattern, headers] of blocks) {
+    const hit = pattern.endsWith('*')
+      ? urlPath.startsWith(pattern.slice(0, -1))
+      : urlPath === pattern;
+    if (hit) Object.assign(out, headers);
   }
   return out;
 }
 
 function start(port) {
-  const headers = parseHeaders();
+  const blocks = parseHeaders();
   return new Promise(resolve => {
     const server = http.createServer((req, res) => {
       let p = decodeURIComponent(req.url.split('?')[0]);
       if (p.endsWith('/')) p += 'index.html';
       const file = path.join(PUBLIC, p);
       const send = (code, body, type) => {
-        for (const [k, v] of Object.entries(headers)) res.setHeader(k, v);
+        for (const [k, v] of Object.entries(headersFor(blocks, p))) res.setHeader(k, v);
         res.writeHead(code, { 'Content-Type': type });
         res.end(body);
       };
@@ -71,4 +95,4 @@ const PAGES = ['/', '/about.html', '/services.html', '/sessions-and-fees.html',
 
 const nameFor = p => (p === '/' ? 'index' : p.replace(/^\//, '').replace(/\.html$/, ''));
 
-module.exports = { start, loadChromium, parseHeaders, PAGES, ROOT, PUBLIC, nameFor };
+module.exports = { start, loadChromium, parseHeaders, headersFor, PAGES, ROOT, PUBLIC, nameFor };

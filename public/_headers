@@ -25,5 +25,19 @@
 /share.png
   Cache-Control: public, max-age=86400
 
-/favicon.svg
+/favicon-32.png
   Cache-Control: public, max-age=86400
+
+# The diagram artwork. These are masks, not pictures: on their own they are
+# white-on-black shapes with no context, and they are meant to be seen inside
+# the three-circles diagram rather than as separate files. noimageindex keeps
+# them out of image search, which is the one route by which someone would
+# arrive at one on its own.
+#
+# Worth being straight about the limit here: this stops the images being
+# surfaced and indexed, and the site never links to them or opens them in a
+# tab. It cannot stop someone who requests the URL directly — a browser has to
+# be able to download an image in order to draw it. See docs/IMAGES.md.
+/images/*
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex

@@ -45,11 +45,21 @@ without a home of their own).
 | `public/404.html` | Not-found page |
 
 Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
-`llms.txt`, `favicon.svg`, `share.png`, `apple-touch-icon.png`, `icon-192.png`,
-`icon-512.png`, `site.webmanifest`, `.well-known/security.txt`.
+`llms.txt`, `share.png`, `favicon-32.png`, `apple-touch-icon.png`,
+`icon-192.png`, `icon-512.png`, `site.webmanifest`,
+`.well-known/security.txt`, and `images/` — thirteen marks cut from the
+supplied artwork.
 
-Total 280 KB across 21 files, and a page costs two requests: the HTML and one
-stylesheet. Nothing is loaded from another server.
+Nothing is loaded from another server. A text page costs three requests: the
+HTML, the stylesheet and the masthead logo. The home page costs thirteen, the
+extra ten being the emblems inside the three-circles diagram.
+
+Page weight, measured with everything the page fetches: **70–79 KB** on the
+text pages against a 100 KB budget, **163 KB** on the home page against a
+180 KB one. The home page's allowance is a deliberate, documented exception
+in `scripts/verify.js` — the emblems are one-channel masks emitted at 2x
+their largest rendered size, which holds all ten to about 90 KB together.
+See `docs/IMAGES.md`.
 
 ## Light only — how it is actually enforced
 
@@ -112,9 +122,28 @@ Body copy steps down in three levels — `#4A5568`, `#55636F`, `#5F6E79` — all
 above 4.5:1 on both linen and white. Every pair in the palette now passes;
 tightest is the accent on linen at 4.53:1.
 
-`share.png` and `favicon.svg` use the same palette. The favicon has a single
-version rather than a light/dark pair, because it sits on the browser's chrome
-rather than the site's background, and sage reads against both.
+`share.png` uses the same palette.
+
+**The favicon and app icons are the supplied vertical logo**, cropped to the
+tree-and-fingerprint mark — the wordmark under it is illegible at 32 px and
+only muddies the shape. They are inked on an opaque linen square rather than
+left transparent: maroon on a dark browser tab strip measures about 2:1,
+whereas on its own linen ground it is 7.4:1 wherever the icon lands. There is
+one version rather than a light/dark pair, for the same reason.
+
+The earlier hand-drawn `favicon.svg` has been removed. Leaving it in place
+would have kept overriding the logo, since browsers prefer an SVG icon to a
+PNG one.
+
+**The logo is maroon, and the brand kit is not.** `#7A3B43` was sampled from
+the supplied artwork rather than chosen, and it sits outside the four-colour
+sage / slate / linen / ochre palette the rest of the site is built from. It is
+held in one token, `--brand-maroon`, exposed as `--logo-ink`, and used by the
+masthead and the icons and nowhere else, so the two systems do not bleed into
+each other. It reads correctly on linen at 7.44:1. **Worth a decision before
+launch:** either the kit gains maroon as a formal brand colour, or the logo is
+redrawn in the kit's palette. Right now the site is honouring both, which
+works visually but is not something anyone chose.
 
 **Typography.** Sans title / serif story, as specified:
 
@@ -152,6 +181,14 @@ the practice.
   that are not offered.
 - **Group programs** were named without copy. A short section is on the
   services page.
+- **Several supplied images have no clear licence.** One is another
+  business's logo, one carries a studio watermark, one is a captioned poster
+  print. They are in use on the home page now. See "Before launch: clear the
+  artwork" in `docs/IMAGES.md` — this needs resolving before the site goes
+  live, not after.
+- **`image-10`, a tick in a circle, is prepared but placed nowhere.** No
+  reading of the three roots is illustrated by a checkmark. Either use it on
+  one of the tick lists or delete it.
 - **The Web Map asks for a contact form** ("or complete the form below"). There
   is no form: this site has no JavaScript and no backend, and the CSP sets
   `form-action 'none'`. Email is the contact route for now. A working form
@@ -248,7 +285,9 @@ makes the practice eligible for Maps results.
 ## Editing the shared header and footer
 
 There is no build step and no templating, so the masthead, nav and footer are
-duplicated across all nine pages. **A nav change means editing nine files.**
+duplicated across all nine pages. **A nav change means editing nine files** —
+as does a logo change, since the masthead carries the wide logo as an inline
+SVG mask on every page.
 That is the trade-off for a site with no build tooling; a find and replace
 across `public/*.html` handles it.
 
@@ -309,6 +348,25 @@ the site does not use.
 commitment once you submit at hstspreload.org, but it is a real one — every
 subdomain becomes HTTPS-only in shipped browsers, and removal takes months.
 
+## Images
+
+The masthead logo, the browser icons and the ten emblems inside the
+three-circles diagram are all cut from the supplied artwork by
+`scripts/prepare-images.py`. That script is a one-off asset tool — **the
+deploy path is still build-free**, `public/` is uploaded as it sits.
+
+Two things about it are load-bearing and easy to undo by accident:
+
+1. **The marks are masks, not pictures.** They carry no colour of their own;
+   `--graphic-motif` and `--logo-ink` supply it. That is what lets Windows
+   High Contrast mode substitute its own ink, and what keeps them small.
+2. **There is no `<img>` element anywhere on the site.** Every mark is an SVG
+   `<mask>` on a `<rect>`, so no emblem can be saved, copied or opened in a
+   tab from the context menu, and none is selectable or draggable.
+
+**Read `docs/IMAGES.md` before touching any of it** — particularly the section
+on clearing the artwork, which is unfinished business rather than background.
+
 ## Design decisions
 
 **No JavaScript.** The content security policy sets `script-src 'none'`, so
@@ -352,7 +410,9 @@ with its real `_headers` CSP, not asserted. Re-run these after any change.
 | Print stylesheet | nav and sticky bar hidden, content intact |
 | HTML tag balance | 9/9 clean |
 | JSON-LD | valid on all pages, no `Review`/`AggregateRating` |
-| Requests per page | 2 (HTML + CSS), zero external, zero CSP violations |
+| Requests per page | 3 (HTML + CSS + logo), 13 on the home page, zero external, zero CSP violations |
+| Page weight | 70–79 KB on text pages, 163 KB on the home page, both inside budget |
+| Context menu on any mark | resolves to a `<rect>` — no save, copy or open-in-tab |
 
 Two notes on the tap-target check. It found 151 failures on the first pass —
 navigation, breadcrumb, footer and list links were all around 21px tall — now

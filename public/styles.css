@@ -28,6 +28,11 @@
   --brand-sage-deeper: #496167;  /* 6.04:1 linen                */
   --brand-ochre-deep:  #8A6A4B;  /* 4.54:1 linen — text-safe    */
 
+  /* The logo's own colour, sampled from the supplied artwork rather than
+     chosen. It sits outside the four-colour kit, which is worth knowing:
+     see "The logo is maroon" in the README. 7.44:1 on linen. */
+  --brand-maroon: #7A3B43;
+
   color-scheme: light;
 
   /* ---- 2. ROLE TOKENS ----------------------------------- */
@@ -56,6 +61,13 @@
   --graphic-warm:      var(--brand-ochre);
   --graphic-line:      var(--brand-slate);
   --graphic-band:      #E4EAEA;
+  /* Diagram emblems: the ring colour two steps darker, so fine line work —
+     the fingerprint ridges, the tree's leaf stipple — still reads at the
+     size the circles allow. 6.04:1 on linen. */
+  --graphic-motif:     var(--brand-sage-deeper);
+
+  /* brand marks */
+  --logo-ink:          var(--brand-maroon);
 
   /* ---- 3a. SPACING SCALE -------------------------------- */
   --space-3xs: 0.125rem;  --space-2xs: 0.25rem;  --space-xs:  0.375rem;
@@ -221,12 +233,24 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   border-block-end:var(--border-hairline) solid var(--border-strong);
   padding-block:var(--space-xl); background:var(--surface-page);
 }
-.masthead .wrap{ display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-lg); }
-.brand{ display:flex; flex-direction:column; gap:var(--space-3xs); }
-.wordmark{
-  font-family:var(--font-sans); font-weight:var(--weight-semi);
-  font-size:var(--type-h3); letter-spacing:-0.01em;
-  color:var(--text-strong); text-decoration:none;
+.masthead .wrap{ display:flex; justify-content:space-between; align-items:center; gap:var(--space-lg); }
+.brand{ display:flex; flex-direction:column; gap:var(--space-xs); }
+.wordmark{ display:block; text-decoration:none; color:var(--text-strong); }
+
+/* The logo is a mask, not an <img>: the artwork supplies the shape and
+   --logo-ink supplies the colour, so the mark follows the palette and
+   forced-colours mode can substitute its own. The wordmark text stays in
+   the link for search engines and screen readers — the logo already says
+   it, so showing both would be a stutter. aspect-ratio holds the box open
+   before the mask loads, which is what keeps CLS at zero. */
+.wordmark .logo{
+  display:block; inline-size:min(13rem, 44vw); block-size:auto;
+  aspect-ratio:520 / 295; fill:var(--logo-ink);
+}
+.vh{
+  position:absolute; inline-size:1px; block-size:1px;
+  margin:-1px; padding:0; border:0; overflow:hidden;
+  clip-path:inset(50%); white-space:nowrap;
 }
 .masthead .role{
   font-family:var(--font-sans); font-size:var(--type-eyebrow);
@@ -252,12 +276,17 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 /* ---------- Three roots diagram ---------- */
 .pillars{ margin-block-start:var(--space-4xl); }
 .pillars svg{ display:block; inline-size:100%; max-inline-size:44rem; block-size:auto; margin-inline:auto; overflow:visible; }
-.pl-ring{ fill:none; stroke:var(--graphic-primary); stroke-width:1.6; }
+.pl-ring{ fill:none; stroke:var(--graphic-primary); stroke-width:1.9; }
 .pl-fill{ fill:var(--graphic-primary); opacity:0.10; }
 .pl-core{ fill:var(--graphic-warm); opacity:0.22; }
-.pl-label{ font-family:var(--font-sans); font-size:15px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
-.pl-sub{ font-family:var(--font-sans); font-size:11.5px; font-weight:500; letter-spacing:0.06em; fill:var(--text-subtle); text-anchor:middle; text-transform:uppercase; }
-.pl-centre{ font-family:var(--font-sans); font-size:13px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
+/* The emblems. Each one is a plain rectangle wearing an artwork mask, so
+   the colour is set here rather than baked into the file. Nothing inside
+   the diagram is selectable or draggable — see docs/IMAGES.md. */
+.pl-motif{ fill:var(--graphic-motif); }
+.pillars svg{ -webkit-user-select:none; user-select:none; -webkit-user-drag:none; }
+.pl-label{ font-family:var(--font-sans); font-size:17.5px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
+.pl-sub{ font-family:var(--font-sans); font-size:13.5px; font-weight:500; letter-spacing:0.06em; fill:var(--text-subtle); text-anchor:middle; text-transform:uppercase; }
+.pl-centre{ font-family:var(--font-sans); font-size:15px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
 
 .pillar-notes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:var(--space-2xl); margin-block-start:var(--space-3xl); }
 .pillar-notes h3{ font-size:var(--type-label); font-weight:var(--weight-bold); letter-spacing:var(--tracking-label); text-transform:uppercase; margin-block-end:var(--space-xs); }
@@ -468,7 +497,7 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .n3{ animation-delay:1340ms; } .n4{ animation-delay:1500ms; }
   .n5{ animation-delay:1660ms; }
 
-  .pl-ring,.pl-fill,.pl-core,.pl-label,.pl-sub,.pl-centre{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-ring,.pl-fill,.pl-core,.pl-motif,.pl-label,.pl-sub,.pl-centre{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
   .pl-core{ animation-delay:120ms; }
   .p1{ animation-delay:320ms; } .p2{ animation-delay:520ms; } .p3{ animation-delay:720ms; }
 
@@ -488,7 +517,7 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   *,*::before,*::after{ animation:none !important; transition:none !important; }
   .demand-line{ stroke-dasharray:none; stroke-dashoffset:0; }
   .cap-band,.cap-edge,.cap-tag,.stem,.node{ opacity:1; }
-  .pl-ring,.pl-label,.pl-sub,.pl-centre{ opacity:1; }
+  .pl-ring,.pl-motif,.pl-label,.pl-sub,.pl-centre{ opacity:1; }
   .pl-fill{ opacity:0.10; } .pl-core{ opacity:0.22; }
 }
 
@@ -529,6 +558,11 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .btn-solid{ background:ButtonFace; color:ButtonText; }
   .pl-ring{ stroke:CanvasText; }
   .pl-fill, .pl-core{ fill:transparent; }
+  /* The emblems are masked shapes, so the OS palette reaches them the
+     same way it reaches any other fill — name it explicitly rather than
+     relying on the forced-colours default. */
+  .pl-motif{ fill:CanvasText; }
+  .wordmark .logo{ fill:CanvasText; }
   .pl-label, .pl-sub, .pl-centre, .cap-tag{ fill:CanvasText; }
   .demand-line{ stroke:CanvasText; }
   .cap-band{ fill:transparent; stroke:CanvasText; stroke-width:1; }
