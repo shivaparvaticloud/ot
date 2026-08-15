@@ -29,8 +29,10 @@
   --brand-ochre-deep:  #8A6A4B;  /* 4.54:1 linen — text-safe    */
 
   /* The logo's own colour, sampled from the supplied artwork rather than
-     chosen. It sits outside the four-colour kit, which is worth knowing:
-     see "The logo is maroon" in the README. 7.44:1 on linen. */
+     chosen. It sits outside the sage/slate/linen/ochre kit deliberately —
+     the logo keeps its colour and is not redrawn in the palette. 7.44:1 on
+     linen. Reaches the masthead logo and the browser icons through
+     --logo-ink and must not be used for anything else; see the README. */
   --brand-maroon: #7A3B43;
 
   color-scheme: light;

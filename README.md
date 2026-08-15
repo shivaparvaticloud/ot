@@ -88,15 +88,17 @@ Verified by loading every page with the browser's system preference forced to
 gets the light site. `color-scheme: light` is declared so scrollbars and any
 native controls match.
 
-**Colour** uses the supplied sage / slate / linen / ochre palette:
+**Colour** uses the supplied sage / slate / linen / ochre palette, plus the
+logo's own maroon:
 
 | Supplied | Value | Where |
 |---|---|---|
 | Soothing Warm Neutral | `#F7F5F0` | Page background |
 | Card background | `#FFFFFF` | Raised bands and cards |
-| Clinical Trust Slate | `#2B3A4A` | Headings, wordmark, the demand line |
+| Clinical Trust Slate | `#2B3A4A` | Headings, the demand line |
 | Calming Eucalyptus Green | `#6A8D95` | Diagram strokes, rules, icons |
 | Gentle Warmth Accent | `#D4A373` | Decorative fills only |
+| Logo maroon | `#7A3B43` | The masthead logo and the browser icons, nothing else |
 
 **Three colours were adjusted for contrast, on the same hues.** Measured, not
 assumed:
@@ -135,15 +137,24 @@ The earlier hand-drawn `favicon.svg` has been removed. Leaving it in place
 would have kept overriding the logo, since browsers prefer an SVG icon to a
 PNG one.
 
-**The logo is maroon, and the brand kit is not.** `#7A3B43` was sampled from
-the supplied artwork rather than chosen, and it sits outside the four-colour
-sage / slate / linen / ochre palette the rest of the site is built from. It is
-held in one token, `--brand-maroon`, exposed as `--logo-ink`, and used by the
-masthead and the icons and nowhere else, so the two systems do not bleed into
-each other. It reads correctly on linen at 7.44:1. **Worth a decision before
-launch:** either the kit gains maroon as a formal brand colour, or the logo is
-redrawn in the kit's palette. Right now the site is honouring both, which
-works visually but is not something anyone chose.
+**The logo keeps its own maroon — decided, not defaulted.** `#7A3B43` was
+sampled from the supplied artwork rather than chosen, and it sits outside the
+sage / slate / linen / ochre palette the rest of the site is built from. The
+alternative was redrawing the logo in the kit's colours; the instruction was
+to leave it as it is, so the kit has five colours rather than four and the
+logo is never recoloured.
+
+What keeps that from turning into drift: maroon lives in one token,
+`--brand-maroon`, exposed as `--logo-ink`, and is used by the masthead logo
+and the browser icons and **nowhere else**. It is not a text colour, not a
+link colour, and not a diagram colour — the emblems inside the three circles
+are sage, like the rings around them. If maroon starts appearing anywhere a
+reader could mistake it for an accent, the two systems have begun to bleed
+and something has gone wrong.
+
+It reads correctly on linen at 7.44:1, well clear of the 3:1 graphics floor —
+which is the whole reason it can stay as it is without costing anything in
+accessibility.
 
 **Typography.** Sans title / serif story, as specified:
 
