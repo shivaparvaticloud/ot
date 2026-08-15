@@ -521,6 +521,13 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .stem{ opacity:0; animation:fadeIn var(--dur-base) var(--ease-entrance) forwards; }
   .node{ opacity:0; transform-box:fill-box; transform-origin:center; animation:pop 480ms var(--ease-entrance) forwards; }
 
+  /* Each stem draws 20ms before the node it carries pops. These live here
+     rather than as inline style attributes so that style-src in _headers
+     does not have to allow 'unsafe-inline'. */
+  .s1{ animation-delay:1000ms; } .s2{ animation-delay:1160ms; }
+  .s3{ animation-delay:1320ms; } .s4{ animation-delay:1480ms; }
+  .s5{ animation-delay:1640ms; }
+
   .n1{ animation-delay:1020ms; } .n2{ animation-delay:1180ms; }
   .n3{ animation-delay:1340ms; } .n4{ animation-delay:1500ms; }
   .n5{ animation-delay:1660ms; }

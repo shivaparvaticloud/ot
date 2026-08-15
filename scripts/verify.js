@@ -225,8 +225,13 @@ const PROBE = () => {
     record('200% zoom reflow', p, z.d <= z.w + 1, z.d > z.w + 1 ? `${z.d} > ${z.w}` : '');
     await zctx.close();
 
-    // WCAG 1.4.12 text spacing
-    const tctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    // WCAG 1.4.12 text spacing.
+    // bypassCSP is required because style-src is 'self' with no 'unsafe-inline',
+    // which blocks addStyleTag. That is faithful rather than a workaround: a real
+    // visitor applies text spacing through a browser setting, an extension or a
+    // user stylesheet, all of which are user-origin and exempt from page CSP.
+    // The CSP-violation check runs in its own context and is not bypassed.
+    const tctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, bypassCSP: true });
     const tp = await tctx.newPage();
     await tp.goto(BASE + p, { waitUntil: 'domcontentloaded' });
     await tp.addStyleTag({ content: `*{line-height:1.5!important;letter-spacing:0.12em!important;word-spacing:0.16em!important}p{margin-bottom:2em!important}` });
