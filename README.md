@@ -6,6 +6,19 @@ requests, no cookies, no contact form.
 Built from two source documents: **Web Map.docx** (structure and copy) and
 **Brand Kit.docx** (voice, colour, typography).
 
+## Documentation
+
+| Doc | What it covers |
+|---|---|
+| [`docs/INFRASTRUCTURE.md`](docs/INFRASTRUCTURE.md) | Hosting, config, deploy and rollback, custom domain, and the checks that can only run against the live origin |
+| [`docs/SECURITY.md`](docs/SECURITY.md) | Threat model, every response header and why its value, two open decisions |
+| [`docs/EMAIL-DELIVERABILITY.md`](docs/EMAIL-DELIVERABILITY.md) | SPF, DKIM and DMARC for Microsoft 365 — the site's only contact route |
+| [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md) | Measured page weights and paint timings, and what is deliberately not optimised |
+| [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Load-bearing versus decorative features, and how each fails |
+| [`docs/VERIFY.md`](docs/VERIFY.md) | The pre-deploy gate, check by check |
+| [`docs/VISUAL-REGRESSION.md`](docs/VISUAL-REGRESSION.md) | Pixel baseline, tolerance, and how to update it honestly |
+| [`docs/EDGE-CASES.md`](docs/EDGE-CASES.md) | Narrow viewports, raised font sizes, missing CSS — and the four bugs they caught |
+
 ## Deploy to Cloudflare
 
 Deployed as a **Worker with static assets**. The site is `public/`; everything
@@ -45,11 +58,14 @@ without a home of their own).
 | `public/404.html` | Not-found page |
 
 Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
-`llms.txt`, `favicon.svg`, `share.png`, `apple-touch-icon.png`, `icon-192.png`,
-`icon-512.png`, `site.webmanifest`, `.well-known/security.txt`.
+`llms.txt`, `share.png`, `favicon-32.png`, `apple-touch-icon.png`,
+`icon-192.png`, `icon-512.png`, `logo-wide-{240,360,480}.{png,webp}`,
+`site.webmanifest`, `.well-known/security.txt`.
 
-Total 280 KB across 21 files, and a page costs two requests: the HTML and one
-stylesheet. Nothing is loaded from another server.
+Total 728 KB across 27 files, most of it icons and logo derivatives that are
+not on the load path. A page costs **two requests** — the HTML and one
+stylesheet — and the home page a third for the logo. Nothing is loaded from
+another server. Measured page weights are in `docs/PERFORMANCE.md`.
 
 ## Light only — how it is actually enforced
 
@@ -112,9 +128,10 @@ Body copy steps down in three levels — `#4A5568`, `#55636F`, `#5F6E79` — all
 above 4.5:1 on both linen and white. Every pair in the palette now passes;
 tightest is the accent on linen at 4.53:1.
 
-`share.png` and `favicon.svg` use the same palette. The favicon has a single
-version rather than a light/dark pair, because it sits on the browser's chrome
-rather than the site's background, and sage reads against both.
+`share.png` uses the same palette. The browser icons are raster derivatives of
+the supplied vertical logo rather than palette artwork — there is one version
+rather than a light/dark pair, because the icon sits on the browser's chrome
+rather than the site's background.
 
 **Typography.** Sans title / serif story, as specified:
 
@@ -332,6 +349,17 @@ have has its own URL, which is better for search, for sharing a specific
 answer, and for anyone who finds a long page hard to navigate.
 
 ## Verification
+
+Three scripts, all runnable locally, all against the site served with its
+real `_headers`:
+
+```
+node scripts/verify.js        # 21 checks, 186 assertions
+node scripts/visual-diff.js   # 81 captures, 9 pages x 3 widths x 3 modes
+node scripts/edge-cases.js    # narrow viewports, raised font size, no CSS
+```
+
+See `docs/VERIFY.md`, `docs/VISUAL-REGRESSION.md` and `docs/EDGE-CASES.md`.
 
 Everything below was measured in a headless browser against the site served
 with its real `_headers` CSP, not asserted. Re-run these after any change.

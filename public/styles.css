@@ -152,6 +152,13 @@ body{
 }
 .wrap{ width:min(100% - var(--container-gutter), var(--container)); margin-inline:auto; }
 
+/* A long unbreakable token — an email address, a URL — must wrap rather than
+   push the whole page sideways. 'anywhere' rather than 'break-word' on the
+   links: only 'anywhere' reduces min-content width, which is the figure a
+   grid or flex track actually measures when deciding how wide to be. */
+body{ overflow-wrap:break-word; }
+a[href^="mailto:"], a[href^="http"]{ overflow-wrap:anywhere; }
+
 .skip{
   position:absolute; inset-inline-start:-9999px; inset-block-start:0;
   z-index:var(--layer-skip);
@@ -249,17 +256,82 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .hero{ padding-block:var(--space-7xl) var(--space-5xl); }
 .hero .lede{ margin-block-end:var(--space-2xl); }
 
-/* ---------- Three roots diagram ---------- */
+/* Brand lockup: the wide logo sits beside the headline. width/height are
+   on the <img> so the box is reserved before the image arrives and CLS
+   stays at zero. */
+.hero-lockup{ display:flex; align-items:center; gap:var(--space-4xl); flex-wrap:wrap; }
+.hero-logo{ flex:none; display:block; }
+.hero-logo img{ display:block; inline-size:240px; block-size:auto; }
+.hero-text{ flex:1 1 22rem; min-inline-size:0; }
+
+/* ============================================================
+   THREE ROOTS — the practice's conceptual model, as a component.
+
+   One geometry, used at every size. The full diagram and the three
+   single-root marks share the identical circle coordinates
+   (280,150 / 200,285 / 360,285, r=110); the marks are simply a
+   cropped viewBox over the same drawing, so they are the same
+   family by construction rather than by resemblance.
+
+   Strokes use vector-effect:non-scaling-stroke, so optical weight
+   is constant whether the mark renders at 20px or the diagram at
+   900px. No hardcoded colour — everything comes from tokens, so a
+   palette change propagates without touching the markup.
+   ============================================================ */
 .pillars{ margin-block-start:var(--space-4xl); }
-.pillars svg{ display:block; inline-size:100%; max-inline-size:44rem; block-size:auto; margin-inline:auto; overflow:visible; }
+.pillars svg{
+  display:block; inline-size:100%;
+  /* min(280px, 100%) so the floor never exceeds the space available. A bare
+     280px floor overflowed a 320px phone whose owner had raised the default
+     font size, because the gutter scales with the root font and the column
+     drops below 280px. An illegibly small diagram is a much smaller problem
+     than a page that scrolls sideways. */
+  min-inline-size:min(280px,100%); max-inline-size:900px;
+  block-size:auto; margin-inline:auto; overflow:visible;
+}
+/* These two rest translucent so the circles read as overlapping sets rather
+   than one solid shape. The value lives in a token because it is needed in
+   three places — here, the entrance keyframes, and the reduced-motion
+   fallback — and a shared fadeIn to opacity:1 silently flattened the
+   diagram once already. */
+.pillars{ --pl-fill-rest:0.10; --pl-core-rest:0.22; }
 .pl-ring{ fill:none; stroke:var(--graphic-primary); stroke-width:1.6; }
-.pl-fill{ fill:var(--graphic-primary); opacity:0.10; }
-.pl-core{ fill:var(--graphic-warm); opacity:0.22; }
+.pl-fill{ fill:var(--graphic-primary); opacity:var(--pl-fill-rest); }
+.pl-core{ fill:var(--graphic-warm); opacity:var(--pl-core-rest); }
+
+/* Home page: each circle is a link to the page it stands for. */
+.pl-hit{ fill:transparent; cursor:pointer; }
+.pl-link:focus-visible{ outline:none; }
+.pl-link:focus-visible .pl-hit,
+.pl-link:hover .pl-hit{ fill:var(--graphic-primary); fill-opacity:0.12; }
+.pl-link:focus-visible .pl-ring{ stroke:var(--action); stroke-width:3; }
+
+/* ---------- Single-root marks, derived from the same geometry ---------- */
+.root-mark{
+  display:inline-block; vertical-align:middle;
+  inline-size:var(--mark-size, 1.5rem); block-size:var(--mark-size, 1.5rem);
+  flex:none;
+}
+.rm-dim{
+  fill:none; stroke:var(--graphic-primary); stroke-width:1;
+  vector-effect:non-scaling-stroke; opacity:0.32;
+}
+.rm-on{
+  fill:var(--graphic-primary); fill-opacity:0.16;
+  stroke:var(--graphic-primary); stroke-width:1.75;
+  vector-effect:non-scaling-stroke;
+}
+/* A section heading marked with the root it belongs to. */
+.rooted{ display:flex; align-items:center; gap:var(--space-md); }
+.rooted h2, .rooted h3{ margin-block-end:0; }
 .pl-label{ font-family:var(--font-sans); font-size:15px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
 .pl-sub{ font-family:var(--font-sans); font-size:11.5px; font-weight:500; letter-spacing:0.06em; fill:var(--text-subtle); text-anchor:middle; text-transform:uppercase; }
 .pl-centre{ font-family:var(--font-sans); font-size:13px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
 
-.pillar-notes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:var(--space-2xl); margin-block-start:var(--space-3xl); }
+/* min(14rem, 100%) for the same reason as .cards — a bare rem minimum in an
+   auto-fit track is a fixed floor that does not know how much room it has,
+   and rem grows with the visitor's font setting. */
+.pillar-notes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr)); gap:var(--space-2xl); margin-block-start:var(--space-3xl); }
 .pillar-notes h3{ font-size:var(--type-label); font-weight:var(--weight-bold); letter-spacing:var(--tracking-label); text-transform:uppercase; margin-block-end:var(--space-xs); }
 .pillar-notes p{ font-size:var(--type-caption); color:var(--text-muted); margin:0; max-width:none; }
 
@@ -286,7 +358,11 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   color:var(--text-subtle); margin-block:var(--space-2xl) 0;
   max-width:var(--measure-wide); line-height:1.9;
 }
-.legend .key{ margin-inline-end:var(--space-3xl); white-space:nowrap; }
+/* No white-space:nowrap. It kept each swatch beside its whole label, but a
+   label like "What you have available that day" cannot fit on one line at a
+   large default font size and pushed the page sideways instead. Wrapping the
+   label is the lesser cost; inline-flex keeps the swatch attached to it. */
+.legend .key{ display:inline-flex; align-items:baseline; margin-inline-end:var(--space-3xl); }
 .legend b{ display:inline-block; vertical-align:middle; inline-size:var(--space-2xl); margin-inline-end:var(--space-sm); }
 .legend .sw-line{ block-size:2.5px; background:var(--graphic-line); border-radius:var(--radius-sm); }
 .legend .sw-band{ block-size:var(--space-md); background:var(--graphic-band); border:var(--border-hairline) solid var(--border-strong); }
@@ -362,7 +438,12 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 }
 
 /* ---------- Home cards ---------- */
-.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:var(--space-lg); }
+/* min(16rem, 100%), not a bare 16rem: auto-fit still lays out a 16rem track
+   when the container is narrower than that, and the grid overflows. The
+   min() lets the track collapse to the container instead. It shows up when
+   a visitor raises their default font size — 16rem is 384px at a 24px root,
+   wider than the content column on a phone. */
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(16rem,100%),1fr)); gap:var(--space-lg); }
 .card{
   display:block; background:var(--surface-card);
   border:var(--border-hairline) solid var(--border-subtle);
@@ -378,11 +459,45 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .card-go{ font-family:var(--font-sans); font-size:var(--type-label); font-weight:var(--weight-semi); color:var(--action); }
 
 /* ---------- FAQ ---------- */
+/* ---------- FAQ disclosure ----------
+   <details> carries the open/closed state natively, so this needs no
+   JavaScript and keeps working with the CSP set to script-src 'none'.
+   The <h2> stays inside <summary> so the document outline survives —
+   one heading per question, as it was before the questions collapsed.
+   Answers remain in the DOM when closed, so find-in-page reaches them
+   (browsers auto-expand a details on a match) and so the FAQPage
+   structured data still describes content that is genuinely present. */
 .faq{ max-width:var(--measure-wide); }
-.qa{ padding-block:var(--space-lg); border-block-end:var(--border-hairline) solid var(--border-subtle); }
-.qa:first-child{ padding-block-start:0; }
-.qa:last-child{ border-block-end:0; padding-block-end:0; }
-.qa h2{ font-size:var(--type-h3); margin-block-end:var(--space-xs); }
+.qa{ border-block-end:var(--border-hairline) solid var(--border-subtle); }
+.qa:last-child{ border-block-end:0; }
+
+.qa summary{
+  display:flex; align-items:flex-start; gap:var(--space-md);
+  padding-block:var(--space-lg); cursor:pointer;
+  list-style:none;              /* Firefox */
+  min-block-size:24px;          /* SC 2.5.8 target size */
+}
+.qa summary::-webkit-details-marker{ display:none; }  /* Safari */
+.qa summary h2{
+  font-size:var(--type-h3); margin:0; flex:1 1 auto; min-inline-size:0;
+  text-wrap:pretty;
+}
+.qa summary:hover h2{ color:var(--action); }
+.qa summary:focus-visible{ outline:var(--border-medium) solid var(--action); outline-offset:var(--space-2xs); }
+
+/* Marker: a chevron drawn from two borders, so it needs no image request
+   and inherits currentColor under forced-colors. */
+.qa summary::after{
+  content:""; flex:none; align-self:flex-start;
+  inline-size:0.5em; block-size:0.5em; margin-block-start:0.45em;
+  border-inline-end:var(--border-medium) solid var(--action);
+  border-block-end:var(--border-medium) solid var(--action);
+  transform:rotate(45deg); transform-origin:center;
+  transition:transform var(--dur-fast) var(--ease-emphasis);
+}
+.qa[open] summary::after{ transform:rotate(-135deg); }
+
+.qa-a{ padding-block-end:var(--space-lg); }
 .qa p{ margin:0; font-size:var(--type-caption); color:var(--text-muted); max-width:var(--measure-prose); }
 
 .sub{ margin-block-start:var(--space-3xl); font-size:var(--type-caption); }
@@ -430,6 +545,48 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .doc{ padding-block:var(--space-6xl) var(--space-lg); }
 .doc h1{ max-width:24ch; margin-block-end:var(--space-md); }
 .doc h2{ margin-block-start:var(--space-4xl); }
+
+/* ---------- In-page contents ----------
+   Only on the two legal pages. Eleven sections each, and they are read by
+   someone looking for one clause rather than front to back. */
+.toc{
+  margin-block:var(--space-3xl);
+  padding:var(--space-xl) var(--space-2xl);
+  background:var(--surface-raised);
+  border:var(--border-hairline) solid var(--border-subtle);
+  border-radius:var(--radius-md);
+  max-inline-size:var(--measure-wide);
+}
+.toc-title{
+  font-size:var(--type-label); font-weight:var(--weight-semi);
+  letter-spacing:var(--tracking-label); text-transform:uppercase;
+  color:var(--text-subtle);
+  margin:0 0 var(--space-md);
+}
+.doc .toc-title{ margin-block-start:0; }   /* beats .doc h2 */
+.toc ol{
+  margin:0; padding:0; list-style:none;
+  /* column-width, not column-count: the browser fits one column on a phone
+     and two on a wide screen with no breakpoint of its own. Column flow
+     also keeps the list reading top-to-bottom, as a contents list should. */
+  columns:16rem; column-gap:var(--space-3xl);
+}
+.toc li{ margin:0; break-inside:avoid; max-width:none; }
+.toc a{
+  display:block; padding-block:var(--space-2xs);
+  min-block-size:24px;                     /* SC 2.5.8 */
+  font-family:var(--font-sans); font-size:var(--type-caption);
+  text-decoration-thickness:var(--border-hairline);
+}
+
+/* The heading a jump link lands on should not sit hard against the top of
+   the window, and should say so for a moment when it is the target. */
+.doc h2{ scroll-margin-block-start:var(--space-3xl); }
+.doc h2:target{
+  border-inline-start:var(--border-thick) solid var(--action);
+  padding-inline-start:var(--space-md);
+  margin-inline-start:calc(-1 * (var(--space-md) + var(--border-thick)));
+}
 .doc p{ max-width:var(--measure-prose); }
 .doc li{ max-width:var(--measure-wide); }
 .doc ul{ padding-inline-start:var(--space-xl); }
@@ -464,11 +621,20 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .stem{ opacity:0; animation:fadeIn var(--dur-base) var(--ease-entrance) forwards; }
   .node{ opacity:0; transform-box:fill-box; transform-origin:center; animation:pop 480ms var(--ease-entrance) forwards; }
 
+  /* Each stem draws 20ms before the node it carries pops. These live here
+     rather than as inline style attributes so that style-src in _headers
+     does not have to allow 'unsafe-inline'. */
+  .s1{ animation-delay:1000ms; } .s2{ animation-delay:1160ms; }
+  .s3{ animation-delay:1320ms; } .s4{ animation-delay:1480ms; }
+  .s5{ animation-delay:1640ms; }
+
   .n1{ animation-delay:1020ms; } .n2{ animation-delay:1180ms; }
   .n3{ animation-delay:1340ms; } .n4{ animation-delay:1500ms; }
   .n5{ animation-delay:1660ms; }
 
-  .pl-ring,.pl-fill,.pl-core,.pl-label,.pl-sub,.pl-centre{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-ring,.pl-label,.pl-sub,.pl-centre{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-fill{ opacity:0; animation:fadeToFill var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-core{ opacity:0; animation:fadeToCore var(--dur-slow) var(--ease-entrance) forwards; }
   .pl-core{ animation-delay:120ms; }
   .p1{ animation-delay:320ms; } .p2{ animation-delay:520ms; } .p3{ animation-delay:720ms; }
 
@@ -479,9 +645,46 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 }
 
 @keyframes fadeIn{ to{ opacity:1; } }
+/* The two translucent diagram layers land on their resting opacity, not on 1.
+   A var() in a keyframe end-state resolves at computed-value time, so the
+   token stays the single source of truth. */
+@keyframes fadeToFill{ to{ opacity:var(--pl-fill-rest); } }
+@keyframes fadeToCore{ to{ opacity:var(--pl-core-rest); } }
 @keyframes draw{ to{ stroke-dashoffset:0; } }
 @keyframes pop{ from{ opacity:0; transform:scale(.4); } to{ opacity:1; transform:scale(1); } }
 @keyframes rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+
+/* ---------- Cross-document view transitions ----------
+   Pure CSS. The JavaScript View Transition API is unavailable here by
+   design — script-src is 'none' — but the declarative form needs no script
+   at all, so the site gets the effect without weakening the policy.
+
+   The value is not the fade. It is that the masthead, the footer and the
+   sticky CTA are identical on every page, so naming them holds them still
+   while the content beneath changes. Without the names the whole viewport
+   cross-fades, including chrome that never moved, which reads as a page
+   reload rather than as moving within one site.
+
+   Unsupported browsers — Firefox at time of writing — simply navigate.
+   There is nothing to fall back to and nothing to detect. */
+@view-transition{ navigation:auto; }
+
+.masthead{ view-transition-name:masthead; }
+.foot{ view-transition-name:foot; }
+.sticky-cta{ view-transition-name:sticky-cta; }
+
+::view-transition-old(root),
+::view-transition-new(root){
+  animation-duration:var(--dur-base);
+  animation-timing-function:var(--ease-entrance);
+}
+
+@media (prefers-reduced-motion: reduce){
+  /* navigation:none rather than animation:none. Suppressing the animation
+     would still capture and composite the snapshots, doing the work and
+     risking a flash; this turns the mechanism off. */
+  @view-transition{ navigation:none; }
+}
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
@@ -489,7 +692,7 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .demand-line{ stroke-dasharray:none; stroke-dashoffset:0; }
   .cap-band,.cap-edge,.cap-tag,.stem,.node{ opacity:1; }
   .pl-ring,.pl-label,.pl-sub,.pl-centre{ opacity:1; }
-  .pl-fill{ opacity:0.10; } .pl-core{ opacity:0.22; }
+  .pl-fill{ opacity:var(--pl-fill-rest); } .pl-core{ opacity:var(--pl-core-rest); }
 }
 
 /* ---------- Responsive ---------- */
@@ -503,6 +706,8 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .day-marks div{ border-block-start:var(--border-hairline) solid var(--border-subtle); padding-block-start:var(--space-sm); }
   .creds > div{ grid-template-columns:1fr; gap:var(--space-3xs); }
   .hero{ padding-block:var(--space-5xl) var(--space-4xl); }
+  .hero-lockup{ gap:var(--space-2xl); }
+  .hero-logo img{ inline-size:180px; }
   .band{ padding-block:var(--space-section-tight); }
 
   .sticky-cta{
@@ -538,11 +743,82 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .legend .sw-band{ background:transparent; border:1px solid CanvasText; }
   .ticks li::before{ background:CanvasText; }
   .nav a[aria-current="page"]{ border-block-end-color:Highlight; }
+  .qa summary::after{ border-color:CanvasText; }
   :focus-visible{ outline:3px solid Highlight; }
 }
 
+/* ---------- Print ----------
+   People do print from a health service site: a fee summary to discuss at
+   home, an FAQ page for a support coordinator, a privacy policy for a file.
+   The aim is a clean document, not a screenshot of a web page. */
+@page{ margin:18mm 16mm; }
+
 @media print{
-  body{ background:#fff; color:var(--text-strong); padding-block-end:0; }
-  .btn,.skip,.nav,.sticky-cta{ display:none; }
-  .band{ break-inside:avoid; }
+  /* Paper is its own medium: white ground, ink-dark text, physical units.
+     pt is the correct unit here — the fluid vw-based scale has no meaning
+     when there is no viewport. */
+  body{
+    background:#fff; color:#000;
+    font-size:11pt; line-height:1.45;
+    padding-block-end:0;
+  }
+  .wrap{ width:auto; margin-inline:0; }
+  p, .lede, .qa p{ max-width:none; color:#000; }
+  h1{ font-size:20pt; } h2{ font-size:14pt; } h3{ font-size:12pt; }
+
+  /* Interface chrome that cannot be used on paper. */
+  .skip, .nav, .sticky-cta, .btn, .crumbs, .foot-nav, .card-go,
+  .toc, .qa summary::after{ display:none; }
+
+  /* Screen decoration that only costs toner. */
+  .band, .band-fill, .card, .urgent{
+    background:none; border:0; box-shadow:none;
+    padding-block:0; margin-block:0 12pt;
+  }
+  /* background:none matters even though backgrounds are off by default —
+     a reader who ticks "background graphics" should not get a full-width
+     band of linen across the top of every sheet. */
+  .masthead{
+    background:none;
+    border-block-end:0.5pt solid #000; padding-block-end:6pt; margin-block-end:12pt;
+  }
+  .hero{ padding-block:0 12pt; }
+  .hero-logo img{ inline-size:36mm; }
+
+  /* Every FAQ answer prints, whether or not it was open on screen.
+     Two mechanisms because engines differ: older ones hide the closed
+     children with display, current Chromium uses ::details-content. */
+  details:not([open]) > *:not(summary){ display:block !important; }
+  details::details-content{ content-visibility:visible !important; }
+
+  /* Expand links that mean something off-screen. Internal page links are
+     left alone — a bare path helps nobody holding a sheet of paper. */
+  a[href^="mailto:"]::after,
+  a[href^="http"]::after{
+    content:" (" attr(href) ")";
+    font-size:9pt; word-break:break-all;
+  }
+  /* …except where the link text is already the address, which is every
+     link in the footer meta. Printing it twice helps nobody. */
+  .foot-meta a::after{ content:none; }
+  a{ color:#000; text-decoration:underline; }
+
+  /* Keep units of meaning on one page. */
+  .qa, .card, .urgent, .pillar-notes > div, .band{ break-inside:avoid; }
+  h1, h2, h3{ break-after:avoid; break-inside:avoid; }
+  p{ orphans:3; widows:3; }
+
+  /* The safety notice and the contact details are the two things most worth
+     having on the printed copy, so they are given a visible frame rather
+     than being flattened with the rest. */
+  .urgent{ border:0.5pt solid #000; padding:8pt; break-inside:avoid; }
+  .foot{ border-block-start:0.5pt solid #000; padding-block-start:8pt; margin-block-start:12pt; }
+  .foot-meta{ font-size:9pt; }
+
+  /* The diagram is structural, not decorative — it carries the model the
+     whole practice is built on, so it prints, but sized for paper. */
+  .pillars svg{ max-inline-size:110mm; }
+  .pl-fill{ opacity:0.10; } .pl-core{ opacity:0.18; }
+
+  *, *::before, *::after{ animation:none !important; transition:none !important; }
 }

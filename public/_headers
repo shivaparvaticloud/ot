@@ -6,7 +6,7 @@
 # tracker, the browser refuses it rather than failing quietly.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; form-action 'none'; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; form-action 'none'; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
@@ -19,11 +19,41 @@
 
 # Assets change rarely and are not content-hashed, so cache for a day rather
 # than a year — long enough to matter, short enough to correct a mistake.
+#
+# Listed one by one rather than as /*.png. Wildcard matching is documented for
+# Pages but not confirmed for Workers static assets, and a pattern that
+# silently fails to match would leave these assets with no caching at all —
+# the exact failure that was already sitting in this file. Nine explicit rules
+# against a limit of 100 is a cheap way to be certain.
 /styles.css
   Cache-Control: public, max-age=86400
 
 /share.png
   Cache-Control: public, max-age=86400
 
-/favicon.svg
+/favicon-32.png
+  Cache-Control: public, max-age=86400
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=86400
+
+/icon-192.png
+  Cache-Control: public, max-age=86400
+
+/icon-512.png
+  Cache-Control: public, max-age=86400
+
+/logo-wide-240.png
+  Cache-Control: public, max-age=86400
+
+/logo-wide-240.webp
+  Cache-Control: public, max-age=86400
+
+/logo-wide-480.png
+  Cache-Control: public, max-age=86400
+
+/logo-wide-480.webp
+  Cache-Control: public, max-age=86400
+
+/site.webmanifest
   Cache-Control: public, max-age=86400

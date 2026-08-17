@@ -87,6 +87,10 @@ const COMPARE = async ([a, b, tol]) => {
 
 (async () => {
   fs.mkdirSync(BASELINE, { recursive: true });
+  // Clear old masks. They used to accumulate across runs, so the directory
+  // could hold a mask for a page that passed this time — which is actively
+  // misleading when you open one to work out what moved.
+  fs.rmSync(DIFFDIR, { recursive: true, force: true });
   const server = await start(PORT);
   const chromium = loadChromium();
   const browser = await chromium.launch();
