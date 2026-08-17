@@ -123,12 +123,46 @@ const PROBE = () => {
       const href = m[1];
       if (/^(https?:|mailto:|tel:)/.test(href)) continue;
       const [p, frag] = href.split('#');
-      const target = (p === '/' || p === '') ? 'index.html' : p.replace(/^\//, '');
+      // An empty path means "this page", not the home page. Resolving it to
+      // index.html made every same-page fragment get checked against the
+      // wrong file. It went unnoticed while the only such link was the skip
+      // link, because #main happens to exist on index.html as well.
+      const target = p === '/' ? 'index.html'
+        : p === '' ? (f)
+        : p.replace(/^\//, '');
       if (p && !fs.existsSync(path.join(PUBLIC, target))) bad.push(`missing file ${href}`);
       else if (frag && ids[target] && !ids[target].has(frag)) bad.push(`missing anchor ${href}`);
     }
     record('internal links', page, bad.length === 0, bad.join('; '));
 
+  }
+
+  // Modern selectors must sit in their own rule.
+  //
+  // A browser that does not recognise a selector drops the ENTIRE rule, not
+  // just that one selector — so `.card, ::details-content { padding: … }`
+  // silently loses the card padding everywhere the pseudo-element is unknown.
+  // Declarations and at-rules fail gracefully; selectors do not.
+  {
+    const css = fs.readFileSync(path.join(PUBLIC, 'styles.css'), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+    const MODERN = [/::details-content/, /::view-transition/, /:has\(/, /::backdrop/];
+    const lists = [];
+    let buf = '';
+    for (const ch of css) {
+      if (ch === '{') { lists.push(buf.trim()); buf = ''; }
+      else if (ch === '}' || ch === ';') buf = '';
+      else buf += ch;
+    }
+    const risky = [];
+    for (const sel of lists) {
+      if (!sel || sel.startsWith('@')) continue;
+      if (!MODERN.some(r => r.test(sel))) continue;
+      const parts = sel.split(',').map(s => s.trim()).filter(Boolean);
+      const plain = parts.filter(s => !MODERN.some(r => r.test(s)));
+      if (plain.length) risky.push(`${sel.replace(/\s+/g, ' ')} would also lose ${plain.join(', ')}`);
+    }
+    record('modern selectors isolated', '/styles.css', risky.length === 0, risky.join('; '));
   }
 
   // unfilled placeholders — every text asset, not just HTML.
@@ -177,6 +211,24 @@ const PROBE = () => {
     record('duplicate ids', p, probe.dupIds.length === 0, probe.dupIds.join(', '));
     record('accessible names', p, probe.nameless.length === 0, probe.nameless.slice(0, 2).join('; '));
     record('image alt', p, probe.imgNoAlt.length === 0, probe.imgNoAlt.join(', '));
+
+    // The width/height attributes reserve the box before the image arrives.
+    // If their ratio disagrees with the file's own, the reserved box is the
+    // wrong shape and the artwork is stretched into it — while CLS stays at
+    // zero, because the layout is stable, just stably wrong. That is exactly
+    // how the logo shipped 7% too tall, so it is asserted rather than trusted.
+    const ratios = await pg.evaluate(() => [...document.images]
+      .filter(i => i.getAttribute('width') && i.getAttribute('height') && i.naturalWidth)
+      .map(i => {
+        const attr = +i.getAttribute('width') / +i.getAttribute('height');
+        const real = i.naturalWidth / i.naturalHeight;
+        // 2% absorbs integer rounding of the intrinsic height, which the
+        // browser reports divided by the selected candidate's density.
+        return Math.abs(attr - real) / real > 0.02
+          ? `${i.currentSrc.split('/').pop()} attr ${attr.toFixed(3)} vs file ${real.toFixed(3)}`
+          : null;
+      }).filter(Boolean));
+    record('image aspect ratio', p, ratios.length === 0, ratios.join('; '));
     record('svg labelled/hidden', p, probe.svgUnlabelled.length === 0, probe.svgUnlabelled.join('; '));
     record('target size', p, probe.targets.length === 0, probe.targets.slice(0, 3).join('; '));
 
@@ -225,8 +277,13 @@ const PROBE = () => {
     record('200% zoom reflow', p, z.d <= z.w + 1, z.d > z.w + 1 ? `${z.d} > ${z.w}` : '');
     await zctx.close();
 
-    // WCAG 1.4.12 text spacing
-    const tctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    // WCAG 1.4.12 text spacing.
+    // bypassCSP is required because style-src is 'self' with no 'unsafe-inline',
+    // which blocks addStyleTag. That is faithful rather than a workaround: a real
+    // visitor applies text spacing through a browser setting, an extension or a
+    // user stylesheet, all of which are user-origin and exempt from page CSP.
+    // The CSP-violation check runs in its own context and is not bypassed.
+    const tctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, bypassCSP: true });
     const tp = await tctx.newPage();
     await tp.goto(BASE + p, { waitUntil: 'domcontentloaded' });
     await tp.addStyleTag({ content: `*{line-height:1.5!important;letter-spacing:0.12em!important;word-spacing:0.16em!important}p{margin-bottom:2em!important}` });
