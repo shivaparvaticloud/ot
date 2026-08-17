@@ -12,15 +12,15 @@ no analytics, no third-party anything, so there is nothing else to fetch.
 
 | Page | Requests | Raw | gzip | brotli |
 |---|---|---|---|---|
-| index | 14 | 210.5K | 169.2K | **166.2K** |
-| services | 4 | 90.6K | 53.6K | **50.7K** |
-| faqs | 4 | 90.0K | 52.1K | **49.4K** |
-| privacy | 4 | 88.2K | 52.5K | **49.8K** |
-| terms | 4 | 87.7K | 52.4K | **49.7K** |
-| sessions-and-fees | 4 | 87.1K | 52.2K | **49.6K** |
-| about | 4 | 86.0K | 51.9K | **49.3K** |
-| contact | 4 | 84.4K | 51.3K | **48.9K** |
-| 404 | 4 | 82.6K | 50.6K | **48.3K** |
+| index | 14 | 170.6K | 124.8K | **121.5K** |
+| services | 4 | 97.5K | 55.7K | **52.4K** |
+| faqs | 4 | 94.9K | 53.3K | **50.6K** |
+| privacy | 4 | 93.0K | 53.8K | **51.0K** |
+| terms | 4 | 92.5K | 53.7K | **50.8K** |
+| sessions-and-fees | 4 | 91.8K | 53.5K | **50.7K** |
+| about | 4 | 91.3K | 53.4K | **50.7K** |
+| contact | 4 | 89.2K | 52.5K | **50.0K** |
+| 404 | 4 | 87.4K | 51.8K | **49.4K** |
 
 **Compression barely moves these totals, and that is expected.** PNG is
 already deflate-compressed, so brotli finds almost nothing left in it — the
@@ -106,7 +106,7 @@ recorded because the previous note would otherwise send someone looking for
 ## What is deliberately not optimised
 
 **The diagram emblems are not shrunk further.** Ten of them come to about
-125K raw, which is most of the home page. They are already one-channel masks
+70K raw, which is most of the home page. They are already one-channel masks
 rather than colour images — about a third of the RGBA equivalent — and they
 are sized to exactly 2x their largest rendered size, which is set by the
 diagram's `max-inline-size`. Going below that trades visible sharpness on

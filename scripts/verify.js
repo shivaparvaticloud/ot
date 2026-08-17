@@ -26,19 +26,20 @@ const BASE = `http://127.0.0.1:${PORT}`;
  * 100 KB is the standing budget; the text pages sit in the mid-eighties, the
  * masthead logo being the only image they carry.
  *
- * The home page is allowed 220 KB because the three-circles diagram carries
+ * The home page is allowed 200 KB because the three-circles diagram carries
  * ten emblems. That is a deliberate exception, not a relaxation: the emblems
  * are one-channel masks rather than colour images, which is what makes ten of
  * them affordable at all.
  *
  * Before raising either number again, check that no emblem is being shipped
  * larger than the layout can display it — that is the failure this budget
- * exists to catch. It was checked when the diagram's max-inline-size went from
- * 44rem to 900px: the emblems were then rendering at 1.6x rather than the
- * intended 2x, so they were scaled UP to match, and this ceiling moved to
- * cover it. Sizes live in scripts/prepare-images.py; see docs/IMAGES.md.
+ * exists to catch. It has already been the cause twice, both times because the
+ * diagram's max-inline-size moved under it. It is now pinned to the viewBox
+ * width, so one user unit is one CSS pixel and each emblem is simply twice
+ * its height in units. Sizes live in scripts/prepare-images.py; see
+ * docs/IMAGES.md.
  */
-const WEIGHT_BUDGET = { default: 100 * 1024, '/': 220 * 1024 };
+const WEIGHT_BUDGET = { default: 100 * 1024, '/': 200 * 1024 };
 const budgetFor = p => WEIGHT_BUDGET[p] || WEIGHT_BUDGET.default;
 
 const WIDTHS = [320, 360, 390, 414, 600, 768, 1024, 1280, 1440, 1920];

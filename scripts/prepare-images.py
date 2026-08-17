@@ -37,9 +37,10 @@ Three things it does, and why each one matters here:
 Everything is emitted at roughly 2x the largest size the layout can ask for,
 so the marks stay crisp on high-density displays without carrying pixels the
 page can never use. That ceiling is the diagram's max-inline-size in
-styles.css — currently 900px against a 660-unit viewBox, so a 118-unit emblem
-renders at 161px and ships at ~330. Change that CSS value and these numbers
-need recomputing, or the marks quietly go soft.
+styles.css. It is deliberately set to the viewBox width — 41.25rem for 660
+units — so one user unit is one CSS pixel and each emblem simply ships at
+twice its height in units. Change that CSS value and every number in JOBS
+needs recomputing, or the marks quietly go soft.
 """
 import sys
 from pathlib import Path
@@ -80,16 +81,16 @@ CROP = {
 # strokes at full size and still wash out once scaled.
 JOBS = {
     'logo-wide':       ('wide-logo.png',    520, (0.30, 0.62), 1.0),
-    'self-figure':     ('image-1.jpg',      333, (0.20, 0.52), 0.85),
-    'self-seated':     ('image-11.jpg',     128, (0.22, 0.55), 1.0),
-    'env-tree':        ('image-3.png',      307, (0.12, 0.40), 0.45),
-    'env-sapling':     ('image-2.png',      159, (0.18, 0.50), 0.65),
-    'others-reaching': ('image-6.png',      159, (0.20, 0.55), 1.0),
-    'others-family':   ('image-4.png',      169, (0.20, 0.55), 1.0),
-    'others-circle':   ('image-5.png',      154, (0.20, 0.55), 0.8),
-    'others-hands':    ('image-7.png',      148, (0.18, 0.50), 1.0),
-    'others-holding':  ('image-8.png',      159, (0.18, 0.50), 1.0),
-    'others-pair':     ('image-9.png',      138, (0.18, 0.50), 1.0),
+    'self-figure':     ('image-1.jpg',      232, (0.20, 0.52), 0.85),
+    'self-seated':     ('image-11.jpg',     88, (0.22, 0.55), 1.0),
+    'env-tree':        ('image-3.png',      220, (0.12, 0.40), 0.45),
+    'env-sapling':     ('image-2.png',      112, (0.18, 0.50), 0.65),
+    'others-reaching': ('image-6.png',      112, (0.20, 0.55), 1.0),
+    'others-family':   ('image-4.png',      120, (0.20, 0.55), 1.0),
+    'others-circle':   ('image-5.png',      108, (0.20, 0.55), 0.8),
+    'others-hands':    ('image-7.png',      104, (0.18, 0.50), 1.0),
+    'others-holding':  ('image-8.png',      112, (0.18, 0.50), 1.0),
+    'others-pair':     ('image-9.png',      96, (0.18, 0.50), 1.0),
     'tick':            ('image-10.jpg',     128, (0.18, 0.50), 1.0),
 }
 
