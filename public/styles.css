@@ -19,6 +19,7 @@
   --brand-slate:  #2B3A4A;   /* Clinical Trust Slate     */
   --brand-linen:  #F7F5F0;   /* Soothing Warm Neutral    */
   --brand-ochre:  #D4A373;   /* Gentle Warmth Accent     */
+  --brand-plum:   #825358;   /* Accent                   */
   --brand-white:  #FFFFFF;   /* Card background          */
 
   /* Darker steps on the same hues. Sage measures 3.29:1 on linen,
@@ -50,6 +51,14 @@
   --action:            var(--brand-sage-deep);
   --action-hover:      var(--brand-sage-deeper);
   --action-on:         var(--brand-white);
+
+  /* accent — the brand kit's #825358, measured at 5.79:1 on linen and
+     6.31:1 on white, so unlike sage and ochre it can carry text. It is
+     given the small uppercase labels, the diagram centre and the icons,
+     which puts it on every page without competing with the sage that
+     signals "this is a link". */
+  --accent:            var(--brand-plum);
+  --label-accent:      var(--accent);
 
   /* graphics — 3:1 non-text threshold, never carries text */
   --graphic-primary:   var(--brand-sage);
@@ -124,6 +133,10 @@
   --container:     64rem;
   --container-gutter: var(--space-4xl);
 
+  /* Icons are masks rather than <img>, so one declaration draws them in
+     the accent colour and forced-colours mode can repaint them. */
+  --ico-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.8 11.3a9.4 9.4 0 1 1-3.4-6.4'/%3E%3Cpath d='M7.2 12.3l4.3 4.3L22 5.6'/%3E%3C/svg%3E");
+
   --layer-base:    0;
   --layer-raised:  10;
   --layer-sticky:  50;
@@ -136,6 +149,8 @@
     --text-muted: var(--text-strong);
     --text-subtle: var(--text-strong);
     --border-strong: var(--text-subtle);
+    /* the accent clears AA at 5.79:1, but this mode asks for more than AA */
+    --label-accent: var(--text-strong);
   }
 }
 
@@ -193,13 +208,13 @@ p{ margin:0 0 var(--space-lg); max-width:var(--measure-prose); text-wrap:pretty;
 .eyebrow{
   font-family:var(--font-sans); font-size:var(--type-eyebrow);
   font-weight:var(--weight-semi); letter-spacing:var(--tracking-eyebrow);
-  text-transform:uppercase; color:var(--text-subtle);
+  text-transform:uppercase; color:var(--label-accent);
   margin:0 0 var(--space-md);
 }
 .section-lead{
   font-family:var(--font-sans); font-size:var(--type-label);
   font-weight:var(--weight-bold); letter-spacing:var(--tracking-label);
-  text-transform:uppercase; color:var(--text-subtle);
+  text-transform:uppercase; color:var(--label-accent);
   margin:0 0 var(--space-2xl);
 }
 
@@ -238,7 +253,7 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .masthead .role{
   font-family:var(--font-sans); font-size:var(--type-eyebrow);
   font-weight:500; letter-spacing:0.1em; text-transform:uppercase;
-  color:var(--text-subtle);
+  color:var(--label-accent);
 }
 .nav{
   display:flex; flex-wrap:wrap; gap:var(--space-2xs) var(--space-xl);
@@ -286,18 +301,23 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
      font size, because the gutter scales with the root font and the column
      drops below 280px. An illegibly small diagram is a much smaller problem
      than a page that scrolls sideways. */
-  min-inline-size:min(280px,100%); max-inline-size:900px;
+  min-inline-size:min(280px,100%);
+  /* Capped at the 640-unit viewBox width, so the type inside the diagram
+     renders at the size it was drawn at rather than scaling up past the
+     prose beside it. */
+  max-inline-size:40rem;
   block-size:auto; margin-inline:auto; overflow:visible;
 }
-/* These two rest translucent so the circles read as overlapping sets rather
+/* These rest translucent so the circles read as overlapping sets rather
    than one solid shape. The value lives in a token because it is needed in
    three places — here, the entrance keyframes, and the reduced-motion
    fallback — and a shared fadeIn to opacity:1 silently flattened the
    diagram once already. */
-.pillars{ --pl-fill-rest:0.10; --pl-core-rest:0.22; }
+.pillars{ --pl-fill-rest:0.10; --pl-core-rest:0.22; --pl-ring-rest:0.45; }
 .pl-ring{ fill:none; stroke:var(--graphic-primary); stroke-width:1.6; }
 .pl-fill{ fill:var(--graphic-primary); opacity:var(--pl-fill-rest); }
 .pl-core{ fill:var(--graphic-warm); opacity:var(--pl-core-rest); }
+.pl-core-ring{ fill:none; stroke:var(--accent); stroke-width:1.4; opacity:var(--pl-ring-rest); }
 
 /* Home page: each circle is a link to the page it stands for. */
 .pl-hit{ fill:transparent; cursor:pointer; }
@@ -324,15 +344,16 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 /* A section heading marked with the root it belongs to. */
 .rooted{ display:flex; align-items:center; gap:var(--space-md); }
 .rooted h2, .rooted h3{ margin-block-end:0; }
-.pl-label{ font-family:var(--font-sans); font-size:15px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
-.pl-sub{ font-family:var(--font-sans); font-size:11.5px; font-weight:500; letter-spacing:0.06em; fill:var(--text-subtle); text-anchor:middle; text-transform:uppercase; }
-.pl-centre{ font-family:var(--font-sans); font-size:13px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
+.pl-label{ font-family:var(--font-sans); font-size:17px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
+.pl-sub{ font-family:var(--font-sans); font-size:12px; font-weight:500; letter-spacing:0.06em; fill:var(--label-accent); text-anchor:middle; text-transform:uppercase; }
+.pl-centre{ font-family:var(--font-sans); font-size:15px; font-weight:var(--weight-semi); fill:var(--text-strong); text-anchor:middle; }
+.pl-centre-sub{ font-family:var(--font-sans); font-size:12.5px; font-weight:500; fill:var(--text-muted); text-anchor:middle; }
 
 /* min(14rem, 100%) for the same reason as .cards — a bare rem minimum in an
    auto-fit track is a fixed floor that does not know how much room it has,
    and rem grows with the visitor's font setting. */
 .pillar-notes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr)); gap:var(--space-2xl); margin-block-start:var(--space-3xl); }
-.pillar-notes h3{ font-size:var(--type-label); font-weight:var(--weight-bold); letter-spacing:var(--tracking-label); text-transform:uppercase; margin-block-end:var(--space-xs); }
+.pillar-notes h3{ font-size:var(--type-label); font-weight:var(--weight-bold); letter-spacing:var(--tracking-label); text-transform:uppercase; color:var(--label-accent); margin-block-end:var(--space-xs); }
 .pillar-notes p{ font-size:var(--type-caption); color:var(--text-muted); margin:0; max-width:none; }
 
 /* ---------- Demand vs capacity graphic ---------- */
@@ -343,13 +364,13 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .demand-line{ fill:none; stroke:var(--graphic-line); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
 .node{ fill:var(--surface-page); stroke:var(--graphic-line); stroke-width:2; }
 .stem{ stroke:var(--border-strong); stroke-width:1; }
-.cap-tag{ font-family:var(--font-sans); font-size:11px; font-weight:var(--weight-semi); letter-spacing:0.1em; text-transform:uppercase; fill:var(--text-subtle); }
+.cap-tag{ font-family:var(--font-sans); font-size:11px; font-weight:var(--weight-semi); letter-spacing:0.1em; text-transform:uppercase; fill:var(--label-accent); }
 
 .day-marks{ display:grid; grid-template-columns:repeat(5,1fr); gap:var(--space-lg); margin-block-start:var(--space-2xs); }
 .day-marks dt{
   font-family:var(--font-sans); font-size:var(--type-label);
   font-weight:var(--weight-bold); letter-spacing:var(--tracking-label);
-  text-transform:uppercase; color:var(--text-strong); margin-block-end:var(--space-2xs);
+  text-transform:uppercase; color:var(--label-accent); margin-block-end:var(--space-2xs);
 }
 .day-marks dd{ margin:0; font-size:var(--type-caption); line-height:var(--leading-caption); color:var(--text-muted); }
 
@@ -394,6 +415,13 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .cols{ display:grid; grid-template-columns:minmax(0,15rem) minmax(0,1fr); gap:var(--space-4xl); }
 .cols > :last-child > :last-child{ margin-block-end:0; }
 
+/* Life-stage beliefs on the home page. Same rhythm as .ticks, but no
+   rules between items — it reads as one statement, not a checklist. */
+.beliefs{ list-style:none; margin:0 0 var(--space-lg); padding:0; max-width:var(--measure-prose); }
+.beliefs li{ position:relative; padding-block:var(--space-2xs); padding-inline-start:var(--space-2xl); }
+.beliefs li::before{ content:""; position:absolute; inset-inline-start:0; inset-block-start:1.05em; inline-size:var(--space-md); block-size:1px; background:var(--accent); }
+.beliefs strong{ color:var(--text-strong); font-weight:var(--weight-semi); }
+
 .ticks{ list-style:none; margin:0 0 var(--space-lg); padding:0; max-width:var(--measure-prose); }
 .ticks li{ padding-block:var(--space-sm); padding-inline-start:var(--space-2xl); position:relative; border-block-end:var(--border-hairline) solid var(--border-subtle); }
 .ticks li:last-child{ border-block-end:0; }
@@ -425,15 +453,48 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   display:grid; grid-template-columns:minmax(0,13rem) minmax(0,1fr); gap:var(--space-lg);
   padding-block:var(--space-md); border-block-end:var(--border-hairline) solid var(--border-subtle);
 }
-.creds dt{ font-family:var(--font-sans); font-size:var(--type-label); font-weight:var(--weight-bold); letter-spacing:var(--tracking-label); text-transform:uppercase; color:var(--text-subtle); padding-block-start:var(--space-2xs); }
+.creds dt{ font-family:var(--font-sans); font-size:var(--type-label); font-weight:var(--weight-bold); letter-spacing:var(--tracking-label); text-transform:uppercase; color:var(--label-accent); padding-block-start:var(--space-2xs); }
 .creds dd{ margin:0; font-size:var(--type-caption); }
+
+/* Check-marked variant. The tick is a mask rather than an <img> or a
+   repeated inline SVG, so it is one declaration, it takes the accent
+   colour from a token, and forced-colours mode can repaint it. */
+.creds-check > div{ grid-template-columns:var(--space-2xl) minmax(0,12rem) minmax(0,1fr); }
+.creds-check > div::before{
+  content:""; inline-size:var(--space-xl); block-size:var(--space-xl);
+  margin-block-start:0.15em; background-color:transparent;
+}
+@supports ((-webkit-mask-image:url("#i")) or (mask-image:url("#i"))){
+  .creds-check > div::before{
+    background-color:var(--accent);
+    -webkit-mask:var(--ico-check) center/contain no-repeat;
+            mask:var(--ico-check) center/contain no-repeat;
+  }
+}
+
+/* ---------- Icons and illustration ---------- */
+.with-icon{ display:flex; align-items:center; gap:var(--space-md); }
+.ico{ flex:none; inline-size:1.1em; block-size:1.1em; fill:var(--accent); }
+
+.illus{ margin:var(--space-3xl) 0; max-width:var(--measure-prose); }
+.illus svg{ display:block; inline-size:100%; block-size:auto; border-radius:var(--radius-md); }
+.illus figcaption{
+  font-family:var(--font-sans); font-size:var(--type-caption);
+  line-height:var(--leading-caption); color:var(--text-muted);
+  margin-block-start:var(--space-md); max-width:var(--measure-prose);
+}
+.il-panel{ fill:var(--graphic-warm); opacity:0.13; }
+.il-ground{ fill:none; stroke:var(--graphic-primary); stroke-width:2; stroke-linecap:round; opacity:0.5; }
+.il-figure{ fill:var(--accent); }
+.il-link{ fill:none; stroke:var(--accent); stroke-width:11; stroke-linecap:round; }
+.il-play{ fill:var(--graphic-primary); opacity:0.55; }
 
 /* ---------- Contact ---------- */
 .contact-lines{ list-style:none; margin:0 0 var(--space-xl); padding:0; }
 .contact-lines li{ padding-block:var(--space-sm); border-block-end:var(--border-hairline) solid var(--border-subtle); font-size:var(--type-body); }
 .contact-lines span{
   font-family:var(--font-sans); font-size:var(--type-label); font-weight:var(--weight-bold);
-  letter-spacing:var(--tracking-label); text-transform:uppercase; color:var(--text-subtle);
+  letter-spacing:var(--tracking-label); text-transform:uppercase; color:var(--label-accent);
   display:block; margin-block-end:var(--space-3xs);
 }
 
@@ -524,13 +585,6 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   font-size:var(--type-caption); color:var(--text-muted); background:var(--surface-page);
 }
 .foot p{ max-width:var(--measure-prose); }
-.urgent{
-  border-inline-start:var(--border-thick) solid var(--action);
-  padding-block:var(--space-lg); padding-inline:var(--space-xl) 0;
-  margin:0 0 var(--space-3xl); background:var(--surface-raised);
-  max-width:var(--measure-wide);
-}
-.urgent p{ margin:0; font-size:var(--type-caption); }
 .foot-nav{
   display:flex; flex-wrap:wrap; gap:var(--space-sm) var(--space-2xl);
   font-family:var(--font-sans); font-size:var(--type-label); font-weight:500;
@@ -541,8 +595,16 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .foot-nav a:hover{ color:var(--action); }
 .foot-meta{ display:flex; flex-wrap:wrap; gap:var(--space-sm) var(--space-2xl); font-family:var(--font-sans); font-size:var(--type-label); }
 
-/* ---------- Long-form pages ---------- */
-.doc{ padding-block:var(--space-6xl) var(--space-lg); }
+/* ---------- Long-form pages ----------
+   The reading measure is set wider here than on the home page. At 34rem
+   inside a 64rem container the text stopped around halfway across a desktop
+   screen and left a dead column beside it; 44rem still lands inside a
+   comfortable line length while using the width the page actually has. */
+.doc{
+  --measure-prose: 44rem;
+  --measure-wide:  52rem;
+  padding-block:var(--space-6xl) var(--space-lg);
+}
 .doc h1{ max-width:24ch; margin-block-end:var(--space-md); }
 .doc h2{ margin-block-start:var(--space-4xl); }
 
@@ -632,10 +694,11 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .n3{ animation-delay:1340ms; } .n4{ animation-delay:1500ms; }
   .n5{ animation-delay:1660ms; }
 
-  .pl-ring,.pl-label,.pl-sub,.pl-centre{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-ring,.pl-label,.pl-sub,.pl-centre,.pl-centre-sub{ opacity:0; animation:fadeIn var(--dur-slow) var(--ease-entrance) forwards; }
   .pl-fill{ opacity:0; animation:fadeToFill var(--dur-slow) var(--ease-entrance) forwards; }
   .pl-core{ opacity:0; animation:fadeToCore var(--dur-slow) var(--ease-entrance) forwards; }
-  .pl-core{ animation-delay:120ms; }
+  .pl-core-ring{ opacity:0; animation:fadeToRing var(--dur-slow) var(--ease-entrance) forwards; }
+  .pl-core, .pl-core-ring{ animation-delay:120ms; }
   .p1{ animation-delay:320ms; } .p2{ animation-delay:520ms; } .p3{ animation-delay:720ms; }
 
   .hero .eyebrow{ animation:rise var(--dur-slow) var(--ease-entrance) both; }
@@ -645,11 +708,12 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 }
 
 @keyframes fadeIn{ to{ opacity:1; } }
-/* The two translucent diagram layers land on their resting opacity, not on 1.
-   A var() in a keyframe end-state resolves at computed-value time, so the
+/* The three translucent diagram layers land on their resting opacity, not on
+   1. A var() in a keyframe end-state resolves at computed-value time, so the
    token stays the single source of truth. */
 @keyframes fadeToFill{ to{ opacity:var(--pl-fill-rest); } }
 @keyframes fadeToCore{ to{ opacity:var(--pl-core-rest); } }
+@keyframes fadeToRing{ to{ opacity:var(--pl-ring-rest); } }
 @keyframes draw{ to{ stroke-dashoffset:0; } }
 @keyframes pop{ from{ opacity:0; transform:scale(.4); } to{ opacity:1; transform:scale(1); } }
 @keyframes rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
@@ -691,8 +755,9 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   *,*::before,*::after{ animation:none !important; transition:none !important; }
   .demand-line{ stroke-dasharray:none; stroke-dashoffset:0; }
   .cap-band,.cap-edge,.cap-tag,.stem,.node{ opacity:1; }
-  .pl-ring,.pl-label,.pl-sub,.pl-centre{ opacity:1; }
+  .pl-ring,.pl-label,.pl-sub,.pl-centre,.pl-centre-sub{ opacity:1; }
   .pl-fill{ opacity:var(--pl-fill-rest); } .pl-core{ opacity:var(--pl-core-rest); }
+  .pl-core-ring{ opacity:var(--pl-ring-rest); }
 }
 
 /* ---------- Responsive ---------- */
@@ -705,6 +770,16 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   .day-marks{ grid-template-columns:1fr 1fr; gap:var(--space-sm) var(--space-lg); margin-block-start:var(--space-xl); }
   .day-marks div{ border-block-start:var(--border-hairline) solid var(--border-subtle); padding-block-start:var(--space-sm); }
   .creds > div{ grid-template-columns:1fr; gap:var(--space-3xs); }
+  /* keep the tick in its own column, term and definition stacked beside it */
+  .creds-check > div{ grid-template-columns:var(--space-2xl) minmax(0,1fr); column-gap:var(--space-md); }
+  .creds-check dt, .creds-check dd{ grid-column:2; }
+
+  /* The diagram is scaled down here, so its type is scaled up to compensate. */
+  .pl-label{ font-size:20px; }
+  .pl-sub{ font-size:13.5px; }
+  .pl-centre{ font-size:17px; }
+  .pl-centre-sub{ font-size:13.5px; }
+
   .hero{ padding-block:var(--space-5xl) var(--space-4xl); }
   .hero-lockup{ gap:var(--space-2xl); }
   .hero-logo img{ inline-size:180px; }
@@ -729,12 +804,21 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
    replaces ours, which is correct — the job here is to make sure nothing
    disappears when it does. */
 @media (forced-colors: active){
-  .card, .urgent, .band-fill{ background:Canvas; border:1px solid CanvasText; }
+  .card, .band-fill{ background:Canvas; border:1px solid CanvasText; }
   .btn{ border:2px solid ButtonText; }
   .btn-solid{ background:ButtonFace; color:ButtonText; }
   .pl-ring{ stroke:CanvasText; }
   .pl-fill, .pl-core{ fill:transparent; }
-  .pl-label, .pl-sub, .pl-centre, .cap-tag{ fill:CanvasText; }
+  .pl-label, .pl-sub, .pl-centre, .pl-centre-sub, .cap-tag{ fill:CanvasText; }
+  .pl-core-ring{ stroke:CanvasText; opacity:1; }
+  .il-panel{ fill:transparent; stroke:CanvasText; stroke-width:1; }
+  .il-figure{ fill:CanvasText; }
+  .il-link{ stroke:CanvasText; }
+  .il-play{ fill:transparent; stroke:CanvasText; stroke-width:2; }
+  .il-ground{ stroke:CanvasText; }
+  .ico{ fill:CanvasText; }
+  .creds-check > div::before{ background-color:CanvasText; }
+  .beliefs li::before{ background:CanvasText; }
   .demand-line{ stroke:CanvasText; }
   .cap-band{ fill:transparent; stroke:CanvasText; stroke-width:1; }
   .node{ fill:Canvas; stroke:CanvasText; }

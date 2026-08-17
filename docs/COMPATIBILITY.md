@@ -71,6 +71,7 @@ floor for browsers too old to use the CSS.
 | `columns` | in-page contents | One column instead of two |
 | `@page` margins | print | The browser's own print margins |
 | WebP | logo | `<picture>` falls back to the PNG automatically |
+| `mask-image` (with the `-webkit-` pair) | the tick bullets on the services page | The rule sits inside an `@supports`, so the icon is simply absent. Its grid column is still reserved, so the list does not reflow. |
 
 ## Deliberately not used
 
