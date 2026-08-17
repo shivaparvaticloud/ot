@@ -258,23 +258,27 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
   padding-block:var(--space-xl); background:var(--surface-page);
 }
 .masthead .wrap{ display:flex; justify-content:space-between; align-items:center; gap:var(--space-lg); }
-.brand{ display:flex; flex-direction:column; gap:var(--space-xs); }
-.wordmark{ display:block; text-decoration:none; color:var(--text-strong); }
+.brand{ display:flex; }
+.wordmark{
+  display:flex; align-items:center; gap:var(--space-lg);
+  text-decoration:none; color:var(--text-strong);
+}
 
 /* The logo is a mask, not an <img>: the artwork supplies the shape and
    --logo-ink supplies the colour, so the mark follows the palette and
-   forced-colours mode can substitute its own. The wordmark text stays in
-   the link for search engines and screen readers — the logo already says
-   it, so showing both would be a stutter. aspect-ratio holds the box open
-   before the mask loads, which is what keeps CLS at zero. */
+   forced-colours mode can substitute its own. It sits on the inline-start
+   side of the wordmark text, sized to the bar rather than the other way
+   round. aspect-ratio holds the box open before the mask loads, which is
+   what keeps CLS at zero. */
 .wordmark .logo{
-  display:block; inline-size:min(13rem, 44vw); block-size:auto;
-  aspect-ratio:520 / 295; fill:var(--logo-ink);
+  display:block; flex:none; inline-size:clamp(4.75rem, 24vw, 7.5rem);
+  block-size:auto; aspect-ratio:520 / 295; fill:var(--logo-ink);
 }
-.vh{
-  position:absolute; inline-size:1px; block-size:1px;
-  margin:-1px; padding:0; border:0; overflow:hidden;
-  clip-path:inset(50%); white-space:nowrap;
+.brand-text{ display:flex; flex-direction:column; gap:var(--space-2xs); }
+.brand-name{
+  font-family:var(--font-sans); font-weight:var(--weight-semi);
+  font-size:clamp(1.125rem, 1rem + 0.8vw, 1.5rem);
+  line-height:var(--leading-snug); letter-spacing:var(--tracking-snug);
 }
 .masthead .role{
   font-family:var(--font-sans); font-size:var(--type-eyebrow);
