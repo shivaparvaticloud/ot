@@ -99,26 +99,14 @@ new check can actually fail.
 ## Current state
 
 ```
-181/186 passed
+186/186 passed
 ```
 
-The five failures are all the same thing: **content placeholders that have not
-been filled in yet.**
-
-| File | Outstanding |
-|---|---|
-| `.well-known/security.txt` | `[SECURITY_TXT_EXPIRY]` |
-| `faqs.html` | `[24 / 48]` |
-| `privacy.html` | `[DATE]` |
-| `sessions-and-fees.html` | `[24 / 48]` |
-| `terms.html` | `[DATE]`, `[at the time of the appointment / within 7 days of invoice]`, `[24 / 48]` |
-
-This is correct behaviour, not a bug. The site is not ready to deploy while it
-still quotes a bracketed cancellation window to a parent. Fill them in and the
-gate goes green.
-
-Everything else — every accessibility, layout, security, performance and
-rendering check — passes on all nine pages.
+The five placeholder failures this section used to list are gone: the
+cancellation window (48 hours), payment terms (within 7 days of invoice), the
+legal pages' last-updated dates and the `security.txt` expiry have all been
+filled in. Every accessibility, layout, security, performance and rendering
+check passes on all nine pages.
 
 ## Adding a check
 

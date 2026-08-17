@@ -2,6 +2,6 @@
 # instead of guessing or posting it publicly.
 
 Contact: mailto:contact@simplerootstherapy.com.au
-Expires: [SECURITY_TXT_EXPIRY]
+Expires: 2027-08-01T00:00:00.000Z
 Preferred-Languages: en
 Canonical: https://simplerootstherapy.com.au/.well-known/security.txt

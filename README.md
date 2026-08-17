@@ -270,12 +270,11 @@ the two are funded and regulated differently.
 grep -ro '\[[A-Za-z0-9 /–_]*\]' public/ | sort -u
 ```
 
-| Placeholder | Replace with |
-|---|---|
-| `[24 / 48]` | Cancellation notice window |
-| `[at the time of the appointment / within 7 days of invoice]` | Payment terms — pick one |
-| `[DATE]` | Date the legal pages were last updated |
-| `[SECURITY_TXT_EXPIRY]` | ISO timestamp under a year away, e.g. `2027-06-30T00:00:00.000Z` |
+All placeholders are now filled: cancellation notice is **48 hours**, payment
+is due **within 7 days of invoice**, the legal pages carry their last-updated
+date, and `security.txt` expires `2027-08-01T00:00:00.000Z`. The command above
+should come back empty; if it ever reports a bracketed value again, so will
+`scripts/verify.js`.
 
 ## No fees are published
 
@@ -435,8 +434,9 @@ strand text faded for anyone landing mid-page. `prefers-reduced-motion: reduce`
 disables all of it and renders the final state immediately — which matters for
 an audience that includes autistic and ADHD clients and their families.
 
-**Light and dark modes** follow the system setting via `prefers-color-scheme`.
-`prefers-contrast: more` is also honoured.
+**Light only.** There is no dark palette and no `prefers-color-scheme` switch —
+see "Light only — how it is actually enforced" above. `prefers-contrast: more`
+is honoured.
 
 **Separate pages rather than one long scroll.** Each question a visitor might
 have has its own URL, which is better for search, for sharing a specific
@@ -495,8 +495,7 @@ likely to be using the site.
 - Landmarks, breadcrumbs and a real heading hierarchy — one `h1` per page
 - Both diagrams carry `role="img"` with `<title>` and `<desc>`
 - Visible focus rings throughout
-- WCAG AA contrast in both colour modes, measured rather than assumed. Light:
-  tightest pair 4.65:1. Dark: tightest pair 5.64:1. Against a 4.5:1 floor.
-  Re-check with a contrast tool if the palette changes — small uppercase labels
-  fail first.
+- WCAG AA contrast, measured rather than assumed: tightest pair 4.53:1 (the
+  accent on linen) against a 4.5:1 floor. Re-check with a contrast tool if the
+  palette changes — small uppercase labels fail first.
 - Reduced motion fully respected
