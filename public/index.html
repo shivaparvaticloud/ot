@@ -9,6 +9,7 @@
 <link rel="canonical" href="https://simplerootstherapy.com.au/">
 <link rel="stylesheet" href="/styles.css">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#F7F5F0">
@@ -154,7 +155,15 @@
 <header class="masthead">
   <div class="wrap">
     <div class="brand">
-      <a class="wordmark" href="/">Simple Roots Therapy</a>
+      <a class="wordmark" href="/">
+        <svg class="logo" viewBox="0 0 520 295" aria-hidden="true" focusable="false">
+          <mask id="logoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="520" height="295">
+            <image href="/images/logo-wide.png" x="0" y="0" width="520" height="295"></image>
+          </mask>
+          <rect x="0" y="0" width="520" height="295" mask="url(#logoMask)"></rect>
+        </svg>
+        <span class="vh">Simple Roots Therapy</span>
+      </a>
       <span class="role">Occupational Therapy &amp; Coaching &middot; Sydney</span>
     </div>
     <nav class="nav" aria-label="Primary">
@@ -169,32 +178,14 @@
 
 <main id="main">
   <section class="hero">
-    <div class="wrap hero-lockup">
-      <picture class="hero-logo">
-        <!-- Width descriptors, not 1x/2x: the logo renders at 240px on wide
-             screens and 180px below 46rem, so a fixed 2x would make a phone
-             at DPR 2 fetch the 480 when 360 is what it needs. sizes mirrors
-             the two widths in styles.css. Intrinsic ratio is the master's
-             1.894 — width and height here must stay in that ratio or the
-             artwork stretches. -->
-        <source type="image/webp"
-                srcset="/logo-wide-240.webp 240w, /logo-wide-360.webp 360w, /logo-wide-480.webp 480w"
-                sizes="(max-width: 46rem) 180px, 240px">
-        <img src="/logo-wide-240.png"
-             srcset="/logo-wide-240.png 240w, /logo-wide-360.png 360w, /logo-wide-480.png 480w"
-             sizes="(max-width: 46rem) 180px, 240px"
-             width="240" height="127" fetchpriority="high"
-             decoding="async" alt="Simple Roots Therapy &mdash; creating lasting growth">
-      </picture>
-      <div class="hero-text">
-        <p class="eyebrow">Occupational therapy &amp; coaching &middot; Sydney</p>
-        <h1>Simple roots for a fulfilling life.</h1>
-        <p class="lede">Occupational Therapy and coaching that&rsquo;s holistic, paced and empowering for children, adolescents and adults in Sydney.</p>
+    <div class="wrap">
+      <p class="eyebrow">Occupational therapy &amp; coaching &middot; Sydney</p>
+      <h1>Simple roots for a fulfilling life.</h1>
+      <p class="lede">Occupational Therapy and coaching that&rsquo;s holistic, paced and empowering for children, adolescents and adults in Sydney.</p>
 
-        <div class="actions">
-          <a class="btn btn-solid" href="mailto:contact@simplerootstherapy.com.au?subject=Enquiry">Get in Contact</a>
-          <a class="btn btn-line" href="/services.html">Our services</a>
-        </div>
+      <div class="actions">
+        <a class="btn btn-solid" href="mailto:contact@simplerootstherapy.com.au?subject=Enquiry">Get in Contact</a>
+        <a class="btn btn-line" href="/services.html">Our services</a>
       </div>
     </div>
   </section>
@@ -220,36 +211,93 @@
     <div class="wrap">
       <p class="section-lead">The three simple roots</p>
       <div class="pillars">
-        <!-- Geometry: three circles of equal radius on an equilateral triangle
-             centred at (320, 257), so the overlap and the labels are symmetric
-             about the vertical axis. Each label sits inside its own circle's
-             exclusive region; the centre disc carries the shared idea. -->
-        <svg viewBox="0 0 640 460" role="img" aria-labelledby="plTitle plDesc">
+        <!-- Geometry: three equal circles on an equilateral triangle centred at
+             (330, 314), symmetric about the vertical axis, with each label in
+             its own circle's exclusive region. Sized larger relative to the
+             type than a plain circles-and-labels diagram would be, because
+             every circle also carries artwork: the emblems need exclusive
+             room that the labels and the centre disc do not already occupy.
+
+             The emblems are masks rather than <img> or a plain SVG <image> —
+             the mark supplies the shape, the fill supplies the colour from
+             styles.css. That keeps the palette in one place, lets
+             forced-colours mode substitute its own ink, and costs about a
+             third of what the equivalent colour images would.
+
+             Every emblem sits wholly inside its own circle, wholly outside
+             the other two, and clear of the centre disc. Check all four
+             corners against all three circles before moving one; the working
+             is in docs/IMAGES.md. -->
+        <svg viewBox="0 0 660 570" role="img" aria-labelledby="plTitle plDesc">
           <title id="plTitle">The three simple roots</title>
-          <desc id="plDesc">Three equal overlapping circles — Self, meaning mind and body; Environment, meaning space and routine; and Others, meaning relationships — meeting at a shared centre labelled occupation, or meaningful activity.</desc>
+          <desc id="plDesc">Three equal overlapping circles — Self, meaning mind and body; Environment, meaning space and routine; and Others, meaning relationships — meeting at a shared centre labelled occupation, or meaningful activity. Self holds a seated figure drawn from a fingerprint, Environment a rooted tree and a sapling, and Others a group of figures with joined and outstretched hands.</desc>
 
-          <circle class="pl-fill p1" cx="320" cy="149" r="135"></circle>
-          <circle class="pl-fill p2" cx="226" cy="311" r="135"></circle>
-          <circle class="pl-fill p3" cx="414" cy="311" r="135"></circle>
+          <defs>
+            <mask id="mSelfFigure" maskUnits="userSpaceOnUse" x="278.6" y="114" width="102.8" height="116">
+              <image href="/images/self-figure.png" x="278.6" y="114" width="102.8" height="116"></image>
+            </mask>
+            <mask id="mSelfSeated" maskUnits="userSpaceOnUse" x="218.4" y="143" width="39.2" height="44">
+              <image href="/images/self-seated.png" x="218.4" y="143" width="39.2" height="44"></image>
+            </mask>
+            <mask id="mEnvTree" maskUnits="userSpaceOnUse" x="126.5" y="325" width="87.1" height="110">
+              <image href="/images/env-tree.png" x="126.5" y="325" width="87.1" height="110"></image>
+            </mask>
+            <mask id="mEnvSapling" maskUnits="userSpaceOnUse" x="225.3" y="384" width="49.3" height="56">
+              <image href="/images/env-sapling.png" x="225.3" y="384" width="49.3" height="56"></image>
+            </mask>
+            <mask id="mOthersReaching" maskUnits="userSpaceOnUse" x="504" y="272" width="38" height="56">
+              <image href="/images/others-reaching.png" x="504" y="272" width="38" height="56"></image>
+            </mask>
+            <mask id="mOthersFamily" maskUnits="userSpaceOnUse" x="442" y="312" width="56.1" height="60">
+              <image href="/images/others-family.png" x="442" y="312" width="56.1" height="60"></image>
+            </mask>
+            <mask id="mOthersCircle" maskUnits="userSpaceOnUse" x="517.1" y="328" width="51.9" height="54">
+              <image href="/images/others-circle.png" x="517.1" y="328" width="51.9" height="54"></image>
+            </mask>
+            <mask id="mOthersHands" maskUnits="userSpaceOnUse" x="390.4" y="374" width="43.2" height="52">
+              <image href="/images/others-hands.png" x="390.4" y="374" width="43.2" height="52"></image>
+            </mask>
+            <mask id="mOthersHolding" maskUnits="userSpaceOnUse" x="457.2" y="384" width="55.6" height="56">
+              <image href="/images/others-holding.png" x="457.2" y="384" width="55.6" height="56"></image>
+            </mask>
+            <mask id="mOthersPair" maskUnits="userSpaceOnUse" x="524.5" y="396" width="41" height="48">
+              <image href="/images/others-pair.png" x="524.5" y="396" width="41" height="48"></image>
+            </mask>
+          </defs>
 
-          <circle class="pl-ring p1" cx="320" cy="149" r="135"></circle>
-          <circle class="pl-ring p2" cx="226" cy="311" r="135"></circle>
-          <circle class="pl-ring p3" cx="414" cy="311" r="135"></circle>
+          <circle class="pl-fill p1" cx="330" cy="190" r="150"></circle>
+          <circle class="pl-fill p2" cx="221" cy="376" r="150"></circle>
+          <circle class="pl-fill p3" cx="439" cy="376" r="150"></circle>
 
-          <circle class="pl-core" cx="320" cy="257" r="76"></circle>
-          <circle class="pl-core-ring" cx="320" cy="257" r="76"></circle>
+          <circle class="pl-core" cx="330" cy="314" r="78"></circle>
+          <circle class="pl-core-ring" cx="330" cy="314" r="78"></circle>
 
-          <text class="pl-label p1" x="320" y="104">Self</text>
-          <text class="pl-sub p1"   x="320" y="127">Mind and body</text>
+          <circle class="pl-ring p1" cx="330" cy="190" r="150"></circle>
+          <circle class="pl-ring p2" cx="221" cy="376" r="150"></circle>
+          <circle class="pl-ring p3" cx="439" cy="376" r="150"></circle>
 
-          <text class="pl-label p2" x="200" y="360">Environment</text>
-          <text class="pl-sub p2"   x="200" y="383">Space and routine</text>
+          <rect class="pl-motif p1" x="278.6" y="114" width="102.8" height="116" mask="url(#mSelfFigure)"></rect>
+          <rect class="pl-motif p1" x="218.4" y="143" width="39.2" height="44" mask="url(#mSelfSeated)"></rect>
+          <rect class="pl-motif p2" x="126.5" y="325" width="87.1" height="110" mask="url(#mEnvTree)"></rect>
+          <rect class="pl-motif p2" x="225.3" y="384" width="49.3" height="56" mask="url(#mEnvSapling)"></rect>
+          <rect class="pl-motif p3" x="504" y="272" width="38" height="56" mask="url(#mOthersReaching)"></rect>
+          <rect class="pl-motif p3" x="442" y="312" width="56.1" height="60" mask="url(#mOthersFamily)"></rect>
+          <rect class="pl-motif p3" x="517.1" y="328" width="51.9" height="54" mask="url(#mOthersCircle)"></rect>
+          <rect class="pl-motif p3" x="390.4" y="374" width="43.2" height="52" mask="url(#mOthersHands)"></rect>
+          <rect class="pl-motif p3" x="457.2" y="384" width="55.6" height="56" mask="url(#mOthersHolding)"></rect>
+          <rect class="pl-motif p3" x="524.5" y="396" width="41" height="48" mask="url(#mOthersPair)"></rect>
 
-          <text class="pl-label p3" x="440" y="360">Others</text>
-          <text class="pl-sub p3"   x="440" y="383">Relationships</text>
+          <text class="pl-label p1" x="330" y="84">Self</text>
+          <text class="pl-sub p1"   x="330" y="104">Mind and body</text>
 
-          <text class="pl-centre"      x="320" y="251">Occupation</text>
-          <text class="pl-centre-sub"  x="320" y="272">Meaningful activity</text>
+          <text class="pl-label p2" x="190" y="468">Environment</text>
+          <text class="pl-sub p2"   x="190" y="490">Space and routine</text>
+
+          <text class="pl-label p3" x="470" y="468">Others</text>
+          <text class="pl-sub p3"   x="470" y="490">Relationships</text>
+
+          <text class="pl-centre"     x="330" y="308">Occupation</text>
+          <text class="pl-centre-sub" x="330" y="331">Meaningful activity</text>
         </svg>
 
         <div class="pillar-notes">

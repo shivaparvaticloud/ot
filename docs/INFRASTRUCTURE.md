@@ -21,9 +21,9 @@ not_found_handling = "404-page"
 ```
 
 - **`directory = "./public"`** — everything served lives here. The README,
-  `wrangler.toml`, `scripts/`, `docs/`, `tests/` and `brand/` are outside it
-  and are never uploaded. The logo masters in `brand/` are deliberately out of
-  the served tree.
+  `wrangler.toml`, `scripts/`, `docs/`, `tests/` and `assets/` are outside it
+  and are never uploaded. The artwork masters in `assets/source-images/` are
+  deliberately out of the served tree — see `docs/IMAGES.md`.
 - **`not_found_handling = "404-page"`** — an unmatched URL returns **404 with
   `404.html`**, not a 200. That distinction matters: a soft 404 (200 status on
   an error page) makes search engines index the error page.

@@ -43,17 +43,67 @@
 /icon-512.png
   Cache-Control: public, max-age=86400
 
-/logo-wide-240.png
-  Cache-Control: public, max-age=86400
-
-/logo-wide-240.webp
-  Cache-Control: public, max-age=86400
-
-/logo-wide-480.png
-  Cache-Control: public, max-age=86400
-
-/logo-wide-480.webp
-  Cache-Control: public, max-age=86400
-
 /site.webmanifest
   Cache-Control: public, max-age=86400
+
+# The diagram artwork. These are masks, not pictures: on their own they are
+# white-on-black shapes with no colour and no context, and they are meant to be
+# seen inside the three-circles diagram rather than as separate files.
+# noimageindex keeps them out of image search — the one route by which someone
+# would otherwise arrive at one on its own.
+#
+# Spelled out one by one for the same reason as the rules above: a wildcard
+# that silently fails to match on Workers static assets would drop both the
+# caching AND the noindex, and the second failure would be invisible.
+#
+# Being straight about the limit: this stops them being surfaced and indexed,
+# and the site never links to one or opens it in a tab. It cannot stop someone
+# who requests the URL directly — a browser has to download an image to draw
+# it. See docs/IMAGES.md.
+/images/logo-wide.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/self-figure.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/self-seated.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/env-tree.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/env-sapling.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/others-reaching.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/others-family.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/others-circle.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/others-hands.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/others-holding.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/others-pair.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex
+
+/images/tick.png
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex, noimageindex

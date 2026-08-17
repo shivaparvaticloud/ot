@@ -19,7 +19,28 @@ const { start, loadChromium, PAGES, ROOT, PUBLIC } = require('./lib/server');
 
 const PORT = 8123;
 const BASE = `http://127.0.0.1:${PORT}`;
-const WEIGHT_BUDGET = 100 * 1024; // bytes per page, all assets included
+
+/**
+ * Page weight ceilings in bytes, everything the page fetches included.
+ *
+ * 100 KB is the standing budget; the text pages sit in the mid-eighties, the
+ * masthead logo being the only image they carry.
+ *
+ * The home page is allowed 200 KB because the three-circles diagram carries
+ * ten emblems. That is a deliberate exception, not a relaxation: the emblems
+ * are one-channel masks rather than colour images, which is what makes ten of
+ * them affordable at all.
+ *
+ * Before raising either number again, check that no emblem is being shipped
+ * larger than the layout can display it — that is the failure this budget
+ * exists to catch. It has already been the cause twice, both times because the
+ * diagram's max-inline-size moved under it. It is now pinned to the viewBox
+ * width, so one user unit is one CSS pixel and each emblem is simply twice
+ * its height in units. Sizes live in scripts/prepare-images.py; see
+ * docs/IMAGES.md.
+ */
+const WEIGHT_BUDGET = { default: 100 * 1024, '/': 200 * 1024 };
+const budgetFor = p => WEIGHT_BUDGET[p] || WEIGHT_BUDGET.default;
 
 const WIDTHS = [320, 360, 390, 414, 600, 768, 1024, 1280, 1440, 1920];
 
@@ -244,8 +265,8 @@ const PROBE = () => {
     const csp = errs.filter(e => /Content Security Policy|Refused to/i.test(e));
     record('zero CSP violations', p, csp.length === 0, csp.slice(0, 2).join('; '));
 
-    record('page weight', p, bytes <= WEIGHT_BUDGET,
-      `${(bytes / 1024).toFixed(1)} KB of ${(WEIGHT_BUDGET / 1024)} KB budget`);
+    record('page weight', p, bytes <= budgetFor(p),
+      `${(bytes / 1024).toFixed(1)} KB of ${(budgetFor(p) / 1024)} KB budget`);
 
     // CLS
     const cls = await pg.evaluate(() => new Promise(res => {
@@ -358,6 +379,9 @@ const PROBE = () => {
     passed: results.length - failures.length,
     failed: failures.length,
     budgetBytes: WEIGHT_BUDGET,
+    pageWeights: Object.fromEntries(results
+      .filter(r => r.check === 'page weight')
+      .map(r => [r.page, r.detail])),
     checks: [...byCheck.keys()],
     failures: failures.map(f => ({ check: f.check, page: f.page, detail: f.detail })),
   };

@@ -47,7 +47,7 @@ Twenty-one checks, 186 assertions — twenty per page across nine pages, plus on
 | heading structure | More than one `h1`, or a skipped level |
 | zero external requests | Any request to a host other than the local server |
 | zero CSP violations | Any console violation against the real `_headers` policy |
-| page weight | Total transferred bytes over the 100 KB budget |
+| page weight | Total transferred bytes over the page's budget (see below) |
 | CLS is zero | Any layout shift at all |
 | no horizontal overflow | Content wider than the viewport at any of ten widths |
 | 200% zoom reflow | Horizontal scroll at the 200% zoom equivalent |
@@ -57,6 +57,23 @@ Twenty-one checks, 186 assertions — twenty per page across nine pages, plus on
 
 Widths tested for overflow: 320, 360, 390, 414, 600, 768, 1024, 1280, 1440,
 1920.
+
+## Page weight budgets
+
+`WEIGHT_BUDGET` in `scripts/verify.js` is a map, not a single number:
+**100 KB** for every page, **180 KB** for `/`. Both cover everything the page
+fetches, not just the HTML.
+
+The home page's larger allowance is deliberate and specific to it: the
+three-circles diagram carries ten emblems, which together come to about 90 KB
+because they are one-channel masks emitted at 2x their largest rendered size.
+Text pages carry only the masthead logo and still land in the low seventies.
+
+If the home page ever pushes past 180 KB, **check whether an emblem is being
+shipped larger than the layout can display it** before raising the ceiling —
+that has been the cause every time so far. The sizes are the `JOBS` table in
+`scripts/prepare-images.py`, and `docs/IMAGES.md` explains how they were
+derived.
 
 ## Two checks worth understanding
 

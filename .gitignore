@@ -2,5 +2,11 @@
 Thumbs.db
 *.log
 node_modules/
+# The site has no dependencies and no build step, and scripts/lib/server.js
+# looks Playwright up globally rather than declaring it. `npm i -D playwright`
+# for the verification scripts leaves these behind; they are not part of the
+# project and committing one would quietly turn this into an npm package.
+package.json
+package-lock.json
 verify-report.json
 tests/diff/

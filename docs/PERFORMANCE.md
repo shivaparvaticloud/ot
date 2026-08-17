@@ -5,21 +5,27 @@ locally with the real `_headers`.
 
 ## Where it stands
 
-Every page loads in **two requests** — the HTML and `styles.css`. The home
-page makes a third for the logo. There is no JavaScript, no webfont, no
-analytics, no third-party anything, so there is nothing else to fetch.
+A text page loads in **four requests** — the HTML, `styles.css`, the masthead
+logo and the favicon. The home page makes fourteen, the extra ten being the
+emblems inside the three-circles diagram. There is no JavaScript, no webfont,
+no analytics, no third-party anything, so there is nothing else to fetch.
 
 | Page | Requests | Raw | gzip | brotli |
 |---|---|---|---|---|
-| index | 3 | 61.1K | 25.1K | **22.7K** |
-| services | 2 | 48.6K | 14.6K | 11.9K |
-| faqs | 2 | 48.0K | 13.0K | 10.7K |
-| privacy | 2 | 46.2K | 13.5K | 11.1K |
-| terms | 2 | 45.7K | 13.3K | 10.9K |
-| sessions-and-fees | 2 | 45.0K | 13.1K | 10.8K |
-| about | 2 | 43.9K | 12.8K | 10.5K |
-| contact | 2 | 42.4K | 12.2K | 10.1K |
-| 404 | 2 | 40.6K | 11.5K | 9.5K |
+| index | 14 | 170.6K | 124.8K | **121.5K** |
+| services | 4 | 97.5K | 55.7K | **52.4K** |
+| faqs | 4 | 94.9K | 53.3K | **50.6K** |
+| privacy | 4 | 93.0K | 53.8K | **51.0K** |
+| terms | 4 | 92.5K | 53.7K | **50.8K** |
+| sessions-and-fees | 4 | 91.8K | 53.5K | **50.7K** |
+| about | 4 | 91.3K | 53.4K | **50.7K** |
+| contact | 4 | 89.2K | 52.5K | **50.0K** |
+| 404 | 4 | 87.4K | 51.8K | **49.4K** |
+
+**Compression barely moves these totals, and that is expected.** PNG is
+already deflate-compressed, so brotli finds almost nothing left in it — the
+gap between raw and brotli is almost entirely the HTML and CSS. Judge image
+work by the raw column; judge markup work by the brotli one.
 
 **CLS is zero on every page**, asserted by `verify.js` rather than observed
 once. LCP equals FCP everywhere — the largest element is painted in the first
@@ -30,7 +36,13 @@ every page, so it is fetched once and served from cache for the rest of the
 visit. Splitting it per page would trade a warm cache hit for a second round
 trip; it is not worth it at this size.
 
-## The one thing that was actually slow, and why
+## The lesson from the logo derivatives
+
+This section describes machinery that **no longer exists** — the hero logo
+lockup and its six `logo-wide-*` derivatives were removed when the logo moved
+into the masthead as a mask, which needs one file at one size and no `sizes`
+attribute to get wrong. The finding is kept because the mistake is easy to
+repeat the next time anything ships a `<picture>`.
 
 The home page logo was being over-fetched on phones, and the artwork was
 distorted. Both came from the same mistake.
@@ -70,18 +82,36 @@ master's ratio, never from a number typed next to the width. `width` and
 artwork while still reporting CLS of zero — the layout is stable, it is just
 stably wrong.
 
+## The icons were quantised after all
+
+An earlier note here said `icon-512.png` was 187K and could not be reduced
+because the environment had no image tooling. Both halves have since changed:
+`scripts/prepare-images.py` brought Pillow in to cut the diagram artwork, and
+once a quantiser was available the icons got one for free. They are two
+colours and the antialiasing between them, so a 64-entry palette is
+indistinguishable from truecolour:
+
+| Icon | Was | Now |
+|---|---|---|
+| `icon-512.png` | 187K | 42.2K |
+| `icon-192.png` | 34.0K | 9.2K |
+| `apple-touch-icon.png` | 30.2K | 8.3K |
+| `favicon-32.png` | 2.3K | 0.7K |
+
+None of these are on the critical path — manifest icons are fetched at app
+install, not page load — so this was cheap rather than important. It is
+recorded because the previous note would otherwise send someone looking for
+`pngquant` that the project no longer needs.
+
 ## What is deliberately not optimised
 
-**`icon-512.png` is 187K.** It is large for an icon, and it is the biggest
-file in `public/`. It is also not on the critical path: manifest icons are
-fetched when a browser installs the site as an app, not during page load.
-Confirmed by listing every request on load — desktop and mobile both fetch
-exactly three things, none of them an icon.
-
-It could be roughly halved by palette-quantising the PNG, but there is no
-image tooling in this environment (`no PIL`, no `pngquant`, no ImageMagick)
-and hand-rolling a quantiser for an off-path asset is not a good trade. If it
-matters later, run the four icons through `pngquant --quality 65-85`.
+**The diagram emblems are not shrunk further.** Ten of them come to about
+70K raw, which is most of the home page. They are already one-channel masks
+rather than colour images — about a third of the RGBA equivalent — and they
+are sized to exactly 2x their largest rendered size, which is set by the
+diagram's `max-inline-size`. Going below that trades visible sharpness on
+high-density screens for bytes on a page that is still well under a quarter
+of a megabyte. See `docs/IMAGES.md`.
 
 **`styles.css` is not minified.** Brotli does most of what minification would,
 and the comments in it are the design system's documentation — the file
