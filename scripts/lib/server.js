@@ -21,51 +21,78 @@ const MIME = {
 };
 
 /**
- * Read _headers into [pattern, headers] pairs, keeping each block with the
- * path it belongs to. Cloudflare applies every matching block in order, so
- * `/*` supplies the baseline and a narrower block layers on top.
+ * Parse _headers into ordered path rules.
  *
- * Grouping matters as soon as a block carries something that must not leak:
- * /images/* sets X-Robots-Tag: noindex, and flattening the file would stamp
- * that on every page of the local site.
+ * This used to flatten every indented line in the file into a single object
+ * and apply the lot to every response, ignoring the path patterns entirely.
+ * The CSP checks were unaffected — the CSP sits under /* and is global — but
+ * the per-file Cache-Control rules leaked onto every response, so the server
+ * reported HTML as cacheable when the real edge does not, and no path-scoped
+ * rule could ever have been tested.
+ *
+ * Returns [{ re, headers }] in file order. Cloudflare applies every matching
+ * rule, with later ones overriding earlier ones for the same header name.
  */
 function parseHeaders() {
   const file = path.join(PUBLIC, '_headers');
   if (!fs.existsSync(file)) return [];
-  const blocks = [];
-  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
-    if (/^\s*#/.test(line) || !line.trim()) continue;
+  const rules = [];
+  let current = null;
+  for (const raw of fs.readFileSync(file, 'utf8').split('\n')) {
+    const line = raw.replace(/\s+$/, '');
+    if (!line || /^\s*#/.test(line)) continue;
     if (/^\S/.test(line)) {
-      blocks.push([line.trim(), {}]);
-    } else if (blocks.length && line.includes(':')) {
+      // '*' matches any run of characters, '/' included.
+      const re = new RegExp('^' + line.trim()
+        .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+        .replace(/\*/g, '.*') + '$');
+      current = { re, headers: {} };
+      rules.push(current);
+    } else if (current && line.includes(':')) {
       const i = line.indexOf(':');
-      blocks[blocks.length - 1][1][line.slice(0, i).trim()] = line.slice(i + 1).trim();
+      current.headers[line.slice(0, i).trim()] = line.slice(i + 1).trim();
     }
   }
-  return blocks;
+  return rules;
 }
 
-/** Cloudflare's matcher: a literal path, optionally ending in a `*` wildcard. */
-function headersFor(blocks, urlPath) {
+/** Headers for one request path: every matching rule, in file order. */
+function headersFor(rules, urlPath) {
   const out = {};
-  for (const [pattern, headers] of blocks) {
-    const hit = pattern.endsWith('*')
-      ? urlPath.startsWith(pattern.slice(0, -1))
-      : urlPath === pattern;
-    if (hit) Object.assign(out, headers);
+  for (const r of rules) {
+    if (r.re.test(urlPath)) Object.assign(out, r.headers);
   }
   return out;
 }
 
 function start(port) {
-  const blocks = parseHeaders();
+  const rules = parseHeaders();
   return new Promise(resolve => {
     const server = http.createServer((req, res) => {
-      let p = decodeURIComponent(req.url.split('?')[0]);
+      const reqPath = decodeURIComponent(req.url.split('?')[0]);
+      let p = reqPath;
       if (p.endsWith('/')) p += 'index.html';
-      const file = path.join(PUBLIC, p);
+      let file = path.join(PUBLIC, p);
+
+      // Match Cloudflare's html_handling, which defaults to
+      // "auto-trailing-slash": /services resolves to /services.html. Without
+      // this the local server 404s extensionless URLs that work in
+      // production, so routing checks here would not reflect the deployed
+      // site.
+      if (!fs.existsSync(file) && !path.extname(p)) {
+        const asHtml = path.join(PUBLIC, p + '.html');
+        if (fs.existsSync(asHtml)) file = asHtml;
+      }
+
+      // _headers and _redirects are configuration, consumed by the platform
+      // and not served as assets. Serving them locally made the harness
+      // disagree with production on a request that should 404.
+      if (/^\/_(headers|redirects)$/.test(reqPath)) file = path.join(PUBLIC, '__never__');
+      // Matched on the requested path, as the edge does — '/' is matched by
+      // '/*', not by the index.html it happens to resolve to.
+      const headers = headersFor(rules, reqPath);
       const send = (code, body, type) => {
-        for (const [k, v] of Object.entries(headersFor(blocks, p))) res.setHeader(k, v);
+        for (const [k, v] of Object.entries(headers)) res.setHeader(k, v);
         res.writeHead(code, { 'Content-Type': type });
         res.end(body);
       };

@@ -95,9 +95,16 @@ size and washes out again on the way down.
 
 Every mark is emitted at roughly **2× the largest size the layout can ever
 display it**, so it stays sharp on high-density screens without shipping pixels
-the page cannot use. The diagram is capped at `44rem`, which fixes those
-maximums; the numbers live in `JOBS` in the script. Raising them past 2× costs
-bytes on every visit and changes nothing anyone can see.
+the page cannot use. Raising them past 2× costs bytes on every visit and
+changes nothing anyone can see.
+
+**That ceiling is `.pillars svg { max-inline-size }` in `styles.css`, and the
+sizes in `JOBS` are derived from it.** At 900px against a 660-unit viewBox the
+scale is 1.364 px/unit, so the 118-unit `self-figure` renders at 161px and
+ships at 333. When that CSS value last changed — 44rem to 900px — the emblems
+silently dropped to 1.6× and had to be scaled up to match. **If you change it
+again, recompute `JOBS`**, or the marks go soft with nothing failing to tell
+you.
 
 The full-resolution originals are untouched in `assets/source-images/`. If the
 diagram is ever redesigned larger, re-run the script with bigger values rather

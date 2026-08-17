@@ -6,6 +6,19 @@ requests, no cookies, no contact form.
 Built from two source documents: **Web Map.docx** (structure and copy) and
 **Brand Kit.docx** (voice, colour, typography).
 
+## Documentation
+
+| Doc | What it covers |
+|---|---|
+| [`docs/INFRASTRUCTURE.md`](docs/INFRASTRUCTURE.md) | Hosting, config, deploy and rollback, custom domain, and the checks that can only run against the live origin |
+| [`docs/SECURITY.md`](docs/SECURITY.md) | Threat model, every response header and why its value, two open decisions |
+| [`docs/EMAIL-DELIVERABILITY.md`](docs/EMAIL-DELIVERABILITY.md) | SPF, DKIM and DMARC for Microsoft 365 — the site's only contact route |
+| [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md) | Measured page weights and paint timings, and what is deliberately not optimised |
+| [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Load-bearing versus decorative features, and how each fails |
+| [`docs/VERIFY.md`](docs/VERIFY.md) | The pre-deploy gate, check by check |
+| [`docs/VISUAL-REGRESSION.md`](docs/VISUAL-REGRESSION.md) | Pixel baseline, tolerance, and how to update it honestly |
+| [`docs/EDGE-CASES.md`](docs/EDGE-CASES.md) | Narrow viewports, raised font sizes, missing CSS — and the four bugs they caught |
+
 ## Deploy to Cloudflare
 
 Deployed as a **Worker with static assets**. The site is `public/`; everything
@@ -50,16 +63,16 @@ Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
 `.well-known/security.txt`, and `images/` — twelve marks cut from the
 supplied artwork.
 
-Nothing is loaded from another server. A text page costs three requests: the
-HTML, the stylesheet and the masthead logo. The home page costs thirteen, the
-extra ten being the emblems inside the three-circles diagram.
+Nothing is loaded from another server. A text page costs **four requests** —
+the HTML, the stylesheet, the masthead logo and the favicon. The home page
+costs fourteen, the extra ten being the emblems inside the three-circles
+diagram.
 
-Page weight, measured with everything the page fetches: **70–79 KB** on the
-text pages against a 100 KB budget, **163 KB** on the home page against a
-180 KB one. The home page's allowance is a deliberate, documented exception
-in `scripts/verify.js` — the emblems are one-channel masks emitted at 2x
-their largest rendered size, which holds all ten to about 90 KB together.
-See `docs/IMAGES.md`.
+Page weight, measured with everything the page fetches, is in
+`docs/PERFORMANCE.md`. The home page carries a larger budget than the rest, a
+deliberate exception documented in `scripts/verify.js`: the emblems are
+one-channel masks emitted at 2x their largest rendered size, which is what
+keeps ten of them affordable. See `docs/IMAGES.md`.
 
 ## Light only — how it is actually enforced
 
@@ -401,6 +414,17 @@ have has its own URL, which is better for search, for sharing a specific
 answer, and for anyone who finds a long page hard to navigate.
 
 ## Verification
+
+Three scripts, all runnable locally, all against the site served with its
+real `_headers`:
+
+```
+node scripts/verify.js        # 21 checks, 186 assertions
+node scripts/visual-diff.js   # 81 captures, 9 pages x 3 widths x 3 modes
+node scripts/edge-cases.js    # narrow viewports, raised font size, no CSS
+```
+
+See `docs/VERIFY.md`, `docs/VISUAL-REGRESSION.md` and `docs/EDGE-CASES.md`.
 
 Everything below was measured in a headless browser against the site served
 with its real `_headers` CSP, not asserted. Re-run these after any change.
