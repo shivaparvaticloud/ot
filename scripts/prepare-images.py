@@ -77,7 +77,6 @@ CROP = {
 # strokes at full size and still wash out once scaled.
 JOBS = {
     'logo-wide':       ('wide-logo.png',    520, (0.30, 0.62), 1.0),
-    'logo-mark':       ('vertical-logo.png', 512, (0.30, 0.62), 1.0),
     'self-figure':     ('image-1.jpg',      260, (0.20, 0.52), 0.85),
     'self-seated':     ('image-11.jpg',     100, (0.22, 0.55), 1.0),
     'env-tree':        ('image-3.png',      240, (0.12, 0.40), 0.45),
@@ -91,7 +90,12 @@ JOBS = {
     'tick':            ('image-10.jpg',     128, (0.18, 0.50), 1.0),
 }
 
-# Square app icons, all cut from the same logo mark.
+# The square icons are all cut from the vertical logo. This deliberately sits
+# outside JOBS: the icons are flattened colour PNGs built from this mask in
+# memory, so the mask itself is an intermediate. Putting it in JOBS would write
+# it into public/images/ and deploy 26 KB that no page ever asks for.
+ICON_SOURCE = ('vertical-logo.png', 512, (0.30, 0.62), 1.0)
+
 ICON_SIZES = {
     'favicon-32.png': 32,
     'apple-touch-icon.png': 180,
@@ -172,19 +176,19 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     rows, total = [], 0
 
-    masks = {}
     for name, (source, long_edge, ramp, weight) in JOBS.items():
-        masks[name] = separate(source, *ramp)
-        img = fit(masks[name], long_edge, weight)
+        img = fit(separate(source, *ramp), long_edge, weight)
         dest = OUT / f'{name}.png'
         img.save(dest, optimize=True)
         size = dest.stat().st_size
         total += size
         rows.append((f'images/{dest.name}', img.width, img.height, size, source))
 
-    for dest, w, h, size in build_icons(fit(masks['logo-mark'], 512)):
+    icon_src, icon_edge, icon_ramp, icon_weight = ICON_SOURCE
+    mark = fit(separate(icon_src, *icon_ramp), icon_edge, icon_weight)
+    for dest, w, h, size in build_icons(mark):
         total += size
-        rows.append((dest.name, w, h, size, 'vertical-logo.png'))
+        rows.append((dest.name, w, h, size, icon_src))
 
     for name, w, h, size, src in rows:
         print(f'  {name:26s} {w:4d}x{h:<4d} {size / 1024:7.1f} KB   <- {src}')

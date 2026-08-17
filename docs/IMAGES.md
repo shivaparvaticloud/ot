@@ -16,7 +16,7 @@ reproducible and reviewable rather than a folder of undocumented exports.
 | Directory | Contents | Deployed? |
 |---|---|---|
 | `assets/source-images/` | The 13 supplied files, untouched, at their original resolution | **No** — outside `public/` |
-| `public/images/` | 13 web assets derived from them | Yes |
+| `public/images/` | 12 web assets derived from them | Yes |
 | `public/*.png` | The favicon and app icons, also derived from the logo | Yes |
 
 Keeping the masters out of `public/` is deliberate and does two jobs. The
@@ -78,6 +78,12 @@ things follow from that:
 
 **It crops away captions and third-party wordmarks** through the `CROP` table,
 so a re-run cannot quietly reintroduce them.
+
+**The icon source is not one of the twelve.** The square icons are flattened
+colour PNGs, not masks, and they are built from the vertical logo in memory —
+so `ICON_SOURCE` sits outside `JOBS` deliberately. Moving it into `JOBS` would
+write the intermediate mask into `public/images/` and deploy 26 KB that no
+page ever requests. If you add another icon size, add it to `ICON_SIZES`.
 
 **It corrects ink weight after scaling.** The big tree is drawn as thousands of
 separate leaf strokes; averaged down to 240 px they turn into a pale grey cloud

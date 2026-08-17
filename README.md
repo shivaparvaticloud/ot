@@ -47,7 +47,7 @@ without a home of their own).
 Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
 `llms.txt`, `share.png`, `favicon-32.png`, `apple-touch-icon.png`,
 `icon-192.png`, `icon-512.png`, `site.webmanifest`,
-`.well-known/security.txt`, and `images/` — thirteen marks cut from the
+`.well-known/security.txt`, and `images/` — twelve marks cut from the
 supplied artwork.
 
 Nothing is loaded from another server. A text page costs three requests: the
