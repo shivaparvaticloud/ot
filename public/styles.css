@@ -427,6 +427,62 @@ a:hover{ color:var(--action-hover); text-decoration-color:currentColor; }
 .legend .sw-band{ block-size:var(--space-md); background:var(--graphic-band); border:var(--border-hairline) solid var(--border-strong); }
 .legend .note{ display:block; margin-block-start:var(--space-2xs); color:var(--text-muted); }
 
+/* ---------- Contact form ---------- */
+.contact-form{
+  margin-block:var(--space-4xl);
+  padding:var(--space-2xl);
+  background:var(--surface-raised);
+  border:var(--border-hairline) solid var(--border-subtle);
+  border-radius:var(--radius-md);
+  max-inline-size:var(--measure-wide);
+}
+.contact-form h2{ margin-block-start:0; }
+.contact-form form{ display:grid; gap:var(--space-lg); }
+.field{ display:grid; gap:var(--space-xs); }
+.field label{
+  font-family:var(--font-sans);
+  font-size:var(--type-label);
+  font-weight:var(--weight-semi);
+  color:var(--text-strong);
+}
+.field input, .field textarea{
+  box-sizing:border-box;
+  inline-size:100%;
+  min-block-size:2.75rem;
+  padding:var(--space-sm) var(--space-md);
+  border:var(--border-hairline) solid var(--border-strong);
+  border-radius:var(--radius-sm);
+  background:var(--surface-page);
+  color:var(--text-body);
+  font:inherit;
+  line-height:var(--leading-body);
+}
+.field textarea{ min-block-size:10rem; resize:vertical; }
+.field input:focus-visible, .field textarea:focus-visible{
+  outline:var(--border-medium) solid var(--action);
+  outline-offset:var(--space-2xs);
+  border-color:var(--action);
+}
+.field input:invalid:not(:placeholder-shown), .field textarea:invalid:not(:placeholder-shown){
+  border-color:var(--accent);
+}
+.form-trap{
+  position:absolute;
+  inline-size:1px;
+  block-size:1px;
+  margin:-1px;
+  padding:0;
+  overflow:hidden;
+  clip:rect(0 0 0 0);
+  white-space:nowrap;
+  border:0;
+}
+@media (forced-colors: active){
+  .contact-form{ background:Canvas; border-color:CanvasText; }
+  .field input, .field textarea{ background:Canvas; color:CanvasText; border-color:CanvasText; }
+  .field input:focus-visible, .field textarea:focus-visible{ outline-color:Highlight; border-color:Highlight; }
+}
+
 /* ---------- Buttons ---------- */
 .actions{ display:flex; flex-wrap:wrap; gap:var(--space-md); }
 .btn{

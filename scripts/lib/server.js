@@ -118,7 +118,8 @@ function loadChromium() {
 }
 
 const PAGES = ['/', '/about.html', '/services.html', '/sessions-and-fees.html',
-  '/faqs.html', '/contact.html', '/privacy.html', '/terms.html', '/404.html'];
+  '/faqs.html', '/contact.html', '/privacy.html', '/terms.html', '/404.html',
+  '/thank-you.html', '/form-error.html'];
 
 const nameFor = p => (p === '/' ? 'index' : p.replace(/^\//, '').replace(/\.html$/, ''));
 

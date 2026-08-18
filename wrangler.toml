@@ -1,7 +1,7 @@
 # Cloudflare Workers static-assets configuration.
 #
-# There is no build step and no Worker script — `public/` is the site,
-# uploaded and served as-is by `wrangler deploy`.
+# There is no build step. `public/` is the site, uploaded alongside the
+# small Worker that handles the contact form by `wrangler deploy`.
 #
 # not_found_handling is required: unlike Pages, Workers does not infer
 # anything from the presence of 404.html. Without it the default is
@@ -11,7 +11,14 @@
 
 name = "ot"
 compatibility_date = "2026-08-09"
+main = "src/index.js"
 
 [assets]
 directory = "./public"
 not_found_handling = "404-page"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[[send_email]]
+name = "EMAIL"
+destination_address = "contact@simplerootstherapy.com.au"

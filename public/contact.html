@@ -94,7 +94,32 @@
 
   <p>We would love to hear how we can best support you. Crystal strongly believes in honest, integral offerings, be it therapy or coaching. If Crystal feels she is not the best fit for you, she will tell you honestly.</p>
 
+  <section class="contact-form" aria-labelledby="enquiry-title">
+    <h2 id="enquiry-title">Send an enquiry</h2>
+    <p>Use this form for a general enquiry. It sends a plain-text email to the practice.</p>
+    <form action="/api/contact" method="post">
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" autocomplete="name" maxlength="100" required>
+      </div>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required>
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="7" maxlength="5000" required></textarea>
+      </div>
+      <div class="form-trap" aria-hidden="true">
+        <label for="website">Leave this field empty</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <button class="btn btn-solid btn-lg" type="submit">Send enquiry &rarr;</button>
+    </form>
+  </section>
+
   <p class="actions"><a class="btn btn-solid btn-lg" href="mailto:contact@simplerootstherapy.com.au?subject=Enquiry">Get in Contact &rarr;</a></p>
+  <p>The email link remains available as a fallback. See our <a href="/privacy.html">privacy policy</a> for how enquiries are handled.</p>
 
   <ul class="contact-lines">
     <li><span>Email</span><a href="mailto:contact@simplerootstherapy.com.au">contact@simplerootstherapy.com.au</a></li>

@@ -1,7 +1,8 @@
 # Simple Roots Therapy — website
 
-Static multi-page site. No build step, no framework, no JavaScript, no external
-requests, no cookies, no contact form.
+Static multi-page site. No build step, no framework, no browser JavaScript, no
+external requests and no cookies. A same-origin Worker handles the contact form
+without adding client-side code.
 
 Built from two source documents: **Web Map.docx** (structure and copy) and
 **Brand Kit.docx** (voice, colour, typography).
@@ -12,6 +13,7 @@ Built from two source documents: **Web Map.docx** (structure and copy) and
 |---|---|
 | [`docs/INFRASTRUCTURE.md`](docs/INFRASTRUCTURE.md) | Hosting, config, deploy and rollback, custom domain, and the checks that can only run against the live origin |
 | [`docs/SECURITY.md`](docs/SECURITY.md) | Threat model, every response header and why its value, two open decisions |
+| [`docs/CONTACT-FORM.md`](docs/CONTACT-FORM.md) | Native form Worker, Cloudflare Email Sending setup, DNS, abuse posture and testing |
 | [`docs/EMAIL-DELIVERABILITY.md`](docs/EMAIL-DELIVERABILITY.md) | SPF, DKIM and DMARC for Microsoft 365 — the site's only contact route |
 | [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md) | Measured page weights and paint timings, and what is deliberately not optimised |
 | [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Load-bearing versus decorative features, and how each fails |
@@ -53,12 +55,14 @@ without a home of their own).
 | `public/sessions-and-fees.html` | Six-step process, session types, delivery modes, funding. Titled "Sessions" — the fees section was removed by request; the filename stays so existing links keep working |
 | `public/faqs.html` | Seven questions |
 | `public/contact.html` | Contact us |
+| `public/thank-you.html` | Form confirmation (noindex) |
+| `public/form-error.html` | Form failure and mailto fallback (noindex) |
 | `public/privacy.html` | Privacy policy (required — health information is handled) |
 | `public/terms.html` | Terms of service, scope and no-guarantee clauses |
 | `public/404.html` | Not-found page |
 
 Supporting files: `styles.css`, `_headers`, `robots.txt`, `sitemap.xml`,
-`llms.txt`, `share.png`, `favicon-32.png`, `apple-touch-icon.png`,
+`llms.txt`, `BingSiteAuth.xml`, `share.png`, `favicon-32.png`, `apple-touch-icon.png`,
 `icon-192.png`, `icon-512.png`, `site.webmanifest`,
 `.well-known/security.txt`, and `images/` — twelve marks cut from the
 supplied artwork.
@@ -231,11 +235,12 @@ the practice.
 - **`image-10`, a tick in a circle, is prepared but placed nowhere.** No
   reading of the three roots is illustrated by a checkmark. Either use it on
   one of the tick lists or delete it.
-- **The Web Map asks for a contact form** ("or complete the form below"). There
-  is no form: this site has no JavaScript and no backend, and the CSP sets
-  `form-action 'none'`. Email is the contact route for now. A working form
-  needs a third-party endpoint or a small Worker, which would mean relaxing the
-  CSP — worth deciding deliberately rather than by default.
+- **The Web Map asks for a contact form** ("or complete the form below"). The
+  form is now a native HTML POST to the same-origin `/api/contact` Worker
+  endpoint. It has no client-side JavaScript, uses a honeypot rather than a
+  third-party CAPTCHA, and sends plain-text email through Cloudflare Email
+  Sending. The CSP therefore uses `form-action 'self'`; the mailto link remains
+  the documented fallback. See `docs/CONTACT-FORM.md`.
 
 ## Advertising compliance — read this before publishing
 
@@ -315,9 +320,10 @@ The address is also shown as plain visible text in the footer and on the
 contact page, so it can always be copied by hand — which is the fallback that
 makes this safe.
 
-The Web Map asked for a contact form. There is none: this site has no
-JavaScript and no backend, and the CSP sets `form-action 'none'`. A real form
-would need a third-party endpoint or a small Worker, and a CSP change.
+The Web Map asked for a contact form. It is implemented as a native HTML form
+with no browser JavaScript. The same-origin Worker validates it and sends
+plain-text email through Cloudflare Email Sending; `form-action 'self'` is the
+minimum CSP allowance. The mailto route remains available as a fallback.
 
 ## Location
 
@@ -383,8 +389,9 @@ with **no client-side script at all**.
 
 ## Security
 
-The site has no JavaScript, no forms, no cookies, no database and no backend,
-so most of the usual attack surface does not exist. The headers in `_headers`
+The site has no browser JavaScript, no cookies, no database and no client-side
+form processing. A small Worker validates the contact form and sends no data
+anywhere except the fixed practice address. The headers in `_headers`
 keep it that way: if a future edit pulls in an external script, font, frame or
 tracker, the browser refuses it rather than failing silently.
 
@@ -421,8 +428,9 @@ on clearing the artwork, which is unfinished business rather than background.
 
 ## Design decisions
 
-**No JavaScript.** The content security policy sets `script-src 'none'`, so
-there is no script execution path at all. All motion is CSS.
+**No browser JavaScript.** The content security policy sets `script-src 'none'`,
+so there is no script execution path in the page. All motion and form
+interaction are native HTML/CSS; the server-side Worker is not browser code.
 
 **No external requests.** System and locally-installed fonts only. No
 analytics, no cookies, no pixels, no embedded widgets. Nothing loads from

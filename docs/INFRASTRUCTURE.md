@@ -14,19 +14,32 @@ is the reason the first two builds failed.
 ```toml
 name = "ot-site"
 compatibility_date = "2026-08-09"
+main = "src/index.js"
 
 [assets]
 directory = "./public"
 not_found_handling = "404-page"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[[send_email]]
+name = "EMAIL"
+destination_address = "contact@simplerootstherapy.com.au"
 ```
 
 - **`directory = "./public"`** — everything served lives here. The README,
   `wrangler.toml`, `scripts/`, `docs/`, `tests/` and `assets/` are outside it
   and are never uploaded. The artwork masters in `assets/source-images/` are
   deliberately out of the served tree — see `docs/IMAGES.md`.
-- **`not_found_handling = "404-page"`** — an unmatched URL returns **404 with
+- **`not_found_handling = "404-page"`** – an unmatched URL returns **404 with
   `404.html`**, not a 200. That distinction matters: a soft 404 (200 status on
   an error page) makes search engines index the error page.
+- **`main = "src/index.js"`** is the no-build Worker entrypoint. The asset
+  binding is available as `env.ASSETS`; only `/api/*` is run through the
+  Worker first, so normal asset requests bypass it.
+- **`send_email`** binds Cloudflare Email Sending as `env.EMAIL` and restricts
+  the destination to the practice mailbox. See `docs/CONTACT-FORM.md` for the
+  one-time domain onboarding and Microsoft 365 DNS considerations.
 
 There is **no build step**. In Workers Builds the build command stays empty
 and the deploy command is `npx wrangler deploy`. `wrangler pages deploy` is

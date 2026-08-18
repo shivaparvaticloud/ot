@@ -6,9 +6,10 @@ decisions still open.
 
 ## Threat model
 
-This is a static brochure site for a solo health practice. It has no backend,
-no database, no forms, no cookies, no sessions, no user accounts, no
-JavaScript and no third-party resources. Whole categories of web
+This is a static brochure site for a solo health practice. It has no database,
+no cookies, no sessions, no user accounts, no browser JavaScript and no
+third-party resources. A small same-origin Worker handles one contact endpoint;
+it has no database or session state. Whole categories of web
 vulnerability — injection, broken auth, SSRF, deserialisation, XSS via a
 vulnerable dependency — do not have a place to live here.
 
@@ -27,9 +28,9 @@ the site's *current* properties enforceable, so that a later edit which adds
 an analytics snippet or an embedded font is blocked by the browser instead of
 shipping unnoticed.
 
-Health information is not in scope here: none is collected by the site. The
-privacy policy says so explicitly, and there is no contact form — enquiries
-arrive as ordinary email.
+Health information is not requested by the form: its warning asks visitors for
+only a short general enquiry. The privacy policy explains that form submissions
+are handled as correspondence and delivered to the practice by email.
 
 ## Response headers
 
@@ -56,7 +57,7 @@ which directives fall through and which do not.
 | `frame-src` / `child-src` | `'none'` | Nothing is embedded |
 | `worker-src` | `'none'` | No service worker |
 | `manifest-src` | `'self'` | `site.webmanifest` |
-| `form-action` | `'none'` | There are no forms; this blocks one being posted anywhere |
+| `form-action` | `'self'` | The native form can post only to this site's Worker endpoint |
 | `frame-ancestors` | `'none'` | The site cannot be framed |
 | `base-uri` | `'self'` | Stops an injected `<base>` redirecting every relative URL |
 | `upgrade-insecure-requests` | — | Any `http://` subresource is fetched over TLS |
