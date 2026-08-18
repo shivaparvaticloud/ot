@@ -8,7 +8,7 @@ node scripts/visual-diff.js --update   # replace the baseline, deliberately
 Exits **0** if every capture is within tolerance, **1** if any page differs or
 has no baseline, **2** if the script could not run.
 
-Captures **81 images**: 9 pages × 3 widths (390, 768, 1440) × 3 modes
+Captures **99 images**: 11 pages × 3 widths (390, 768, 1440) × 3 modes
 (default, reduced-motion, forced-colors). Full-page, `deviceScaleFactor: 1`,
 served with the real `_headers` on port 8124.
 
@@ -77,13 +77,13 @@ now waits for the entrance sequence to finish. If you add a mode, it needs
 that settle unless it disables animation.
 
 **The reduced-motion mode is largely redundant.** Comparing the baseline by
-hash, `default` and `motion` captures are **identical on 21 of 27**
+hash, `default` and `motion` captures are **identical on 27 of 33**
 page/width combinations. They differ only on index and services, the two
 pages carrying animated SVG. That is the correct result — reduced motion
 renders the same final state — and `verify.js` already asserts separately
 that reduced motion leaves nothing hidden.
 
-Forced-colors, by contrast, differs on **27 of 27**, so it is carrying real
+Forced-colors, by contrast, differs on **33 of 33**, so it is carrying real
 information and the emulation is genuinely working.
 
 ## A third finding: compositing changes pixels without changing layout
@@ -115,7 +115,7 @@ you just did.
 
 ## Repository size — read this before the first update
 
-The baseline is **about 23 MB across 81 PNGs**.
+The baseline is **about 24 MB across 99 PNGs**.
 
 Git stores each binary version in full, so **every `--update` adds roughly
 another 22 MB to history permanently**, whether or not most images changed.
